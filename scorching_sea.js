@@ -327,36 +327,49 @@ function main() {
 			switch (evt.keyCode) {
 			case keys.UP:
 				center[1] += 1;
-				center[1] = Math.floor(center[1]);
 				for(var i = 1; i < villagePos.length; i+=2){
 					villagePos[i] -= 1;
 					villagePos[i] = Math.floor(villagePos[i]);
-				}			
+					if(villagePos[i] == center[1] && villagePos[i-1] == center[0]){
+						center[1] -= 1;
+						
+					}
+				}	
+				center[1] = Math.floor(center[1]);		
 				break;
 			case keys.DOWN:
 				center[1] -= 1;
-				center[1] = Math.floor(center[1]);	
 				for(var i = 1; i < villagePos.length; i+=2){
 					villagePos[i] += 1;
 					villagePos[i] = Math.floor(villagePos[i]);
+					if(villagePos[i] == center[1] && villagePos[i-1] == center[0]){
+						center[1] += 1;
+					}
 				}
+				center[1] = Math.floor(center[1]);
 				break;
 
 			case keys.LEFT:
 				center[0] -= 1;
-				center[0] = Math.floor(center[0]);	
 				for(var i = 0; i < villagePos.length; i+=2){
 					villagePos[i] += 1;
 					villagePos[i] = Math.floor(villagePos[i]);
+					if(villagePos[i] == center[0] && villagePos[i+1] == center[1]){
+						center[0] += 1;
+					}
 				}	
+				center[0] = Math.floor(center[0]);	
 				break;
 			case keys.RIGHT:
 				center[0] += 1;
-				center[0] = Math.floor(center[0]);
 				for(var i = 0; i < villagePos.length; i+=2){
 					villagePos[i] -= 1;
 					villagePos[i] = Math.floor(villagePos[i]);
-				}		
+					if(villagePos[i] == center[0] && villagePos[i+1] == center[1]){
+						center[0] -= 1;
+					}
+				}	
+				center[0] = Math.floor(center[0]);	
 				break;
 			};
 		}, false);
@@ -371,12 +384,12 @@ function main() {
 		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
-		//main character
-		drawTile(2, -1, 50.0);
 		//draw villages
 		for(var i = 0; i < villagePos.length; i+=2){
 			drawTile(villagePos[i], villagePos[i+1], 50.0);
 		}
+		//main character
+		drawTile(2, -1, 50.0);
 		console.log(villagePos[0], villagePos[1]);
 		console.log(center[0], center[1]);
 		

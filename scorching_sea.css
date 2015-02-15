@@ -1,0 +1,15 @@
+html, body {
+    width:100%;
+    height:100%;
+    margin:0px;
+    background-color : #444;
+}
+#gameArea {
+    width:672px;
+    height:330px;
+    margin:0px auto;
+}
+#canvas {
+    border:1px solid black;
+    margin:10px 0px 0px;
+}

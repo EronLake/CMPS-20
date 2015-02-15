@@ -178,8 +178,8 @@ function main() {
 		var tileBitmapX = (0 | (tileValue / 4)) * 32 * 2;
 		var tileBitmapY = (tileValue % 4) * 32 * 3;
 		c.drawImage(img, tileBitmapX, tileBitmapY, 32, 32, colOffset - 0.5, rowOffset - 0.5, 1, 1);
-		//                c.drawImage(img, 0, 0, 32,32,
-		//                colOffset - 0.5, rowOffset - 0.5, 1, 1);
+		// c.drawImage(img, 0, 0, 32,32,
+		// colOffset - 0.5, rowOffset - 0.5, 1, 1);
 
 	}
 
@@ -263,8 +263,9 @@ function main() {
 
 	}
 	
-
-	var center = [50, 50];
+	var centerX = tiles_dimension/2;
+	var centerY = tiles_dimension/2;
+	var center = [centerX, centerY];
 	drawTiles(center);
 	
 	/*
@@ -311,6 +312,11 @@ function main() {
 		DOWN : 87
 	};
 	
+	var villagePos = new Array (200);
+	for(var i = 0; i < villagePos.length; i++){
+		villagePos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
+	}
+	
 	var leftKeyHeldTimer = 30;
 	var movementDelay = 30;
 	var deltaTime = 30;
@@ -321,38 +327,36 @@ function main() {
 			switch (evt.keyCode) {
 			case keys.UP:
 				center[1] += 1;
-				center[1] = Math.floor(center[1]);			
+				center[1] = Math.floor(center[1]);
+				for(var i = 1; i < villagePos.length; i+=2){
+					villagePos[i] -= 1;
+					villagePos[i] = Math.floor(villagePos[i]);
+				}			
 				break;
 			case keys.DOWN:
 				center[1] -= 1;
 				center[1] = Math.floor(center[1]);	
+				for(var i = 1; i < villagePos.length; i+=2){
+					villagePos[i] += 1;
+					villagePos[i] = Math.floor(villagePos[i]);
+				}
 				break;
 
 			case keys.LEFT:
-				/*
-				if (leftKeyHeldTimer > movementDelay) {
-					center[0] -= 1;
-					leftKeyHeldTimer = 0;
-				} else {
-					leftKeyHeldTimer += deltaTime;
-				}
-				*/
-				keyDown = true;
-				
-				for(var i = 0; i < 100; i++){
-					center[0] -= .01;
-				}
-				
-				/*
-				while(keyDown){
-					center[0] -= .001;
-				}
-				*/
+				center[0] -= 1;
 				center[0] = Math.floor(center[0]);	
+				for(var i = 0; i < villagePos.length; i+=2){
+					villagePos[i] += 1;
+					villagePos[i] = Math.floor(villagePos[i]);
+				}	
 				break;
 			case keys.RIGHT:
 				center[0] += 1;
-				center[0] = Math.floor(center[0]);	
+				center[0] = Math.floor(center[0]);
+				for(var i = 0; i < villagePos.length; i+=2){
+					villagePos[i] -= 1;
+					villagePos[i] = Math.floor(villagePos[i]);
+				}		
 				break;
 			};
 		}, false);
@@ -367,7 +371,14 @@ function main() {
 		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
+		//main character
 		drawTile(2, -1, 50.0);
+		//draw villages
+		for(var i = 0; i < villagePos.length; i+=2){
+			drawTile(villagePos[i], villagePos[i+1], 50.0);
+		}
+		console.log(villagePos[0], villagePos[1]);
+		console.log(center[0], center[1]);
 		
 		/*
 		if (mouseDown) {
@@ -399,4 +410,6 @@ function main() {
 function sq(x) {
 	return x * x;
 };
+
+
 

@@ -320,8 +320,11 @@ function main() {
 	var shadows = new Array (200);
 	
 	var player = {
-		WATER : 100,
-		UV : 100
+		WATER : 10000, 
+		UV : 15,
+		HEALTH : 100,
+		SPEED : 10,
+		ATTACK : 10
 	};
 	
 	for(var i = 0; i < rockPos.length; i++){
@@ -353,6 +356,8 @@ function main() {
 					}
 				}	
 				center[1] = Math.floor(center[1]);		
+				if(inSun) player.UV--;
+				else player.UV = 15;
 				break;
 			case keys.DOWN2:
 			case keys.DOWN:
@@ -370,6 +375,8 @@ function main() {
 					}
 				}
 				center[1] = Math.floor(center[1]);
+				if(inSun) player.UV--;
+				else player.UV = 15;
 				break;
 			case keys.LEFT2:
 			case keys.LEFT:
@@ -386,7 +393,9 @@ function main() {
 						}
 					}
 				}	
-				center[0] = Math.floor(center[0]);	
+				center[0] = Math.floor(center[0]);
+				if(inSun) player.UV--;	
+				else player.UV = 15;
 				break;
 			case keys.RIGHT2:
 			case keys.RIGHT:
@@ -404,6 +413,8 @@ function main() {
 					}
 				}	
 				center[0] = Math.floor(center[0]);	
+				if(inSun) player.UV--;
+				else player.UV = 15;
 				break;
 			};
 		}, false);
@@ -413,27 +424,46 @@ function main() {
 	//     Animation
 	// ----------------------------------------
 	var landMoveSpeed = 0.07;
+	var inSun = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		
 		var waterLevel = "Water Level: " + player.WATER;
         var uvLevel = "UV Level: " + player.UV;
+        console.log(player.WATER, player.UV);
         c.fillStyle = '#000';
         c.fillText(waterLevel, 5, canvasHeight - 15);
         c.fillText(uvLevel, 5, canvasHeight - 5);
 		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
-		//draw rocks
-		for(var i = 0; i < rockPos.length; i+=2){
+		//draw rocks and draw shadows
+		for(var i = 0; i < rockPos.length; i += 2){
 			drawTile(rockPos[i], rockPos[i+1], 50.0);
 			drawTile(shadows[i], shadows[i+1], 10.0);
 		}
+		for(var i = 0; i < shadows.length; i += 2){
+			if(shadows[i] == 2 && shadows[i+1] == -1){
+				inSun = false;
+				break;
+			}
+			else{
+				inSun = true;
+			}
+		}
+		
+		if(inSun){
+			player.WATER -= 10;
+		}
+		else{
+			player.WATER -= 1;
+		}
+		
 		//main character
 		drawTile(2, -1, 50.0);
-		console.log(rockPos[0], rockPos[1]);
-		//console.log(center[0], center[1]);
-		
+		//console.log(rockPos[0], rockPos[1]);
+		//console.log(shadows[0], shadows[1]);
+		//console.log(inSun);
 	}
 	animate();
 }

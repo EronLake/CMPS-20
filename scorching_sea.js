@@ -328,7 +328,7 @@ function main() {
 	
 	var rockPos = new Array (200);
 	var shadows = new Array (200);
-	var humanEnemies = new Array (2);
+	var humanEnemies = new Array (50);
 	
 	var player = {
 		X : 2,
@@ -353,6 +353,7 @@ function main() {
 		}
 	}
 	
+	//create humand enemy positions
 	for(var i = 0; i < humanEnemies.length; i++){
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
 	}

@@ -307,66 +307,100 @@ function main() {
 
 	var keys = {
 		LEFT : 65,
+		LEFT2 : 37,
 		UP : 83,
+		UP2 : 40,
 		RIGHT : 68,
-		DOWN : 87
+		RIGHT2 : 39,
+		DOWN : 87,
+		DOWN2 : 38
 	};
 	
-	var villagePos = new Array (200);
-	for(var i = 0; i < villagePos.length; i++){
-		villagePos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
-	}
+	var rockPos = new Array (200);
+	var shadows = new Array (200);
 	
-	var leftKeyHeldTimer = 30;
-	var movementDelay = 30;
-	var deltaTime = 30;
-	var keyDown = false;
+	var player = {
+		WATER : 100,
+		UV : 100
+	};
+	
+	for(var i = 0; i < rockPos.length; i++){
+		rockPos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
+		if(!(i%2 == 0)){
+			shadows[i] = rockPos[i] + 1;
+		}
+		else{
+			shadows[i] = rockPos[i];
+		}
+	}
 	
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
 			switch (evt.keyCode) {
+			case keys.UP2:
 			case keys.UP:
 				center[1] += 1;
-				for(var i = 1; i < villagePos.length; i+=2){
-					villagePos[i] -= 1;
-					villagePos[i] = Math.floor(villagePos[i]);
-					if(villagePos[i] == center[1] && villagePos[i-1] == center[0]){
+				for(var i = 1; i < rockPos.length; i+=2){
+					rockPos[i] -= 1;
+					shadows[i] -= 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == -1 && rockPos[i-1] == 2){
 						center[1] -= 1;
-						
+						for(var j = 1; j < rockPos.length; j+=2){
+							rockPos[j] += 1;
+							shadows[j] += 1;
+						}
 					}
 				}	
 				center[1] = Math.floor(center[1]);		
 				break;
+			case keys.DOWN2:
 			case keys.DOWN:
 				center[1] -= 1;
-				for(var i = 1; i < villagePos.length; i+=2){
-					villagePos[i] += 1;
-					villagePos[i] = Math.floor(villagePos[i]);
-					if(villagePos[i] == center[1] && villagePos[i-1] == center[0]){
+				for(var i = 1; i < rockPos.length; i+=2){
+					rockPos[i] += 1;
+					shadows[i] += 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == -1 && rockPos[i-1] == 2){
 						center[1] += 1;
+						for(var j = 1; j < rockPos.length; j+=2){
+							rockPos[j] -= 1;
+							shadows[j] -= 1;
+						}
 					}
 				}
 				center[1] = Math.floor(center[1]);
 				break;
-
+			case keys.LEFT2:
 			case keys.LEFT:
 				center[0] -= 1;
-				for(var i = 0; i < villagePos.length; i+=2){
-					villagePos[i] += 1;
-					villagePos[i] = Math.floor(villagePos[i]);
-					if(villagePos[i] == center[0] && villagePos[i+1] == center[1]){
+				for(var i = 0; i < rockPos.length; i+=2){
+					rockPos[i] += 1;
+					shadows[i] += 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == 2 && rockPos[i+1] == -1){
 						center[0] += 1;
+						for(var j = 0; j < rockPos.length; j+=2){
+							rockPos[j] -= 1;
+							shadows[j] -= 1;
+						}
 					}
 				}	
 				center[0] = Math.floor(center[0]);	
 				break;
+			case keys.RIGHT2:
 			case keys.RIGHT:
 				center[0] += 1;
-				for(var i = 0; i < villagePos.length; i+=2){
-					villagePos[i] -= 1;
-					villagePos[i] = Math.floor(villagePos[i]);
-					if(villagePos[i] == center[0] && villagePos[i+1] == center[1]){
+				for(var i = 0; i < rockPos.length; i+=2){
+					rockPos[i] -= 1;
+					shadows[i] -= 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == 2 && rockPos[i+1] == -1){
 						center[0] -= 1;
+						for(var j = 0; j < rockPos.length; j+=2){
+							rockPos[j] += 1;
+							shadows[j] += 1;
+						}
 					}
 				}	
 				center[0] = Math.floor(center[0]);	
@@ -384,14 +418,15 @@ function main() {
 		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
-		//draw villages
-		for(var i = 0; i < villagePos.length; i+=2){
-			drawTile(villagePos[i], villagePos[i+1], 50.0);
+		//draw rocks
+		for(var i = 0; i < rockPos.length; i+=2){
+			drawTile(rockPos[i], rockPos[i+1], 50.0);
+			drawTile(shadows[i], shadows[i+1], 10.0);
 		}
 		//main character
 		drawTile(2, -1, 50.0);
-		console.log(villagePos[0], villagePos[1]);
-		console.log(center[0], center[1]);
+		console.log(rockPos[0], rockPos[1]);
+		//console.log(center[0], center[1]);
 		
 		/*
 		if (mouseDown) {
@@ -423,6 +458,4 @@ function main() {
 function sq(x) {
 	return x * x;
 };
-
-
 

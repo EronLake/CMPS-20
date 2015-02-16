@@ -3,6 +3,10 @@ var resCount = 2;
 var img = new Image();
 img.onload = launchMe;
 img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
+
+var img2 = new Image();
+img2.onload = launchMe;
+img2.src = '/Images/village_prototype.png';
 //img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/sand.png';
 
 window.onload = launchMe;

@@ -311,56 +311,114 @@ function main() {
 
 	var keys = {
 		LEFT : 65,
+		LEFT2 : 37,
 		UP : 83,
+		UP2 : 40,
 		RIGHT : 68,
-		DOWN : 87
+		RIGHT2 : 39,
+		DOWN : 87,
+		DOWN2 : 38
 	};
 	
-	var villagePos = new Array (200);
-	for(var i = 0; i < villagePos.length; i++){
-		villagePos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
-	}
+	var rockPos = new Array (200);
+	var shadows = new Array (200);
 	
-	var leftKeyHeldTimer = 30;
-	var movementDelay = 30;
-	var deltaTime = 30;
-	var keyDown = false;
+	var player = {
+		WATER : 10000, 
+		UV : 15,
+		HEALTH : 100,
+		SPEED : 10,
+		ATTACK : 10
+	};
+	
+	for(var i = 0; i < rockPos.length; i++){
+		rockPos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
+		if(!(i%2 == 0)){
+			shadows[i] = rockPos[i] + 1;
+		}
+		else{
+			shadows[i] = rockPos[i];
+		}
+	}
 	
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
 			switch (evt.keyCode) {
+			case keys.UP2:
 			case keys.UP:
 				center[1] += 1;
-				center[1] = Math.floor(center[1]);
-				for(var i = 1; i < villagePos.length; i+=2){
-					villagePos[i] -= 1;
-					villagePos[i] = Math.floor(villagePos[i]);
-				}			
+				for(var i = 1; i < rockPos.length; i+=2){
+					rockPos[i] -= 1;
+					shadows[i] -= 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == -1 && rockPos[i-1] == 2){
+						center[1] -= 1;
+						for(var j = 1; j < rockPos.length; j+=2){
+							rockPos[j] += 1;
+							shadows[j] += 1;
+						}
+					}
+				}	
+				center[1] = Math.floor(center[1]);		
+				if(inSun) player.UV--;
+				else player.UV = 15;
 				break;
+			case keys.DOWN2:
 			case keys.DOWN:
 				center[1] -= 1;
-				center[1] = Math.floor(center[1]);	
-				for(var i = 1; i < villagePos.length; i+=2){
-					villagePos[i] += 1;
-					villagePos[i] = Math.floor(villagePos[i]);
+				for(var i = 1; i < rockPos.length; i+=2){
+					rockPos[i] += 1;
+					shadows[i] += 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == -1 && rockPos[i-1] == 2){
+						center[1] += 1;
+						for(var j = 1; j < rockPos.length; j+=2){
+							rockPos[j] -= 1;
+							shadows[j] -= 1;
+						}
+					}
 				}
+				center[1] = Math.floor(center[1]);
+				if(inSun) player.UV--;
+				else player.UV = 15;
 				break;
-
+			case keys.LEFT2:
 			case keys.LEFT:
 				center[0] -= 1;
-				center[0] = Math.floor(center[0]);	
-				for(var i = 0; i < villagePos.length; i+=2){
-					villagePos[i] += 1;
-					villagePos[i] = Math.floor(villagePos[i]);
+				for(var i = 0; i < rockPos.length; i+=2){
+					rockPos[i] += 1;
+					shadows[i] += 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == 2 && rockPos[i+1] == -1){
+						center[0] += 1;
+						for(var j = 0; j < rockPos.length; j+=2){
+							rockPos[j] -= 1;
+							shadows[j] -= 1;
+						}
+					}
 				}	
+				center[0] = Math.floor(center[0]);
+				if(inSun) player.UV--;	
+				else player.UV = 15;
 				break;
+			case keys.RIGHT2:
 			case keys.RIGHT:
 				center[0] += 1;
-				center[0] = Math.floor(center[0]);
-				for(var i = 0; i < villagePos.length; i+=2){
-					villagePos[i] -= 1;
-					villagePos[i] = Math.floor(villagePos[i]);
-				}		
+				for(var i = 0; i < rockPos.length; i+=2){
+					rockPos[i] -= 1;
+					shadows[i] -= 1;
+					rockPos[i] = Math.floor(rockPos[i]);
+					if(rockPos[i] == 2 && rockPos[i+1] == -1){
+						center[0] -= 1;
+						for(var j = 0; j < rockPos.length; j+=2){
+							rockPos[j] += 1;
+							shadows[j] += 1;
+						}
+					}
+				}	
+				center[0] = Math.floor(center[0]);	
+				if(inSun) player.UV--;
+				else player.UV = 15;
 				break;
 			};
 		}, false);
@@ -370,41 +428,46 @@ function main() {
 	//     Animation
 	// ----------------------------------------
 	var landMoveSpeed = 0.07;
+	var inSun = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		
+		var waterLevel = "Water Level: " + player.WATER;
+        var uvLevel = "UV Level: " + player.UV;
+        console.log(player.WATER, player.UV);
+        c.fillStyle = '#000';
+        c.fillText(waterLevel, 5, canvasHeight - 15);
+        c.fillText(uvLevel, 5, canvasHeight - 5);
+		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
+		//draw rocks and draw shadows
+		for(var i = 0; i < rockPos.length; i += 2){
+			drawTile(rockPos[i], rockPos[i+1], 50.0);
+			drawTile(shadows[i], shadows[i+1], 10.0);
+		}
+		for(var i = 0; i < shadows.length; i += 2){
+			if(shadows[i] == 2 && shadows[i+1] == -1){
+				inSun = false;
+				break;
+			}
+			else{
+				inSun = true;
+			}
+		}
+		
+		if(inSun){
+			player.WATER -= 10;
+		}
+		else{
+			player.WATER -= 1;
+		}
+		
 		//main character
 		drawTile(2, -1, 50.0);
-		//draw villages
-		for(var i = 0; i < villagePos.length; i+=2){
-			drawTile(villagePos[i], villagePos[i+1], 50.0);
-		}
-		console.log(villagePos[0], villagePos[1]);
-		console.log(center[0], center[1]);
-		
-		/*
-		if (mouseDown) {
-			var pt = [0, 0];
-			pt[0] = mousePos[0] - displayCenterX;
-			pt[1] = mousePos[1] - displayCenterY;
-			var origPt = [mousePos[0], mousePos[1]];
-			var norm = Math.sqrt(sq(pt[0]) + sq(pt[1]));
-			pt[0] /= norm;
-			pt[1] /= norm;
-			revertVector(pt);
-			center[0] += landMoveSpeed * pt[0] * scale;
-			center[1] += landMoveSpeed * pt[1] * scale;
-			c.clearRect(0, 0, canvasWidth, canvasHeight);
-			drawTiles(center);
-			revertPoint(origPt, center);
-			drawTile(origPt[0] - center[0], origPt[1] - center[1], 50.0);
-			//console.log(origPt[0] - center[0]);
-			console.log(mousePos[0]);
-		}
-		*/
-		
+		//console.log(rockPos[0], rockPos[1]);
+		//console.log(shadows[0], shadows[1]);
+		//console.log(inSun);
 	}
 	animate();
 }
@@ -414,6 +477,4 @@ function main() {
 function sq(x) {
 	return x * x;
 };
-
-
 

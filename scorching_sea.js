@@ -416,6 +416,12 @@ function main() {
 	function animate() {
 		requestAnimationFrame(animate);
 		
+		var waterLevel = "Water Level: " + player.WATER;
+        var uvLevel = "UV Level: " + player.UV;
+        c.fillStyle = '#000';
+        c.fillText(waterLevel, 5, canvasHeight - 15);
+        c.fillText(uvLevel, 5, canvasHeight - 5);
+		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
 		//draw rocks
@@ -427,27 +433,6 @@ function main() {
 		drawTile(2, -1, 50.0);
 		console.log(rockPos[0], rockPos[1]);
 		//console.log(center[0], center[1]);
-		
-		/*
-		if (mouseDown) {
-			var pt = [0, 0];
-			pt[0] = mousePos[0] - displayCenterX;
-			pt[1] = mousePos[1] - displayCenterY;
-			var origPt = [mousePos[0], mousePos[1]];
-			var norm = Math.sqrt(sq(pt[0]) + sq(pt[1]));
-			pt[0] /= norm;
-			pt[1] /= norm;
-			revertVector(pt);
-			center[0] += landMoveSpeed * pt[0] * scale;
-			center[1] += landMoveSpeed * pt[1] * scale;
-			c.clearRect(0, 0, canvasWidth, canvasHeight);
-			drawTiles(center);
-			revertPoint(origPt, center);
-			drawTile(origPt[0] - center[0], origPt[1] - center[1], 50.0);
-			//console.log(origPt[0] - center[0]);
-			console.log(mousePos[0]);
-		}
-		*/
 		
 	}
 	animate();

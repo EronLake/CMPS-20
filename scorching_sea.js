@@ -328,7 +328,7 @@ function main() {
 	
 	var rockPos = new Array (200);
 	var shadows = new Array (200);
-	var humanEnemies = new Array (50);
+	var humanEnemies = new Array (2);
 	
 	var player = {
 		X : 2,
@@ -362,12 +362,17 @@ function main() {
 			switch (evt.keyCode) {
 			case keys.UP2:
 			case keys.UP:
-				if(player.Y < 1){
+				if(player.Y < 0){
 					player.Y++;
 					for(var i = 1; i < rockPos.length; i+=2){
 						if(rockPos[i] == player.Y && rockPos[i-1] == player.X){
 							player.Y--;
 						}
+						/*
+						if(humanEnemies[i]/player.Y < 5){
+							humanEnemies[i]+2;
+						}
+						*/
 					}
 				}
 				else{
@@ -384,6 +389,11 @@ function main() {
 								humanEnemies[j] += 1;
 							}
 						}
+						/*
+						if(humanEnemies[i]/player.Y < 5){
+							humanEnemies[i]+2;
+						}
+						*/
 					}
 				}		
 				if(inSun) player.UV--;
@@ -420,7 +430,7 @@ function main() {
 				break;
 			case keys.LEFT2:
 			case keys.LEFT:
-				if(player.X > -2){
+				if(player.X > 0){
 					player.X --;
 					for(var i = 0; i < rockPos.length; i+=2){
 						if(rockPos[i] == player.X && rockPos[i+1] == player.Y){
@@ -514,14 +524,14 @@ function main() {
 		if(!inSun && player.WATER > 0){
 			player.WATER -= 1;
 		}
-		else{
+		if(player.WATER < 0){
 			player.WATER == 0;
 		}
 		
 		for(var i = 0; i < humanEnemies.length; i+=2){
 			drawEnemy(humanEnemies[i], humanEnemies[i+1]);
 		}
-		
+		console.log(player.X , player.Y ,humanEnemies[0], humanEnemies[1]);
 		//main character
 		drawPlayer(player.X, player.Y);
 		

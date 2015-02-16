@@ -324,8 +324,9 @@ function main() {
 	var shadows = new Array (200);
 	
 	var player = {
-		WATER : 10000, 
-		UV : 15,
+		WATERORIG : 20000,
+		WATER : 20000, 
+		UV : 25,
 		HEALTH : 100,
 		SPEED : 10,
 		ATTACK : 10
@@ -432,13 +433,6 @@ function main() {
 	function animate() {
 		requestAnimationFrame(animate);
 		
-		var waterLevel = "Water Level: " + player.WATER;
-        var uvLevel = "UV Level: " + player.UV;
-        console.log(player.WATER, player.UV);
-        c.fillStyle = '#000';
-        c.fillText(waterLevel, 5, canvasHeight - 15);
-        c.fillText(uvLevel, 5, canvasHeight - 5);
-		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
 		//draw rocks and draw shadows
@@ -456,18 +450,41 @@ function main() {
 			}
 		}
 		
-		if(inSun){
-			player.WATER -= 10;
+		if(inSun && player.WATER > 0){
+			player.WATER -= 3;
+		}
+		if(!inSun && player.WATER > 0){
+			player.WATER -= 1;
 		}
 		else{
-			player.WATER -= 1;
+			player.WATER == 0;
 		}
 		
 		//main character
 		drawTile(2, -1, 50.0);
-		//console.log(rockPos[0], rockPos[1]);
-		//console.log(shadows[0], shadows[1]);
-		//console.log(inSun);
+		
+		//text
+		var waterLevel = "Water Level: " + player.WATER;
+        var uvLevel = "UV Level: " + player.UV;
+        c.lineWidth = 5;
+        c.fillStyle = "white";
+        c.strokeStyle = "black";
+        c.font = "15px Arial";
+        c.strokeText(waterLevel, 5, canvasHeight - 50);
+        c.strokeText(uvLevel, 5, canvasHeight - 30);
+        c.fillText(waterLevel, 5, canvasHeight - 50);
+        c.fillText(uvLevel, 5, canvasHeight - 30);
+        
+        //draw water meter
+        var divWater = player.WATERORIG/(player.WATERORIG/500);
+        c.fillStyle = "white";
+		c.fillRect(5, ((-player.WATERORIG/divWater) + player.WATERORIG/divWater) + 5, 
+			25, (player.WATERORIG/divWater + player.WATERORIG/divWater) + 10);
+		c.fillStyle = "blue";
+		c.fillRect(10, ((-player.WATER/divWater) + player.WATERORIG/divWater) + 10, 
+			15, player.WATERORIG/divWater + player.WATER/divWater); 
+		console.log(player.WATERORIG/(player.WATER/divWater));
+
 	}
 	animate();
 }

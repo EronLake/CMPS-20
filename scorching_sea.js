@@ -451,7 +451,7 @@ function main() {
 		}
 		
 		if(inSun && player.WATER > 0){
-			player.WATER -= 3;
+			player.WATER -= 50;
 		}
 		if(!inSun && player.WATER > 0){
 			player.WATER -= 1;
@@ -481,9 +481,11 @@ function main() {
 		c.fillRect(5, ((-player.WATERORIG/divWater) + player.WATERORIG/divWater) + 5, 
 			25, (player.WATERORIG/divWater + player.WATERORIG/divWater) + 10);
 		c.fillStyle = "blue";
-		c.fillRect(10, ((-player.WATER/divWater) + player.WATERORIG/divWater) + 10, 
-			15, player.WATERORIG/divWater + player.WATER/divWater); 
-		console.log(player.WATERORIG/(player.WATER/divWater));
+		
+		c.fillRect(10, +player.WATERORIG/divWater*2 - player.WATER/(divWater/2) + 10, 
+			15, ((player.WATER/divWater*2) + player.WATERORIG/(divWater)) - 40 ); 
+		//c.fillRect(10, ((-player.WATER/divWater) + player.WATERORIG/divWater)*2 + 10, 
+			//15, -player.WATERORIG/divWater*2 + player.WATER/(divWater/2)); 
 
 	}
 	animate();

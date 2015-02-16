@@ -72,7 +72,7 @@ function main() {
 	var experimental_useBitmapTiles = true;
 
 	// how many tiles do we show in the back ?
-	var viewBackDepth = 10;
+	var viewBackDepth = 11;
 	//13
 	// how many tiles do we show in the front ?
 	var viewFrontDepth = 15;
@@ -324,6 +324,8 @@ function main() {
 	var shadows = new Array (200);
 	
 	var player = {
+		X : 2,
+		Y : -1,
 		WATERORIG : 20000,
 		WATER : 20000, 
 		UV : 25,
@@ -347,35 +349,57 @@ function main() {
 			switch (evt.keyCode) {
 			case keys.UP2:
 			case keys.UP:
-				center[1] += 1;
-				for(var i = 1; i < rockPos.length; i+=2){
-					rockPos[i] -= 1;
-					shadows[i] -= 1;
-					rockPos[i] = Math.floor(rockPos[i]);
-					if(rockPos[i] == -1 && rockPos[i-1] == 2){
-						center[1] -= 1;
-						for(var j = 1; j < rockPos.length; j+=2){
-							rockPos[j] += 1;
-							shadows[j] += 1;
+				if(player.Y < 1){
+					player.Y++;
+					for(var i = 1; i < rockPos.length; i+=2){
+						rockPos[i] = Math.floor(rockPos[i]);
+						if(rockPos[i] == player.Y && rockPos[i-1] == player.X){
+							player.Y--;
 						}
 					}
-				}	
+				}
+				else{
+					center[1] += 1;
+					for(var i = 1; i < rockPos.length; i+=2){
+						rockPos[i] -= 1;
+						shadows[i] -= 1;
+						rockPos[i] = Math.floor(rockPos[i]);
+						if(rockPos[i] == player.Y && rockPos[i-1] == player.X){
+							center[1] -= 1;
+							for(var j = 1; j < rockPos.length; j+=2){
+								rockPos[j] += 1;
+								shadows[j] += 1;
+							}
+						}
+					}
+				}
 				center[1] = Math.floor(center[1]);		
 				if(inSun) player.UV--;
 				else player.UV = 15;
 				break;
 			case keys.DOWN2:
 			case keys.DOWN:
-				center[1] -= 1;
-				for(var i = 1; i < rockPos.length; i+=2){
-					rockPos[i] += 1;
-					shadows[i] += 1;
-					rockPos[i] = Math.floor(rockPos[i]);
-					if(rockPos[i] == -1 && rockPos[i-1] == 2){
-						center[1] += 1;
-						for(var j = 1; j < rockPos.length; j+=2){
-							rockPos[j] -= 1;
-							shadows[j] -= 1;
+				if(player.Y > -5){
+					player.Y--;
+					for(var i = 1; i < rockPos.length; i+=2){
+						rockPos[i] = Math.floor(rockPos[i]);
+						if(rockPos[i] == player.Y && rockPos[i-1] == player.X){
+							player.Y++;
+						}
+					}
+				}
+				else{
+					center[1] -= 1;
+					for (var i = 1; i < rockPos.length; i += 2) {
+						rockPos[i] += 1;
+						shadows[i] += 1;
+						rockPos[i] = Math.floor(rockPos[i]);
+						if (rockPos[i] == player.Y && rockPos[i - 1] == player.X) {
+							center[1] += 1;
+							for (var j = 1; j < rockPos.length; j += 2) {
+								rockPos[j] -= 1;
+								shadows[j] -= 1;
+							}
 						}
 					}
 				}
@@ -385,38 +409,60 @@ function main() {
 				break;
 			case keys.LEFT2:
 			case keys.LEFT:
-				center[0] -= 1;
-				for(var i = 0; i < rockPos.length; i+=2){
-					rockPos[i] += 1;
-					shadows[i] += 1;
-					rockPos[i] = Math.floor(rockPos[i]);
-					if(rockPos[i] == 2 && rockPos[i+1] == -1){
-						center[0] += 1;
-						for(var j = 0; j < rockPos.length; j+=2){
-							rockPos[j] -= 1;
-							shadows[j] -= 1;
+				if(player.X > -2){
+					player.X --;
+					for(var i = 0; i < rockPos.length; i+=2){
+						rockPos[i] = Math.floor(rockPos[i]);
+						if(rockPos[i] == player.X && rockPos[i+1] == player.Y){
+							player.X++;
 						}
 					}
-				}	
+				}
+				else {
+					center[0] -= 1;
+					for (var i = 0; i < rockPos.length; i += 2) {
+						rockPos[i] += 1;
+						shadows[i] += 1;
+						rockPos[i] = Math.floor(rockPos[i]);
+						if (rockPos[i] == player.X && rockPos[i + 1] == player.Y) {
+							center[0] += 1;
+							for (var j = 0; j < rockPos.length; j += 2) {
+								rockPos[j] -= 1;
+								shadows[j] -= 1;
+							}
+						}
+					}
+				}
 				center[0] = Math.floor(center[0]);
 				if(inSun) player.UV--;	
 				else player.UV = 15;
 				break;
 			case keys.RIGHT2:
 			case keys.RIGHT:
-				center[0] += 1;
-				for(var i = 0; i < rockPos.length; i+=2){
-					rockPos[i] -= 1;
-					shadows[i] -= 1;
-					rockPos[i] = Math.floor(rockPos[i]);
-					if(rockPos[i] == 2 && rockPos[i+1] == -1){
-						center[0] -= 1;
-						for(var j = 0; j < rockPos.length; j+=2){
-							rockPos[j] += 1;
-							shadows[j] += 1;
+				if(player.X < 5){
+					player.X++;
+					for(var i = 0; i < rockPos.length; i+=2){
+						rockPos[i] = Math.floor(rockPos[i]);
+						if(rockPos[i] == player.X && rockPos[i+1] == player.Y){
+							player.X--;
 						}
 					}
-				}	
+				}
+				else{
+					center[0] += 1;
+					for (var i = 0; i < rockPos.length; i += 2) {
+						rockPos[i] -= 1;
+						shadows[i] -= 1;
+						rockPos[i] = Math.floor(rockPos[i]);
+						if (rockPos[i] == player.X && rockPos[i + 1] == player.Y) {
+							center[0] -= 1;
+							for (var j = 0; j < rockPos.length; j += 2) {
+								rockPos[j] += 1;
+								shadows[j] += 1;
+							}
+						}
+					}
+				}
 				center[0] = Math.floor(center[0]);	
 				if(inSun) player.UV--;
 				else player.UV = 15;
@@ -430,18 +476,21 @@ function main() {
 	// ----------------------------------------
 	var landMoveSpeed = 0.07;
 	var inSun = false;
+	var steamX = 10;
+    var steamY = 10;
 	function animate() {
 		requestAnimationFrame(animate);
 		
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
+		
 		//draw rocks and draw shadows
 		for(var i = 0; i < rockPos.length; i += 2){
 			drawTile(rockPos[i], rockPos[i+1], 50.0);
 			drawTile(shadows[i], shadows[i+1], 10.0);
 		}
 		for(var i = 0; i < shadows.length; i += 2){
-			if(shadows[i] == 2 && shadows[i+1] == -1){
+			if(shadows[i] == player.X && shadows[i+1] == player.Y){
 				inSun = false;
 				break;
 			}
@@ -451,7 +500,7 @@ function main() {
 		}
 		
 		if(inSun && player.WATER > 0){
-			player.WATER -= 50;
+			player.WATER -= 3;
 		}
 		if(!inSun && player.WATER > 0){
 			player.WATER -= 1;
@@ -461,31 +510,50 @@ function main() {
 		}
 		
 		//main character
-		drawTile(2, -1, 50.0);
+		drawTile(player.X, player.Y, 50.0);
 		
 		//text
 		var waterLevel = "Water Level: " + player.WATER;
         var uvLevel = "UV Level: " + player.UV;
-        c.lineWidth = 5;
-        c.fillStyle = "white";
-        c.strokeStyle = "black";
+        c.lineWidth = 7;
+        c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
         c.font = "15px Arial";
         c.strokeText(waterLevel, 5, canvasHeight - 50);
         c.strokeText(uvLevel, 5, canvasHeight - 30);
         c.fillText(waterLevel, 5, canvasHeight - 50);
         c.fillText(uvLevel, 5, canvasHeight - 30);
         
+        
         //draw water meter
+		steamY -= .01;
+		//steamX += .01;
+		if(steamY < -5){
+			steamY = 10;
+			//steamX = 5;	
+		}
+        
         var divWater = player.WATERORIG/(player.WATERORIG/500);
-        c.fillStyle = "white";
+        c.fillStyle = 'rgba(0, 0, 0, 0.5)';
 		c.fillRect(5, ((-player.WATERORIG/divWater) + player.WATERORIG/divWater) + 5, 
 			25, (player.WATERORIG/divWater + player.WATERORIG/divWater) + 10);
-		c.fillStyle = "blue";
-		
+		c.fillStyle = 'rgba(150, 150, 150, 0.5)';
+		c.fillRect(10, ((-player.WATERORIG/divWater) + player.WATERORIG/divWater) + 10, 
+			15, (player.WATERORIG/divWater + player.WATERORIG/divWater) );
+		if(!inSun){
+			c.fillStyle = 'rgba(100, 100, 255, 0.75)';
+		}
+		else{
+			c.fillStyle = 'rgba(255, 255, 255, 0.90)';
+			c.fillRect(steamX,steamY,5,5);
+			c.fillRect(steamX+2,steamY-4,5,5);
+			c.fillRect(steamX+4,steamY+6,5,5);
+			c.fillRect(steamX+6,steamY-3,5,5);
+			c.fillRect(steamX+8,steamY+7,5,5);
+			c.fillStyle = 'rgba(200, 200, 255, 0.75)';
+		}
 		c.fillRect(10, +player.WATERORIG/divWater*2 - player.WATER/(divWater/2) + 10, 
 			15, ((player.WATER/divWater*2) + player.WATERORIG/(divWater)) - 40 ); 
-		//c.fillRect(10, ((-player.WATER/divWater) + player.WATERORIG/divWater)*2 + 10, 
-			//15, -player.WATERORIG/divWater*2 + player.WATER/(divWater/2)); 
 
 	}
 	animate();

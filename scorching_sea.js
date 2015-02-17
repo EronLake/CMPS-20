@@ -201,6 +201,18 @@ function main() {
 		c.fillRect(-15, -30, 20, 35);
 		c.restore();
 	}
+		
+	function drawHomeBase(colOffset, rowOffset){
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(50, 150, 150)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-35, -22, 45, 40);
+		c.restore();
+		
+	}
 	
 	function drawEnemy(colOffset, rowOffset){
 		var pt = [0, 0];
@@ -327,12 +339,14 @@ function main() {
 	};
 	
 	var rockPos = new Array (200);
+	var humanEnemies = new Array (100);
+	var homeBase = new Array(2);
+	var allObjects = new Array(202);
 	var shadows = new Array (200);
-	var humanEnemies = new Array (50);
 	
 	var player = {
-		X : 2,
-		Y : -1,
+		X : 3,
+		Y : -3,
 		WATERORIG : 20000,
 		WATER : 20000, 
 		UVORIG : 25,
@@ -342,9 +356,11 @@ function main() {
 		ATTACK : 10
 	};
 	
+	var i = 0;
 	//create rocks and shadow positions
-	for(var i = 0; i < rockPos.length; i++){
+	for(; i < rockPos.length; i++){
 		rockPos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
+		allObjects[i] = rockPos[i];
 		if(!(i%2 == 0)){
 			shadows[i] = rockPos[i] + 1;
 		}
@@ -353,6 +369,13 @@ function main() {
 		}
 	}
 	
+	homeBase[0] = player.X;
+	homeBase[1] = player.Y-1;
+	allObjects[i] = homeBase[0];
+	shadows[i] = homeBase[0];
+	allObjects[++i] = homeBase[1];
+	shadows[i] = player.Y;
+		
 	//create humand enemy positions
 	for(var i = 0; i < humanEnemies.length; i++){
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
@@ -361,40 +384,47 @@ function main() {
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
 			switch (evt.keyCode) {
+		    //actually down
 			case keys.UP2:
 			case keys.UP:
 				if(player.Y < 0){
 					player.Y++;
-					for(var i = 1; i < rockPos.length; i+=2){
-						if(rockPos[i] == player.Y && rockPos[i-1] == player.X){
+					for(var i = 1; i < allObjects.length; i+=2){
+						if(allObjects[i] == player.Y && allObjects[i-1] == player.X){
 							player.Y--;
 						}
-						/*
-						if(humanEnemies[i]/player.Y < 5){
-							humanEnemies[i]+2;
+						//enemy ai going down when near
+						if((humanEnemies[i]) > player.Y - 5 && (humanEnemies[i]) < player.Y){
+							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+								humanEnemies[i]++;
+							}
 						}
-						*/
 					}
 				}
 				else{
 					center[1] += 1;
-					for(var i = 1; i < rockPos.length; i+=2){
+					for(var i = 1; i < allObjects.length; i+=2){
 						rockPos[i] -= 1;
 						shadows[i] -= 1;
 						humanEnemies[i] -= 1;
-						if(rockPos[i] == player.Y && rockPos[i-1] == player.X){
+						homeBase[i] -= 1;
+						allObjects[i] -= 1;
+						if(allObjects[i] == player.Y && allObjects[i-1] == player.X){
 							center[1] -= 1;
-							for(var j = 1; j < rockPos.length; j+=2){
+							for(var j = 1; j < allObjects.length; j+=2){
 								rockPos[j] += 1;
 								shadows[j] += 1;
 								humanEnemies[j] += 1;
+								homeBase[j] += 1;
+								allObjects[j] += 1;
 							}
 						}
-						/*
-						if(humanEnemies[i]/player.Y < 5){
-							humanEnemies[i]+2;
+						//ai going down when near
+						if((humanEnemies[i]) > player.Y - 5 && (humanEnemies[i]) < player.Y){
+							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+								humanEnemies[i]++;
+							}
 						}
-						*/
 					}
 				}		
 				if(inSun) player.UV--;
@@ -404,26 +434,44 @@ function main() {
 			case keys.DOWN:
 				if(player.Y > -5){
 					player.Y--;
-					for(var i = 1; i < rockPos.length; i+=2){
-						if(rockPos[i] == player.Y && rockPos[i-1] == player.X){
+					for(var i = 1; i < allObjects.length; i+=2){
+						if(allObjects[i] == player.Y && allObjects[i-1] == player.X){
 							player.Y++;
 						}
+						//ai going up when near
+						if((humanEnemies[i]) < player.Y + 5 && (humanEnemies[i]) > player.Y){
+							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+								humanEnemies[i]--;
+							}
+						}
+						
 					}
 				}
 				else{
 					center[1] -= 1;
-					for (var i = 1; i < rockPos.length; i += 2) {
+					for (var i = 1; i < allObjects.length; i += 2) {
 						rockPos[i] += 1;
 						shadows[i] += 1;
 						humanEnemies[i] += 1;
-						if (rockPos[i] == player.Y && rockPos[i - 1] == player.X) {
+						homeBase[i] += 1;
+						allObjects[i] += 1;
+						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] += 1;
-							for (var j = 1; j < rockPos.length; j += 2) {
+							for (var j = 1; j < allObjects.length; j += 2) {
 								rockPos[j] -= 1;
 								shadows[j] -= 1;
 								humanEnemies[j] -= 1;
+								homeBase[j] -= 1;
+								allObjects[j] -= 1;
 							}
 						}
+						//ai going up when near
+						if((humanEnemies[i]) < player.Y + 5 && (humanEnemies[i]) > player.Y){
+							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+								humanEnemies[i]--;
+							}
+						}
+						
 					}
 				}
 				if(inSun) player.UV--;
@@ -433,24 +481,28 @@ function main() {
 			case keys.LEFT:
 				if(player.X > 0){
 					player.X --;
-					for(var i = 0; i < rockPos.length; i+=2){
-						if(rockPos[i] == player.X && rockPos[i+1] == player.Y){
+					for(var i = 0; i < allObjects.length; i+=2){
+						if(allObjects[i] == player.X && allObjects[i+1] == player.Y){
 							player.X++;
 						}
 					}
 				}
 				else {
 					center[0] -= 1;
-					for (var i = 0; i < rockPos.length; i += 2) {
+					for (var i = 0; i < allObjects.length; i += 2) {
 						rockPos[i] += 1;
 						shadows[i] += 1;
 						humanEnemies[i] += 1;
-						if (rockPos[i] == player.X && rockPos[i + 1] == player.Y) {
+						homeBase[i] += 1;
+						allObjects[i] += 1;
+						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] += 1;
-							for (var j = 0; j < rockPos.length; j += 2) {
+							for (var j = 0; j < allObjects.length; j += 2) {
 								rockPos[j] -= 1;
 								shadows[j] -= 1;
 								humanEnemies[j] -= 1;
+								homeBase[j] -= 1;
+								allObjects[j] -= 1;
 							}
 						}
 						
@@ -463,24 +515,28 @@ function main() {
 			case keys.RIGHT:
 				if(player.X < 5){
 					player.X++;
-					for(var i = 0; i < rockPos.length; i+=2){
-						if(rockPos[i] == player.X && rockPos[i+1] == player.Y){
+					for(var i = 0; i < allObjects.length; i+=2){
+						if(allObjects[i] == player.X && allObjects[i+1] == player.Y){
 							player.X--;
 						}
 					}
 				}
 				else{
 					center[0] += 1;
-					for (var i = 0; i < rockPos.length; i += 2) {
+					for (var i = 0; i < allObjects.length; i += 2) {
 						rockPos[i] -= 1;
 						shadows[i] -= 1;
 						humanEnemies[i] -= 1;
-						if (rockPos[i] == player.X && rockPos[i + 1] == player.Y) {
+						homeBase[i] -= 1;
+						allObjects[i] -= 1;
+						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] -= 1;
-							for (var j = 0; j < rockPos.length; j += 2) {
+							for (var j = 0; j < allObjects.length; j += 2) {
 								rockPos[j] += 1;
 								shadows[j] += 1;
 								humanEnemies[j] += 1;
+								homeBase[j] += 1;
+								allObjects[j] += 1;
 							}
 						}
 					}
@@ -505,9 +561,12 @@ function main() {
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
 		
-		//draw rocks and draw shadows
+		//draw rocks
 		for(var i = 0; i < rockPos.length; i += 2){
 			drawRock(rockPos[i], rockPos[i+1]);
+		}
+		//draw shadows
+		for(var i = 0; i < shadows.length; i += 2){
 			drawTile(shadows[i], shadows[i+1], 1.0);
 		}
 		for(var i = 0; i < shadows.length; i += 2){
@@ -520,7 +579,7 @@ function main() {
 			}
 		}
 		if(inSun && player.WATER > 0){
-			player.WATER -= 3;
+			player.WATER -= 7;
 		}
 		if(!inSun && player.WATER > 0){
 			player.WATER -= 1;
@@ -528,12 +587,13 @@ function main() {
 		if(player.WATER < 0){
 			player.WATER == 0;
 		}
-		
+		//draw enemies
 		for(var i = 0; i < humanEnemies.length; i+=2){
 			drawEnemy(humanEnemies[i], humanEnemies[i+1]);
 		}
-		console.log(player.X , player.Y ,humanEnemies[0], humanEnemies[1]);
+		console.log(player.X , player.Y);
 		//main character
+		drawHomeBase(homeBase[0], homeBase[1]);
 		drawPlayer(player.X, player.Y);
 		
 		//text

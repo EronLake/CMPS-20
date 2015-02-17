@@ -403,10 +403,10 @@ function main() {
 	}
 
 	//create villages positions
-	for(var j = 0; j < villages.length; j++){
+	for (var j = 0; j < villages.length; j++) {
 		villages[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 		allObjects[i] = villages[j];
-		 if (!(j % 2 == 0)) {
+		if (!(j % 2 == 0)) {
 			shadows[i] = villages[j] + 1;
 		} else {
 			shadows[i] = villages[j];
@@ -421,9 +421,27 @@ function main() {
 	allObjects[++i] = homeBase[1];
 	shadows[i] = player.Y;
 
-	//create humand enemy positions
+	//create human enemy positions
 	for (var i = 0; i < humanEnemies.length; i++) {
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+	}
+
+	function decAll(i) {
+		rockPos[i]--;
+		shadows[i]--;
+		humanEnemies[i]--;
+		homeBase[i]--;
+		villages[i]--;
+		allObjects[i]--;
+	}
+
+	function inAll(i) {
+		rockPos[i]++;
+		shadows[i]++;
+		humanEnemies[i]++;
+		homeBase[i]++;
+		villages[i]++;
+		allObjects[i]++;
 	}
 
 	function hookKeys() {
@@ -448,21 +466,11 @@ function main() {
 				} else {
 					center[1] += 1;
 					for (var i = 1; i < allObjects.length; i += 2) {
-						rockPos[i] -= 1;
-						shadows[i] -= 1;
-						humanEnemies[i] -= 1;
-						homeBase[i] -= 1;
-						villages[i] -= 1;
-						allObjects[i] -= 1;
+						decAll(i);
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] -= 1;
 							for (var j = 1; j < allObjects.length; j += 2) {
-								rockPos[j] += 1;
-								shadows[j] += 1;
-								humanEnemies[j] += 1;
-								homeBase[j] += 1;
-								villages[j] += 1;
-								allObjects[j] += 1;
+								inAll(j);
 							}
 						}
 						//ai going down when near
@@ -496,21 +504,11 @@ function main() {
 				} else {
 					center[1] -= 1;
 					for (var i = 1; i < allObjects.length; i += 2) {
-						rockPos[i] += 1;
-						shadows[i] += 1;
-						humanEnemies[i] += 1;
-						homeBase[i] += 1;
-						villages[i] += 1;
-						allObjects[i] += 1;
+						inAll(i);
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] += 1;
 							for (var j = 1; j < allObjects.length; j += 2) {
-								rockPos[j] -= 1;
-								shadows[j] -= 1;
-								humanEnemies[j] -= 1;
-								homeBase[j] -= 1;
-								villages[j] -= 1;
-								allObjects[j] -= 1;
+								decAll(j);
 							}
 						}
 						//ai going up when near
@@ -546,21 +544,11 @@ function main() {
 				} else {
 					center[0] -= 1;
 					for (var i = 0; i < allObjects.length; i += 2) {
-						rockPos[i] += 1;
-						shadows[i] += 1;
-						humanEnemies[i] += 1;
-						homeBase[i] += 1;
-						villages[i] += 1;
-						allObjects[i] += 1;
+						inAll(i);
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] += 1;
 							for (var j = 0; j < allObjects.length; j += 2) {
-								rockPos[j] -= 1;
-								shadows[j] -= 1;
-								humanEnemies[j] -= 1;
-								homeBase[j] -= 1;
-								villages[j] -= 1;
-								allObjects[j] -= 1;
+								decAll(j);
 							}
 
 						}
@@ -600,21 +588,11 @@ function main() {
 				} else {
 					center[0] += 1;
 					for (var i = 0; i < allObjects.length; i += 2) {
-						rockPos[i] -= 1;
-						shadows[i] -= 1;
-						humanEnemies[i] -= 1;
-						homeBase[i] -= 1;
-						villages[i] -= 1;
-						allObjects[i] -= 1;
+						decAll(i);
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] -= 1;
 							for (var j = 0; j < allObjects.length; j += 2) {
-								rockPos[j] += 1;
-								shadows[j] += 1;
-								humanEnemies[j] += 1;
-								homeBase[j] += 1;
-								villages[j] += 1;
-								allObjects[j] += 1;
+								inAll(j);
 							}
 						}
 						//ai
@@ -635,70 +613,20 @@ function main() {
 		}, false);
 	}
 
-	// ----------------------------------------
-	//     Animation
-	// ----------------------------------------
-	var landMoveSpeed = 0.07;
-	var inSun = false;
-	var steamX = 10;
-	var steamY = 10;
-	function animate() {
-		requestAnimationFrame(animate);
-
-		c.clearRect(0, 0, canvasWidth, canvasHeight);
+	function drawAll() {
 		//draw floor
 		drawTiles(center);
-
-		//draw rocks
-		for (var i = 0; i < rockPos.length; i += 2) {
-			drawRock(rockPos[i], rockPos[i + 1]);
-		}
-		//draw shadows
-		for (var i = 0; i < shadows.length; i += 2) {
+		for (var i = 0; i < allObjects.length; i += 2) {
 			drawTile(shadows[i], shadows[i + 1], 1.0);
-		}
-
-		//draw enemies
-		for (var i = 0; i < humanEnemies.length; i += 2) {
+			drawRock(rockPos[i], rockPos[i + 1]);
 			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
+			drawVillage(villages[i], villages[i + 1]);
 		}
-		
-		//draw villages
-		for(var i = 0; i < villages.length; i+=2){
-			drawVillage(villages[i], villages[i+1]);
-		}
-
-		//main character
 		drawHomeBase(homeBase[0], homeBase[1]);
 		drawPlayer(player.X, player.Y);
+	}
 
-		//conditions
-		//if in shadow
-		for (var i = 0; i < shadows.length; i += 2) {
-			if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
-				inSun = false;
-				player.UV = player.UVORIG;
-				break;
-			} else {
-				inSun = true;
-			}
-		}
-		if (inSun && player.WATER > 0) {
-			player.WATER -= 3;
-		}
-		if (!inSun && player.WATER > 0) {
-			player.WATER -= 1;
-		}
-		if (player.WATER < 0) {
-			player.WATER == 0;
-		}
-
-		//if at base
-		if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
-			homeBase.WATER -= (player.WATERORIG - player.WATER);
-			player.WATER = player.WATERORIG;
-		}
-
+	function drawUI() {
 		//text
 		var waterLevel = "ml: " + player.WATER;
 		var uvLevel = "Integrity: " + player.UV;
@@ -710,18 +638,18 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
-		c.strokeText(homeWaterLev, 5, canvasHeight - 120);
-		c.fillText(homeWaterLev, 5, canvasHeight - 120);
-		c.strokeText(waterLevel, 5, canvasHeight - 100);
-		c.fillText(waterLevel, 5, canvasHeight - 100);
-		c.strokeText(speedLevel, 5, canvasHeight - 80);
-		c.fillText(speedLevel, 5, canvasHeight - 80);
-		c.strokeText(attackLevel, 5, canvasHeight - 60);
-		c.fillText(attackLevel, 5, canvasHeight - 60);
-		c.strokeText(hpLevel, 5, canvasHeight - 40);
-		c.fillText(hpLevel, 5, canvasHeight - 40);
-		c.strokeText(uvLevel, 5, canvasHeight - 20);
-		c.fillText(uvLevel, 5, canvasHeight - 20);
+		c.strokeText(homeWaterLev, 50, 100);
+		c.fillText(homeWaterLev, 50, 100);
+		c.strokeText(waterLevel, 50, 80);
+		c.fillText(waterLevel, 50, 80);
+		c.strokeText(speedLevel, 50, 60);
+		c.fillText(speedLevel, 50, 60);
+		c.strokeText(attackLevel, 50, 40);
+		c.fillText(attackLevel, 50, 40);
+		c.strokeText(hpLevel, 50, 20);
+		c.fillText(hpLevel, 50, 20);
+		c.strokeText(uvLevel, 50, 0);
+		c.fillText(uvLevel, 50, 0);
 
 		//draw water meter
 		steamY -= .01;
@@ -745,6 +673,46 @@ function main() {
 			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
 		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
+
+	}
+
+	// ----------------------------------------
+	//     Animation
+	// ----------------------------------------
+	var landMoveSpeed = 0.07;
+	var inSun = false;
+	var steamX = 10;
+	var steamY = 10;
+	function animate() {
+		requestAnimationFrame(animate);
+
+		c.clearRect(0, 0, canvasWidth, canvasHeight);
+
+		drawAll();
+		drawUI();
+
+		//conditions
+		//if in shadow
+		for (var i = 0; i < shadows.length; i += 2) {
+			if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
+				inSun = false;
+				player.UV = player.UVORIG;
+				break;
+			} else {
+				inSun = true;
+			}
+		}
+		if (inSun && player.WATER > 0) {
+			player.WATER -= 3;
+		} else {
+			player.WATER -= 1;
+		}
+
+		//if at base, refill water and use base's water supply
+		if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
+			homeBase.WATER -= (player.WATERORIG - player.WATER);
+			player.WATER = player.WATERORIG;
+		}
 
 	}
 

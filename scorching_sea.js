@@ -40,7 +40,7 @@ function main() {
 	// ----------------------------------------
 	//     Tiles Setup
 	// ----------------------------------------
-	var tiles_dimension = 120;
+	var tiles_dimension = 100;
 
 	var tileCount = 0;
 	var tileMap = new Array();
@@ -191,19 +191,48 @@ function main() {
 
 	function drawPlayer(colOffset, rowOffset) {
 		var pt = [0, 0];
+		var waterLevel = "ml: " + player.WATER;
+		var uvLevel = "UV: " + player.UV;
 		c.beginPath();
 		c.fillStyle = 'rgb(200, 150, 100)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
 		c.fillRect(-15, -30, 20, 35);
+		c.lineWidth = 5;
+		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+		c.font = "10px Arial";
+		c.strokeText(waterLevel, -30, 20);
+		c.fillText(waterLevel, -30, 20);
+		c.strokeText(uvLevel, -20, 0);
+		c.fillText(uvLevel, -20, 0);
 		c.restore();
 	}
 
 	function drawHomeBase(colOffset, rowOffset) {
 		var pt = [0, 0];
+		var homeWaterLev = "ml: " + homeBase.WATER;
 		c.beginPath();
 		c.fillStyle = 'rgb(50, 150, 150)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-35, -22, 45, 40);
+		c.lineWidth = 5;
+		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+		c.font = "10px Arial";
+		c.strokeText(homeWaterLev, -35, -32);
+		c.fillText(homeWaterLev, -35, -32);
+		c.restore();
+
+	}
+
+	function drawVillage(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(145, 120, 110)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
@@ -340,8 +369,9 @@ function main() {
 	var rockPos = new Array(200);
 	var humanEnemies = new Array(100);
 	var homeBase = new Array(2);
-	var allObjects = new Array(202);
-	var shadows = new Array(200);
+	var villages = new Array(20);
+	var allObjects = new Array(252);
+	var shadows = new Array(252);
 
 	var player = {
 		X : 3,
@@ -354,9 +384,9 @@ function main() {
 		SPEED : 10,
 		ATTACK : 10
 	};
-	
+
 	var homeBase = {
-		WATER : 200000,
+		WATER : 50000,
 		HEALTHPACK : 5
 	};
 
@@ -370,6 +400,18 @@ function main() {
 		} else {
 			shadows[i] = rockPos[i];
 		}
+	}
+
+	//create villages positions
+	for(var j = 0; j < villages.length; j++){
+		villages[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		allObjects[i] = villages[j];
+		 if (!(j % 2 == 0)) {
+			shadows[i] = villages[j] + 1;
+		} else {
+			shadows[i] = villages[j];
+		}
+		i++;
 	}
 
 	homeBase[0] = player.X;
@@ -410,6 +452,7 @@ function main() {
 						shadows[i] -= 1;
 						humanEnemies[i] -= 1;
 						homeBase[i] -= 1;
+						villages[i] -= 1;
 						allObjects[i] -= 1;
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] -= 1;
@@ -418,6 +461,7 @@ function main() {
 								shadows[j] += 1;
 								humanEnemies[j] += 1;
 								homeBase[j] += 1;
+								villages[j] += 1;
 								allObjects[j] += 1;
 							}
 						}
@@ -456,6 +500,7 @@ function main() {
 						shadows[i] += 1;
 						humanEnemies[i] += 1;
 						homeBase[i] += 1;
+						villages[i] += 1;
 						allObjects[i] += 1;
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] += 1;
@@ -464,6 +509,7 @@ function main() {
 								shadows[j] -= 1;
 								humanEnemies[j] -= 1;
 								homeBase[j] -= 1;
+								villages[j] -= 1;
 								allObjects[j] -= 1;
 							}
 						}
@@ -504,6 +550,7 @@ function main() {
 						shadows[i] += 1;
 						humanEnemies[i] += 1;
 						homeBase[i] += 1;
+						villages[i] += 1;
 						allObjects[i] += 1;
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] += 1;
@@ -512,6 +559,7 @@ function main() {
 								shadows[j] -= 1;
 								humanEnemies[j] -= 1;
 								homeBase[j] -= 1;
+								villages[j] -= 1;
 								allObjects[j] -= 1;
 							}
 
@@ -556,6 +604,7 @@ function main() {
 						shadows[i] -= 1;
 						humanEnemies[i] -= 1;
 						homeBase[i] -= 1;
+						villages[i] -= 1;
 						allObjects[i] -= 1;
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] -= 1;
@@ -564,6 +613,7 @@ function main() {
 								shadows[j] += 1;
 								humanEnemies[j] += 1;
 								homeBase[j] += 1;
+								villages[j] += 1;
 								allObjects[j] += 1;
 							}
 						}
@@ -596,6 +646,7 @@ function main() {
 		requestAnimationFrame(animate);
 
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
+		//draw floor
 		drawTiles(center);
 
 		//draw rocks
@@ -606,6 +657,23 @@ function main() {
 		for (var i = 0; i < shadows.length; i += 2) {
 			drawTile(shadows[i], shadows[i + 1], 1.0);
 		}
+
+		//draw enemies
+		for (var i = 0; i < humanEnemies.length; i += 2) {
+			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
+		}
+		
+		//draw villages
+		for(var i = 0; i < villages.length; i+=2){
+			drawVillage(villages[i], villages[i+1]);
+		}
+
+		//main character
+		drawHomeBase(homeBase[0], homeBase[1]);
+		drawPlayer(player.X, player.Y);
+
+		//conditions
+		//if in shadow
 		for (var i = 0; i < shadows.length; i += 2) {
 			if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
 				inSun = false;
@@ -624,43 +692,36 @@ function main() {
 		if (player.WATER < 0) {
 			player.WATER == 0;
 		}
+
 		//if at base
-		if(player.X == homeBase[0] && player.Y == homeBase[1] + 1){
+		if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
 			homeBase.WATER -= (player.WATERORIG - player.WATER);
 			player.WATER = player.WATERORIG;
 		}
-		//draw enemies
-		for (var i = 0; i < humanEnemies.length; i += 2) {
-			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
-		}
-		console.log(player.X, player.Y);
-		//main character
-		drawHomeBase(homeBase[0], homeBase[1]);
-		drawPlayer(player.X, player.Y);
 
 		//text
 		var waterLevel = "ml: " + player.WATER;
 		var uvLevel = "Integrity: " + player.UV;
 		var hpLevel = "Health: " + player.HEALTH;
-		var speedLevel = "Speed: " +player.SPEED;
-		var attackLevel = "Attack: "+ player.ATTACK;
-		var homeWaterLev = homeBase.WATER + " :Home ml";
+		var speedLevel = "Speed: " + player.SPEED;
+		var attackLevel = "Attack: " + player.ATTACK;
+		var homeWaterLev = "Home ml: " + homeBase.WATER;
 		c.lineWidth = 7;
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
-		c.strokeText(speedLevel, 5, canvasHeight - 100);
-		c.fillText(speedLevel, 5, canvasHeight - 100);
-		c.strokeText(attackLevel, 5, canvasHeight - 80);
-		c.fillText(attackLevel, 5, canvasHeight - 80);
-		c.strokeText(hpLevel, 5, canvasHeight - 60);
-		c.fillText(hpLevel, 5, canvasHeight - 60);
-		c.strokeText(waterLevel, 5, canvasHeight - 40);
-		c.fillText(waterLevel, 5, canvasHeight - 40);
+		c.strokeText(homeWaterLev, 5, canvasHeight - 120);
+		c.fillText(homeWaterLev, 5, canvasHeight - 120);
+		c.strokeText(waterLevel, 5, canvasHeight - 100);
+		c.fillText(waterLevel, 5, canvasHeight - 100);
+		c.strokeText(speedLevel, 5, canvasHeight - 80);
+		c.fillText(speedLevel, 5, canvasHeight - 80);
+		c.strokeText(attackLevel, 5, canvasHeight - 60);
+		c.fillText(attackLevel, 5, canvasHeight - 60);
+		c.strokeText(hpLevel, 5, canvasHeight - 40);
+		c.fillText(hpLevel, 5, canvasHeight - 40);
 		c.strokeText(uvLevel, 5, canvasHeight - 20);
 		c.fillText(uvLevel, 5, canvasHeight - 20);
-		c.strokeText(homeWaterLev, canvasWidth - 125, canvasHeight - 20);
-		c.fillText(homeWaterLev, canvasWidth - 125, canvasHeight - 20);
 
 		//draw water meter
 		steamY -= .01;
@@ -675,13 +736,13 @@ function main() {
 		if (!inSun) {
 			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
 		} else {
-			c.fillStyle = 'rgba(255, 255, 255, 0.9)';
+			c.fillStyle = 'rgba(255, 220, 255, 0.9)';
 			c.fillRect(steamX, steamY, 5, 5);
 			c.fillRect(steamX + 2, steamY - 4, 5, 5);
 			c.fillRect(steamX + 4, steamY + 6, 5, 5);
 			c.fillRect(steamX + 6, steamY - 3, 5, 5);
 			c.fillRect(steamX + 8, steamY + 7, 5, 5);
-			c.fillStyle = 'rgba(200, 200, 255, 0.75)';
+			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
 		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
 

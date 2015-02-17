@@ -16,28 +16,26 @@ img2.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock.png';
 window.onload = launchMe;
 
 function launchMe() {
-	if (--resCount == 0){
+	if (--resCount == 0) {
 		main();
 	}
 }
 
-
 function main() {
 	hookKeys();
-	
+
 	// ----------------------------------------
 	//     Canvas Setup
 	// ----------------------------------------
 	var canvas = document.getElementById('canvas');
 	var c = canvas.getContext('2d');
-	c.canvas.width  = window.innerWidth;
-  	c.canvas.height = window.innerHeight;
+	c.canvas.width = window.innerWidth;
+	c.canvas.height = window.innerHeight;
 	var canvasWidth = canvas.width;
 	var canvasHeight = canvas.height;
 	c.textBaseline = 'top';
 	c.font = '10px sans-serif';
 	c.fillStyle = '#00FFFF';
-	
 
 	// ----------------------------------------
 	//     Tiles Setup
@@ -79,7 +77,7 @@ function main() {
 
 	// how many tiles do we show in the back ?
 	var viewBackDepth = 17;
-    //13
+	//13
 	// how many tiles do we show in the front ?
 	var viewFrontDepth = 23;
 	//14
@@ -179,8 +177,8 @@ function main() {
 		c.fillRect(-8, -22, 16, 18);
 		c.restore();
 	}
-	
-	function drawRock(colOffset, rowOffset){
+
+	function drawRock(colOffset, rowOffset) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(45, 20, 10)';
@@ -190,8 +188,8 @@ function main() {
 		c.fillRect(-35, -22, 45, 40);
 		c.restore();
 	}
-	
-	function drawPlayer(colOffset, rowOffset){
+
+	function drawPlayer(colOffset, rowOffset) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(200, 150, 100)';
@@ -201,8 +199,8 @@ function main() {
 		c.fillRect(-15, -30, 20, 35);
 		c.restore();
 	}
-		
-	function drawHomeBase(colOffset, rowOffset){
+
+	function drawHomeBase(colOffset, rowOffset) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(50, 150, 150)';
@@ -211,10 +209,10 @@ function main() {
 		c.translate(pt[0], pt[1]);
 		c.fillRect(-35, -22, 45, 40);
 		c.restore();
-		
+
 	}
-	
-	function drawEnemy(colOffset, rowOffset){
+
+	function drawEnemy(colOffset, rowOffset) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(100, 150, 100)';
@@ -227,7 +225,8 @@ function main() {
 
 	// with sprites
 	function drawFilledTile(colOffset, rowOffset, tileValue) {
-		tileValue = tileValue % 13; //1
+		tileValue = tileValue % 13;
+		//1
 		var pt = [colOffset - 0.5, rowOffset - 0.5];
 		// where is the tile ?
 		var tileBitmapX = (0 | (tileValue / 4)) * 32 * 2;
@@ -275,7 +274,7 @@ function main() {
 	function drawTiles(newCenterPoint) {
 		// get rounded coordinates and floating part.
 		var centerPoint = [0, 0];
-		
+
 		centerPoint[0] = Math.floor(newCenterPoint[0]);
 		centerPoint[1] = Math.floor(newCenterPoint[1]);
 		var remains = [newCenterPoint[0] - centerPoint[0], newCenterPoint[1] - centerPoint[1]];
@@ -317,12 +316,12 @@ function main() {
 			c.restore();
 
 	}
-	
-	var centerX = tiles_dimension/2;
-	var centerY = tiles_dimension/2;
+
+	var centerX = tiles_dimension / 2;
+	var centerY = tiles_dimension / 2;
 	var center = [centerX, centerY];
 	drawTiles(center);
-	
+
 	function sq(x) {
 		return x * x;
 	};
@@ -337,18 +336,18 @@ function main() {
 		DOWN : 87,
 		DOWN2 : 38
 	};
-	
-	var rockPos = new Array (200);
-	var humanEnemies = new Array (100);
+
+	var rockPos = new Array(200);
+	var humanEnemies = new Array(100);
 	var homeBase = new Array(2);
 	var allObjects = new Array(202);
-	var shadows = new Array (200);
-	
+	var shadows = new Array(200);
+
 	var player = {
 		X : 3,
 		Y : -3,
 		WATERORIG : 20000,
-		WATER : 20000, 
+		WATER : 20000,
 		UVORIG : 25,
 		UV : 25,
 		HEALTH : 100,
@@ -356,62 +355,65 @@ function main() {
 		ATTACK : 10
 	};
 	
+	var homeBase = {
+		WATER : 200000,
+		HEALTHPACK : 5
+	};
+
 	var i = 0;
 	//create rocks and shadow positions
-	for(; i < rockPos.length; i++){
-		rockPos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
+	for (; i < rockPos.length; i++) {
+		rockPos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 		allObjects[i] = rockPos[i];
-		if(!(i%2 == 0)){
+		if (!(i % 2 == 0)) {
 			shadows[i] = rockPos[i] + 1;
-		}
-		else{
+		} else {
 			shadows[i] = rockPos[i];
 		}
 	}
-	
+
 	homeBase[0] = player.X;
-	homeBase[1] = player.Y-1;
+	homeBase[1] = player.Y - 1;
 	allObjects[i] = homeBase[0];
 	shadows[i] = homeBase[0];
 	allObjects[++i] = homeBase[1];
 	shadows[i] = player.Y;
-		
+
 	//create humand enemy positions
-	for(var i = 0; i < humanEnemies.length; i++){
-		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension/2);
+	for (var i = 0; i < humanEnemies.length; i++) {
+		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	}
-	
+
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
 			switch (evt.keyCode) {
-		    //actually down
+			//actually down
 			case keys.UP2:
 			case keys.UP:
-				if(player.Y < 0){
+				if (player.Y < 0) {
 					player.Y++;
-					for(var i = 1; i < allObjects.length; i+=2){
-						if(allObjects[i] == player.Y && allObjects[i-1] == player.X){
+					for (var i = 1; i < allObjects.length; i += 2) {
+						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							player.Y--;
 						}
 						//enemy ai going down when near
-						if((humanEnemies[i]) > player.Y - 5 && (humanEnemies[i]) < player.Y){
-							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+						if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
+							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]++;
 							}
 						}
 					}
-				}
-				else{
+				} else {
 					center[1] += 1;
-					for(var i = 1; i < allObjects.length; i+=2){
+					for (var i = 1; i < allObjects.length; i += 2) {
 						rockPos[i] -= 1;
 						shadows[i] -= 1;
 						humanEnemies[i] -= 1;
 						homeBase[i] -= 1;
 						allObjects[i] -= 1;
-						if(allObjects[i] == player.Y && allObjects[i-1] == player.X){
+						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] -= 1;
-							for(var j = 1; j < allObjects.length; j+=2){
+							for (var j = 1; j < allObjects.length; j += 2) {
 								rockPos[j] += 1;
 								shadows[j] += 1;
 								humanEnemies[j] += 1;
@@ -420,34 +422,34 @@ function main() {
 							}
 						}
 						//ai going down when near
-						if((humanEnemies[i]) > player.Y - 5 && (humanEnemies[i]) < player.Y){
-							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+						if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
+							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]++;
 							}
+
 						}
 					}
-				}		
-				if(inSun) player.UV--;
-				else player.UV = player.UVORIG;
+				}
+				if (inSun)
+					player.UV--;
 				break;
 			case keys.DOWN2:
 			case keys.DOWN:
-				if(player.Y > -5){
+				if (player.Y > -5) {
 					player.Y--;
-					for(var i = 1; i < allObjects.length; i+=2){
-						if(allObjects[i] == player.Y && allObjects[i-1] == player.X){
+					for (var i = 1; i < allObjects.length; i += 2) {
+						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							player.Y++;
 						}
 						//ai going up when near
-						if((humanEnemies[i]) < player.Y + 5 && (humanEnemies[i]) > player.Y){
-							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+						if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
+							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]--;
 							}
 						}
-						
+
 					}
-				}
-				else{
+				} else {
 					center[1] -= 1;
 					for (var i = 1; i < allObjects.length; i += 2) {
 						rockPos[i] += 1;
@@ -466,28 +468,36 @@ function main() {
 							}
 						}
 						//ai going up when near
-						if((humanEnemies[i]) < player.Y + 5 && (humanEnemies[i]) > player.Y){
-							if(player.X - humanEnemies[i-1] < 7 && player.X - humanEnemies[i-1] > -7){
+						if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
+							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]--;
 							}
 						}
-						
+
 					}
 				}
-				if(inSun) player.UV--;
-				else player.UV = player.UVORIG;
+				if (inSun)
+					player.UV--;
 				break;
 			case keys.LEFT2:
 			case keys.LEFT:
-				if(player.X > 0){
-					player.X --;
-					for(var i = 0; i < allObjects.length; i+=2){
-						if(allObjects[i] == player.X && allObjects[i+1] == player.Y){
+				if (player.X > 0) {
+					player.X--;
+					for (var i = 0; i < allObjects.length; i += 2) {
+						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							player.X++;
 						}
+						//ai
+						if ((humanEnemies[i]) > player.X - 7 && (humanEnemies[i]) < player.X + 5) {
+							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+								humanEnemies[i]++;
+								if ((humanEnemies[i]) > player.X) {
+									humanEnemies[i] -= 2;
+								}
+							}
+						}
 					}
-				}
-				else {
+				} else {
 					center[0] -= 1;
 					for (var i = 0; i < allObjects.length; i += 2) {
 						rockPos[i] += 1;
@@ -504,24 +514,42 @@ function main() {
 								homeBase[j] -= 1;
 								allObjects[j] -= 1;
 							}
+
 						}
-						
+						//ai
+						if ((humanEnemies[i]) > player.X - 7 && (humanEnemies[i]) < player.X + 5) {
+							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+								humanEnemies[i]++;
+								if ((humanEnemies[i]) > player.X) {
+									humanEnemies[i] -= 2;
+								}
+							}
+						}
 					}
+
 				}
-				if(inSun) player.UV--;	
-				else player.UV = player.UVORIG;
+				if (inSun)
+					player.UV--;
 				break;
 			case keys.RIGHT2:
 			case keys.RIGHT:
-				if(player.X < 5){
+				if (player.X < 5) {
 					player.X++;
-					for(var i = 0; i < allObjects.length; i+=2){
-						if(allObjects[i] == player.X && allObjects[i+1] == player.Y){
+					for (var i = 0; i < allObjects.length; i += 2) {
+						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							player.X--;
 						}
+						//ai
+						if ((humanEnemies[i]) < player.X + 7 && (humanEnemies[i]) > player.X - 5) {
+							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+								humanEnemies[i]--;
+								if ((humanEnemies[i]) < player.X) {
+									humanEnemies[i] += 2;
+								}
+							}
+						}
 					}
-				}
-				else{
+				} else {
 					center[0] += 1;
 					for (var i = 0; i < allObjects.length; i += 2) {
 						rockPos[i] -= 1;
@@ -539,10 +567,19 @@ function main() {
 								allObjects[j] += 1;
 							}
 						}
+						//ai
+						if ((humanEnemies[i]) < player.X + 7 && (humanEnemies[i]) > player.X - 5) {
+							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+								humanEnemies[i]--;
+								if ((humanEnemies[i]) < player.X) {
+									humanEnemies[i] += 2;
+								}
+							}
+						}
 					}
 				}
-				if(inSun) player.UV--;
-				else player.UV = player.UVORIG;
+				if (inSun)
+					player.UV--;
 				break;
 			};
 		}, false);
@@ -554,88 +591,102 @@ function main() {
 	var landMoveSpeed = 0.07;
 	var inSun = false;
 	var steamX = 10;
-    var steamY = 10;
+	var steamY = 10;
 	function animate() {
 		requestAnimationFrame(animate);
-		
+
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawTiles(center);
-		
+
 		//draw rocks
-		for(var i = 0; i < rockPos.length; i += 2){
-			drawRock(rockPos[i], rockPos[i+1]);
+		for (var i = 0; i < rockPos.length; i += 2) {
+			drawRock(rockPos[i], rockPos[i + 1]);
 		}
 		//draw shadows
-		for(var i = 0; i < shadows.length; i += 2){
-			drawTile(shadows[i], shadows[i+1], 1.0);
+		for (var i = 0; i < shadows.length; i += 2) {
+			drawTile(shadows[i], shadows[i + 1], 1.0);
 		}
-		for(var i = 0; i < shadows.length; i += 2){
-			if(shadows[i] == player.X && shadows[i+1] == player.Y){
+		for (var i = 0; i < shadows.length; i += 2) {
+			if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
 				inSun = false;
+				player.UV = player.UVORIG;
 				break;
-			}
-			else{
+			} else {
 				inSun = true;
 			}
 		}
-		if(inSun && player.WATER > 0){
-			player.WATER -= 7;
+		if (inSun && player.WATER > 0) {
+			player.WATER -= 3;
 		}
-		if(!inSun && player.WATER > 0){
+		if (!inSun && player.WATER > 0) {
 			player.WATER -= 1;
 		}
-		if(player.WATER < 0){
+		if (player.WATER < 0) {
 			player.WATER == 0;
 		}
-		//draw enemies
-		for(var i = 0; i < humanEnemies.length; i+=2){
-			drawEnemy(humanEnemies[i], humanEnemies[i+1]);
+		//if at base
+		if(player.X == homeBase[0] && player.Y == homeBase[1] + 1){
+			homeBase.WATER -= (player.WATERORIG - player.WATER);
+			player.WATER = player.WATERORIG;
 		}
-		console.log(player.X , player.Y);
+		//draw enemies
+		for (var i = 0; i < humanEnemies.length; i += 2) {
+			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
+		}
+		console.log(player.X, player.Y);
 		//main character
 		drawHomeBase(homeBase[0], homeBase[1]);
 		drawPlayer(player.X, player.Y);
-		
+
 		//text
-		var waterLevel = "Water Level: " + player.WATER;
-        var uvLevel = "UV Level: " + player.UV;
-        c.lineWidth = 7;
-        c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-        c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
-        c.font = "15px Arial";
-        c.strokeText(waterLevel, 5, canvasHeight - 50);
-        c.strokeText(uvLevel, 5, canvasHeight - 30);
-        c.fillText(waterLevel, 5, canvasHeight - 50);
-        c.fillText(uvLevel, 5, canvasHeight - 30);
-        
-        //draw water meter
+		var waterLevel = "ml: " + player.WATER;
+		var uvLevel = "Integrity: " + player.UV;
+		var hpLevel = "Health: " + player.HEALTH;
+		var speedLevel = "Speed: " +player.SPEED;
+		var attackLevel = "Attack: "+ player.ATTACK;
+		var homeWaterLev = homeBase.WATER + " :Home ml";
+		c.lineWidth = 7;
+		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
+		c.font = "15px Arial";
+		c.strokeText(speedLevel, 5, canvasHeight - 100);
+		c.fillText(speedLevel, 5, canvasHeight - 100);
+		c.strokeText(attackLevel, 5, canvasHeight - 80);
+		c.fillText(attackLevel, 5, canvasHeight - 80);
+		c.strokeText(hpLevel, 5, canvasHeight - 60);
+		c.fillText(hpLevel, 5, canvasHeight - 60);
+		c.strokeText(waterLevel, 5, canvasHeight - 40);
+		c.fillText(waterLevel, 5, canvasHeight - 40);
+		c.strokeText(uvLevel, 5, canvasHeight - 20);
+		c.fillText(uvLevel, 5, canvasHeight - 20);
+		c.strokeText(homeWaterLev, canvasWidth - 125, canvasHeight - 20);
+		c.fillText(homeWaterLev, canvasWidth - 125, canvasHeight - 20);
+
+		//draw water meter
 		steamY -= .01;
-		if(steamY < -5){
+		if (steamY < -5) {
 			steamY = 10;
-		}    
-        var divWater = player.WATERORIG/(player.WATERORIG/500);
-        c.fillStyle = 'rgba(0, 0, 0, 0.75)';
-		c.fillRect(5, ((-player.WATERORIG/divWater) + player.WATERORIG/divWater) + 5, 
-			25, (player.WATERORIG/divWater + player.WATERORIG/divWater) + 10);
-		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
-		c.fillRect(10, ((-player.WATERORIG/divWater) + player.WATERORIG/divWater) + 10, 
-			15, (player.WATERORIG/divWater + player.WATERORIG/divWater) );
-		if(!inSun){
-			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
 		}
-		else{
+		var divWater = player.WATERORIG / (player.WATERORIG / 500);
+		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+		c.fillRect(5, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
+		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+		c.fillRect(10, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 10, 15, (player.WATERORIG / divWater + player.WATERORIG / divWater));
+		if (!inSun) {
+			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
+		} else {
 			c.fillStyle = 'rgba(255, 255, 255, 0.9)';
-			c.fillRect(steamX,steamY,5,5);
-			c.fillRect(steamX+2,steamY-4,5,5);
-			c.fillRect(steamX+4,steamY+6,5,5);
-			c.fillRect(steamX+6,steamY-3,5,5);
-			c.fillRect(steamX+8,steamY+7,5,5);
+			c.fillRect(steamX, steamY, 5, 5);
+			c.fillRect(steamX + 2, steamY - 4, 5, 5);
+			c.fillRect(steamX + 4, steamY + 6, 5, 5);
+			c.fillRect(steamX + 6, steamY - 3, 5, 5);
+			c.fillRect(steamX + 8, steamY + 7, 5, 5);
 			c.fillStyle = 'rgba(200, 200, 255, 0.75)';
 		}
-		c.fillRect(10, +player.WATERORIG/divWater*2 - player.WATER/(divWater/2) + 10, 
-			15, ((player.WATER/divWater*2) + player.WATERORIG/(divWater)) - 40 ); 
+		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
 
 	}
+
 	animate();
 }
 

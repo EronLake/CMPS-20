@@ -2,16 +2,17 @@ var resCount = 2;
 
 var img = new Image();
 img.onload = launchMe;
-img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
+img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
+//img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
 
 var img2 = new Image();
 img2.onload = launchMe;
 img2.src = '/Images/village_prototype.png';
 //img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/sand.png';
 
-var rockImg = new Image();
-rockImg.onload = launchMe;
-img2.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock.png';
+//var rockImg = new Image();
+//rockImg.onload = launchMe;
+//img2.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock.png';
 
 window.onload = launchMe;
 
@@ -53,6 +54,16 @@ function main() {
 		}
 		tileMap[x] = row;
 	}
+
+	//-----------------------------------------
+	//       Time parameters
+	//-----------------------------------------
+	var day = true;
+	var counter = 0;
+	var dayLength = 10;
+	//seconds
+	setInterval(function() {++counter;
+	}, 1000);
 
 	// ----------------------------------------
 	//     Display parameters
@@ -252,14 +263,19 @@ function main() {
 		c.restore();
 	}
 
+	var tileBitmapX = 0;
+	var tileBitmapY = 32;
 	// with sprites
 	function drawFilledTile(colOffset, rowOffset, tileValue) {
-		tileValue = tileValue % 13;
+		tileValue = tileValue % 11;
 		//1
 		var pt = [colOffset - 0.5, rowOffset - 0.5];
 		// where is the tile ?
-		var tileBitmapX = (0 | (tileValue / 4)) * 32 * 2;
-		var tileBitmapY = (tileValue % 4) * 32 * 3;
+		//var tileBitmapX = (0 | (tileValue / 4)) * 32 * 2;
+		//var tileBitmapY = (tileValue % 4) * 32 * 2;//3
+		//need global variable for the texture
+		tileBitmapX = tileValue % 32;
+		tileBitmapY = tileValue / 224;
 		c.drawImage(img, tileBitmapX, tileBitmapY, 32, 32, colOffset - 0.5, rowOffset - 0.5, 1, 1);
 		// c.drawImage(img, 0, 0, 32,32,
 		// colOffset - 0.5, rowOffset - 0.5, 1, 1);
@@ -330,7 +346,8 @@ function main() {
 			c.save();
 			setWorldTransform();
 		}
-		var drawTileMethod = (experimental_useBitmapTiles) ? drawFilledTile : drawTile;
+
+		//var drawTileMethod = (experimental_useBitmapTiles) ? drawFilledTile : drawTile;
 		// iterate on col/rows
 		var pt = [0, 0];
 		for (var colIndex = colStart; colIndex < colEnd; colIndex++) {
@@ -338,7 +355,8 @@ function main() {
 			for ( rowIndex = rowStart; rowIndex < rowEnd; rowIndex++) {
 				var rowOffset = rowIndex - centerPoint[1];
 				var thisTile = tileMap[colIndex][rowIndex];
-				drawTileMethod(colOffset - remains[0], rowOffset - remains[1], thisTile);
+				//drawTileMethod(colOffset - remains[0], rowOffset - remains[1], thisTile);
+				drawFilledTile(colOffset - remains[0], rowOffset - remains[1], thisTile);
 			}
 		}
 		if (experimental_useBitmapTiles)
@@ -444,6 +462,20 @@ function main() {
 		allObjects[i]++;
 	}
 
+	//collision
+	function detection(i) {
+		for (var j = -1; j <= 1; j++) {
+			for (var k = -1; k <= 1; k++) {
+				if (humanEnemies[i] + j == player.X && humanEnemies[i + 1] + k == player.Y) {
+					//push battle
+					player.HEALTH--;
+					break;
+				}
+			}
+		}
+	}
+
+	//conrol player
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
 			switch (evt.keyCode) {
@@ -460,6 +492,7 @@ function main() {
 						if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
 							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]++;
+								detection(i - 1);
 							}
 						}
 					}
@@ -477,6 +510,7 @@ function main() {
 						if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
 							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]++;
+								detection(i - 1);
 							}
 
 						}
@@ -497,9 +531,9 @@ function main() {
 						if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
 							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]--;
+								detection(i - 1);
 							}
 						}
-
 					}
 				} else {
 					center[1] -= 1;
@@ -515,9 +549,9 @@ function main() {
 						if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
 							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
 								humanEnemies[i]--;
+								detection(i - 1);
 							}
 						}
-
 					}
 				}
 				if (inSun)
@@ -537,6 +571,7 @@ function main() {
 								humanEnemies[i]++;
 								if ((humanEnemies[i]) > player.X) {
 									humanEnemies[i] -= 2;
+									detection(i);
 								}
 							}
 						}
@@ -558,11 +593,11 @@ function main() {
 								humanEnemies[i]++;
 								if ((humanEnemies[i]) > player.X) {
 									humanEnemies[i] -= 2;
+									detection(i);
 								}
 							}
 						}
 					}
-
 				}
 				if (inSun)
 					player.UV--;
@@ -581,6 +616,7 @@ function main() {
 								humanEnemies[i]--;
 								if ((humanEnemies[i]) < player.X) {
 									humanEnemies[i] += 2;
+									detection(i);
 								}
 							}
 						}
@@ -601,6 +637,7 @@ function main() {
 								humanEnemies[i]--;
 								if ((humanEnemies[i]) < player.X) {
 									humanEnemies[i] += 2;
+									detection(i);
 								}
 							}
 						}
@@ -634,10 +671,16 @@ function main() {
 		var speedLevel = "Speed: " + player.SPEED;
 		var attackLevel = "Attack: " + player.ATTACK;
 		var homeWaterLev = "Home ml: " + homeBase.WATER;
+		var time = Math.floor(counter / 60) + " : " + counter % 60;
+		var sunshine = "Sun out: " + day;
 		c.lineWidth = 7;
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
+		c.strokeText(sunshine, 50, 140);
+		c.fillText(sunshine, 50, 140);
+		c.strokeText(time, 50, 120);
+		c.fillText(time, 50, 120);
 		c.strokeText(homeWaterLev, 50, 100);
 		c.fillText(homeWaterLev, 50, 100);
 		c.strokeText(waterLevel, 50, 80);
@@ -673,6 +716,16 @@ function main() {
 			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
 		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
+	
+		//draw ui sun
+		if(day){
+			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
+			c.fillRect(canvasWidth/4, 10, 50, 50);
+		}
+		else{
+			c.fillStyle = 'rgba(50, 25, 100, 0.2)';
+			c.fillRect(0,0,canvasWidth, canvasHeight);
+		}
 
 	}
 
@@ -681,13 +734,12 @@ function main() {
 	// ----------------------------------------
 	var landMoveSpeed = 0.07;
 	var inSun = false;
+	var inBattle = false;
 	var steamX = 10;
 	var steamY = 10;
 	function animate() {
 		requestAnimationFrame(animate);
-
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
-
 		drawAll();
 		drawUI();
 
@@ -702,9 +754,26 @@ function main() {
 				inSun = true;
 			}
 		}
-		if (inSun && player.WATER > 0) {
+
+		//sun out?
+		if ((Math.floor(counter / dayLength)) % 2 == 1) {
+			day = false;
+			inSun = false;
+		}
+		if ((Math.floor(counter / dayLength)) % 2 == 0) {
+			day = true;
+		}
+		
+		//decrease water count
+		if (inSun && player.WATER > 0 && day) {
+			player.WATER -= 5;
+		}
+
+		if (!inSun && player.WATER > 0 && day) {
 			player.WATER -= 3;
-		} else {
+		}
+
+		if (player.WATER > 0 && !day) {
 			player.WATER -= 1;
 		}
 
@@ -718,10 +787,4 @@ function main() {
 
 	animate();
 }
-
-// utils
-
-function sq(x) {
-	return x * x;
-};
 

@@ -8,11 +8,6 @@ img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 var img2 = new Image();
 img2.onload = launchMe;
 img2.src = '/Images/village_prototype.png';
-//img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/sand.png';
-
-//var rockImg = new Image();
-//rockImg.onload = launchMe;
-//img2.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock.png';
 
 window.onload = launchMe;
 
@@ -475,6 +470,41 @@ function main() {
 		}
 	}
 
+	//ai movement when near
+	function aiMvmtVert(i) {
+		if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
+			if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
+				humanEnemies[i]++;
+				detection(i - 1);
+			}
+			return;
+		}
+		if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
+			if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
+				humanEnemies[i]--;
+				detection(i - 1);
+			}
+		}
+	}
+
+	function aiMvmtHorz(i) {
+		if ((humanEnemies[i]) < player.X + 1 && (humanEnemies[i]) > player.X - 7) {
+			if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+				humanEnemies[i]++;
+				detection(i);
+			}
+			return;
+		}
+
+		if ((humanEnemies[i]) > player.X - 1 && (humanEnemies[i]) < player.X + 7) {
+			if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+				humanEnemies[i]--;
+				detection(i);
+			}
+			return;
+		}
+	}
+
 	//conrol player
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
@@ -488,13 +518,7 @@ function main() {
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							player.Y--;
 						}
-						//enemy ai going down when near
-						if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
-							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-								humanEnemies[i]++;
-								detection(i - 1);
-							}
-						}
+						aiMvmtVert(i);
 					}
 				} else {
 					center[1] += 1;
@@ -506,14 +530,7 @@ function main() {
 								inAll(j);
 							}
 						}
-						//ai going down when near
-						if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
-							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-								humanEnemies[i]++;
-								detection(i - 1);
-							}
-
-						}
+						aiMvmtVert(i);
 					}
 				}
 				if (inSun)
@@ -527,13 +544,7 @@ function main() {
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							player.Y++;
 						}
-						//ai going up when near
-						if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
-							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-								humanEnemies[i]--;
-								detection(i - 1);
-							}
-						}
+						aiMvmtVert(i);
 					}
 				} else {
 					center[1] -= 1;
@@ -545,13 +556,7 @@ function main() {
 								decAll(j);
 							}
 						}
-						//ai going up when near
-						if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
-							if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-								humanEnemies[i]--;
-								detection(i - 1);
-							}
-						}
+						aiMvmtVert(i);
 					}
 				}
 				if (inSun)
@@ -565,16 +570,7 @@ function main() {
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							player.X++;
 						}
-						//ai
-						if ((humanEnemies[i]) > player.X - 7 && (humanEnemies[i]) < player.X + 5) {
-							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
-								humanEnemies[i]++;
-								if ((humanEnemies[i]) > player.X) {
-									humanEnemies[i] -= 2;
-									detection(i);
-								}
-							}
-						}
+						aiMvmtHorz(i);
 					}
 				} else {
 					center[0] -= 1;
@@ -585,18 +581,8 @@ function main() {
 							for (var j = 0; j < allObjects.length; j += 2) {
 								decAll(j);
 							}
-
 						}
-						//ai
-						if ((humanEnemies[i]) > player.X - 7 && (humanEnemies[i]) < player.X + 5) {
-							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
-								humanEnemies[i]++;
-								if ((humanEnemies[i]) > player.X) {
-									humanEnemies[i] -= 2;
-									detection(i);
-								}
-							}
-						}
+						aiMvmtHorz(i);
 					}
 				}
 				if (inSun)
@@ -610,16 +596,7 @@ function main() {
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							player.X--;
 						}
-						//ai
-						if ((humanEnemies[i]) < player.X + 7 && (humanEnemies[i]) > player.X - 5) {
-							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
-								humanEnemies[i]--;
-								if ((humanEnemies[i]) < player.X) {
-									humanEnemies[i] += 2;
-									detection(i);
-								}
-							}
-						}
+						aiMvmtHorz(i);
 					}
 				} else {
 					center[0] += 1;
@@ -631,16 +608,7 @@ function main() {
 								inAll(j);
 							}
 						}
-						//ai
-						if ((humanEnemies[i]) < player.X + 7 && (humanEnemies[i]) > player.X - 5) {
-							if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
-								humanEnemies[i]--;
-								if ((humanEnemies[i]) < player.X) {
-									humanEnemies[i] += 2;
-									detection(i);
-								}
-							}
-						}
+						aiMvmtHorz(i);
 					}
 				}
 				if (inSun)
@@ -716,15 +684,14 @@ function main() {
 			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
 		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
-	
+
 		//draw ui sun
-		if(day){
+		if (day) {
 			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
-			c.fillRect(canvasWidth/4, 10, 50, 50);
-		}
-		else{
+			c.fillRect(canvasWidth / 4, 10, 50, 50);
+		} else {
 			c.fillStyle = 'rgba(50, 25, 100, 0.2)';
-			c.fillRect(0,0,canvasWidth, canvasHeight);
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
 
 	}
@@ -763,7 +730,7 @@ function main() {
 		if ((Math.floor(counter / dayLength)) % 2 == 0) {
 			day = true;
 		}
-		
+
 		//decrease water count
 		if (inSun && player.WATER > 0 && day) {
 			player.WATER -= 5;

@@ -1,5 +1,5 @@
 var resCount = 2;
-
+//oh yeah baby!
 var img = new Image();
 img.onload = launchMe;
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';

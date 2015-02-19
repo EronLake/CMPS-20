@@ -69,10 +69,8 @@ function main() {
 
 	// angle of the x axis. Should be in [0, PI/2]
 	var angleX = 0;
-	//Math.PI/8
-	// angle of the y axis. Should be in [PI/2, PI[
+	// angle of the y axis. Should be in [PI/2, PI]
 	var angleY = 2.2;
-	//2.7
 
 	// scale for the tiles
 	var scale = 90.0;
@@ -470,42 +468,48 @@ function main() {
 		}
 	}
 
-	//ai movement when near
+	//ai movement up down when near +1,-1
 	function aiMvmtVert(i) {
-		if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y + 1) {
-			if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-				humanEnemies[i]++;
-				detection(i - 1);
+		setTimeout(function() {
+			if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y) {
+				if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
+					humanEnemies[i]++;
+					detection(i - 1);
+				}
+				return;
 			}
-			return;
-		}
-		if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y - 1) {
-			if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-				humanEnemies[i]--;
-				detection(i - 1);
+			if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y) {
+				if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
+					humanEnemies[i]--;
+					detection(i - 1);
+				}
 			}
-		}
+		}, 500);
 	}
 
+	// left right d+1, -1
 	function aiMvmtHorz(i) {
-		if ((humanEnemies[i]) < player.X + 1 && (humanEnemies[i]) > player.X - 7) {
-			if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
-				humanEnemies[i]++;
-				detection(i);
+		setTimeout(function() {
+			if ((humanEnemies[i]) < player.X && (humanEnemies[i]) > player.X - 7) {
+				if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+					humanEnemies[i]++;
+					detection(i);
+				}
+				return;
 			}
-			return;
-		}
 
-		if ((humanEnemies[i]) > player.X - 1 && (humanEnemies[i]) < player.X + 7) {
-			if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
-				humanEnemies[i]--;
-				detection(i);
+			if ((humanEnemies[i]) > player.X && (humanEnemies[i]) < player.X + 7) {
+				if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+					humanEnemies[i]--;
+					detection(i);
+				}
+				return;
 			}
-			return;
-		}
+		}, 500);
 	}
 
-	//conrol player
+	//control player
+	var hitWall = false;
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
 			switch (evt.keyCode) {
@@ -517,21 +521,29 @@ function main() {
 					for (var i = 1; i < allObjects.length; i += 2) {
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							player.Y--;
+							hitWall = true;
 						}
-						aiMvmtVert(i);
+						if (!hitWall) {
+							aiMvmtVert(i);
+						}
 					}
+					hitWall = false;
 				} else {
 					center[1] += 1;
 					for (var i = 1; i < allObjects.length; i += 2) {
 						decAll(i);
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] -= 1;
+							hitWall = true;
 							for (var j = 1; j < allObjects.length; j += 2) {
 								inAll(j);
 							}
 						}
-						aiMvmtVert(i);
+						if (!hitWall) {
+							aiMvmtVert(i);
+						}
 					}
+					hitWall = false;
 				}
 				if (inSun)
 					player.UV--;
@@ -543,21 +555,29 @@ function main() {
 					for (var i = 1; i < allObjects.length; i += 2) {
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							player.Y++;
+							hitWall = true;
 						}
-						aiMvmtVert(i);
+						if (!hitWall) {
+							aiMvmtVert(i);
+						}
 					}
+					hitWall = false;
 				} else {
 					center[1] -= 1;
 					for (var i = 1; i < allObjects.length; i += 2) {
 						inAll(i);
 						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 							center[1] += 1;
+							hitWall = true;
 							for (var j = 1; j < allObjects.length; j += 2) {
 								decAll(j);
 							}
 						}
-						aiMvmtVert(i);
+						if (!hitWall) {
+							aiMvmtVert(i);
+						}
 					}
+					hitWall = false;
 				}
 				if (inSun)
 					player.UV--;
@@ -569,21 +589,29 @@ function main() {
 					for (var i = 0; i < allObjects.length; i += 2) {
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							player.X++;
+							hitWall = true;
 						}
-						aiMvmtHorz(i);
+						if (!hitWall) {
+							aiMvmtHorz(i);
+						}
 					}
+					hitWall = false;
 				} else {
 					center[0] -= 1;
 					for (var i = 0; i < allObjects.length; i += 2) {
 						inAll(i);
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] += 1;
+							hitWall = true;
 							for (var j = 0; j < allObjects.length; j += 2) {
 								decAll(j);
 							}
 						}
-						aiMvmtHorz(i);
+						if (!hitWall) {
+							aiMvmtHorz(i);
+						}
 					}
+					hitWall = false;
 				}
 				if (inSun)
 					player.UV--;
@@ -595,21 +623,29 @@ function main() {
 					for (var i = 0; i < allObjects.length; i += 2) {
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							player.X--;
+							hitWall = true;
 						}
-						aiMvmtHorz(i);
+						if (!hitWall) {
+							aiMvmtHorz(i);
+						}
 					}
+					hitWall = false;
 				} else {
 					center[0] += 1;
 					for (var i = 0; i < allObjects.length; i += 2) {
 						decAll(i);
 						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 							center[0] -= 1;
+							hitWall = true;
 							for (var j = 0; j < allObjects.length; j += 2) {
 								inAll(j);
 							}
 						}
-						aiMvmtHorz(i);
+						if (!hitWall) {
+							aiMvmtHorz(i);
+						}
 					}
+					hitWall = false;
 				}
 				if (inSun)
 					player.UV--;
@@ -632,6 +668,15 @@ function main() {
 	}
 
 	function drawUI() {
+		//draw ui sun
+		if (day) {
+			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
+			c.fillRect(canvasWidth / 4, 10, 50, 50);
+		} else {
+			c.fillStyle = 'rgba(50, 25, 100, 0.2)';
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
+		}
+
 		//text
 		var waterLevel = "ml: " + player.WATER;
 		var uvLevel = "Integrity: " + player.UV;
@@ -684,15 +729,6 @@ function main() {
 			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
 		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
-
-		//draw ui sun
-		if (day) {
-			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
-			c.fillRect(canvasWidth / 4, 10, 50, 50);
-		} else {
-			c.fillStyle = 'rgba(50, 25, 100, 0.2)';
-			c.fillRect(0, 0, canvasWidth, canvasHeight);
-		}
 
 	}
 

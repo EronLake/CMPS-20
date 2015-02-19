@@ -469,6 +469,17 @@ function main() {
 
 	}
 
+	function drawVillageUI() {
+		c.lineWidth = 10;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "20px Arial";
+		c.strokeText("IN VILLAGE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
+		c.fillText("IN VILLAGE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
+		c.fillStyle = "rgba(0,50,50, 0.3)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+	}
+
 	var centerX = tiles_dimension / 2;
 	var centerY = tiles_dimension / 2;
 	var center = [centerX, centerY];
@@ -487,6 +498,7 @@ function main() {
 		RIGHT2 : 39,
 		DOWN : 87,
 		DOWN2 : 38,
+		ENTER : 13,
 		PAUSE : 27
 	};
 
@@ -500,7 +512,7 @@ function main() {
 	var villages = new Array(120);
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
-	
+
 	var humanEnemies = new Array(50);
 
 	var player = {
@@ -559,8 +571,8 @@ function main() {
 			} else {
 				shadows[i + x] = villages[j + x];
 			}
-			if(x > 6){
-				shadows[i+x] = -tiles_dimension;
+			if (x > 6) {
+				shadows[i + x] = -tiles_dimension;
 			}
 		}
 		i += 12;
@@ -653,6 +665,150 @@ function main() {
 		}, 500);
 	}
 
+	function moveUp() {
+		if (player.Y > -5) {
+			player.Y--;
+			for (var i = 1; i < allObjects.length; i += 2) {
+				if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+					player.Y++;
+					hitWall = true;
+				}
+				if (!hitWall) {
+					aiMvmtVert(i);
+				}
+			}
+			hitWall = false;
+		} else {
+			if (center[1] > 5) {
+				center[1] -= 1;
+				for (var i = 1; i < allObjects.length; i += 2) {
+					inAll(i);
+					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+						center[1] += 1;
+						hitWall = true;
+						for (var j = 1; j < allObjects.length; j += 2) {
+							decAll(j);
+						}
+					}
+					if (!hitWall) {
+						aiMvmtVert(i);
+					}
+				}
+				hitWall = false;
+			}
+		}
+		if (inSun)
+			player.UV--;
+	}
+
+	function moveDown() {
+		if (player.Y < 0) {
+			player.Y++;
+			for (var i = 1; i < allObjects.length; i += 2) {
+				if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+					player.Y--;
+					hitWall = true;
+				}
+				if (!hitWall) {
+					aiMvmtVert(i);
+				}
+			}
+			hitWall = false;
+		} else {
+			if (center[1] < tiles_dimension - 1) {
+				center[1] += 1;
+				for (var i = 1; i < allObjects.length; i += 2) {
+					decAll(i);
+					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+						center[1] -= 1;
+						hitWall = true;
+						for (var j = 1; j < allObjects.length; j += 2) {
+							inAll(j);
+						}
+					}
+					if (!hitWall) {
+						aiMvmtVert(i);
+					}
+				}
+				hitWall = false;
+			}
+		}
+		if (inSun)
+			player.UV--;
+	}
+
+	function moveLeft() {
+		if (player.X > 0) {
+			player.X--;
+			for (var i = 0; i < allObjects.length; i += 2) {
+				if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+					player.X++;
+					hitWall = true;
+				}
+				if (!hitWall) {
+					aiMvmtHorz(i);
+				}
+			}
+			hitWall = false;
+		} else {
+			if (center[0] > 0) {
+				center[0] -= 1;
+				for (var i = 0; i < allObjects.length; i += 2) {
+					inAll(i);
+					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+						center[0] += 1;
+						hitWall = true;
+						for (var j = 0; j < allObjects.length; j += 2) {
+							decAll(j);
+						}
+					}
+					if (!hitWall) {
+						aiMvmtHorz(i);
+					}
+				}
+			}
+			hitWall = false;
+		}
+		if (inSun)
+			player.UV--;
+	}
+
+	function moveRight() {
+		if (player.X < 5) {
+			player.X++;
+			for (var i = 0; i < allObjects.length; i += 2) {
+				if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+					player.X--;
+					hitWall = true;
+				}
+				if (!hitWall) {
+					aiMvmtHorz(i);
+				}
+			}
+			hitWall = false;
+		} else {
+			if (center[0] < tiles_dimension - 6) {
+				center[0] += 1;
+				for (var i = 0; i < allObjects.length; i += 2) {
+					decAll(i);
+					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+						center[0] -= 1;
+						hitWall = true;
+						for (var j = 0; j < allObjects.length; j += 2) {
+							inAll(j);
+						}
+					}
+					if (!hitWall) {
+						aiMvmtHorz(i);
+					}
+				}
+				hitWall = false;
+			}
+		}
+		if (inSun)
+			player.UV--;
+	}
+
 	//-------------------------------------------------
 	//control player which moves all objects also
 	//AI movement is in here UP and DOWN are flipped
@@ -666,147 +822,22 @@ function main() {
 				//actually down
 				case keys.UP2:
 				case keys.UP:
-					if (player.Y < 0) {
-						player.Y++;
-						for (var i = 1; i < allObjects.length; i += 2) {
-							if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-								player.Y--;
-								hitWall = true;
-							}
-							if (!hitWall) {
-								aiMvmtVert(i);
-							}
-						}
-						hitWall = false;
-					} else {
-						if (center[1] < tiles_dimension - 1) {
-							center[1] += 1;
-							for (var i = 1; i < allObjects.length; i += 2) {
-								decAll(i);
-								if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-									center[1] -= 1;
-									hitWall = true;
-									for (var j = 1; j < allObjects.length; j += 2) {
-										inAll(j);
-									}
-								}
-								if (!hitWall) {
-									aiMvmtVert(i);
-								}
-							}
-							hitWall = false;
-						}
-					}
-					if (inSun)
-						player.UV--;
+					moveDown();
 					break;
 				case keys.DOWN2:
 				case keys.DOWN:
-					if (player.Y > -5) {
-						player.Y--;
-						for (var i = 1; i < allObjects.length; i += 2) {
-							if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-								player.Y++;
-								hitWall = true;
-							}
-							if (!hitWall) {
-								aiMvmtVert(i);
-							}
-						}
-						hitWall = false;
-					} else {
-						if (center[1] > 5) {
-							center[1] -= 1;
-							for (var i = 1; i < allObjects.length; i += 2) {
-								inAll(i);
-								if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-									center[1] += 1;
-									hitWall = true;
-									for (var j = 1; j < allObjects.length; j += 2) {
-										decAll(j);
-									}
-								}
-								if (!hitWall) {
-									aiMvmtVert(i);
-								}
-							}
-							hitWall = false;
-						}
-					}
-					if (inSun)
-						player.UV--;
+					moveUp();
 					break;
 				case keys.LEFT2:
 				case keys.LEFT:
-					if (player.X > 0) {
-						player.X--;
-						for (var i = 0; i < allObjects.length; i += 2) {
-							if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-								player.X++;
-								hitWall = true;
-							}
-							if (!hitWall) {
-								aiMvmtHorz(i);
-							}
-						}
-						hitWall = false;
-					} else {
-						if (center[0] > 0) {
-							center[0] -= 1;
-							for (var i = 0; i < allObjects.length; i += 2) {
-								inAll(i);
-								if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-									center[0] += 1;
-									hitWall = true;
-									for (var j = 0; j < allObjects.length; j += 2) {
-										decAll(j);
-									}
-								}
-								if (!hitWall) {
-									aiMvmtHorz(i);
-								}
-							}
-						}
-						hitWall = false;
-					}
-					if (inSun)
-						player.UV--;
+					moveLeft();
 					break;
 				case keys.RIGHT2:
 				case keys.RIGHT:
-					if (player.X < 5) {
-						player.X++;
-						for (var i = 0; i < allObjects.length; i += 2) {
-							if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-								player.X--;
-								hitWall = true;
-							}
-							if (!hitWall) {
-								aiMvmtHorz(i);
-							}
-						}
-						hitWall = false;
-					} else {
-						if (center[0] < tiles_dimension - 6) {
-							center[0] += 1;
-							for (var i = 0; i < allObjects.length; i += 2) {
-								decAll(i);
-								if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-									center[0] -= 1;
-									hitWall = true;
-									for (var j = 0; j < allObjects.length; j += 2) {
-										inAll(j);
-									}
-								}
-								if (!hitWall) {
-									aiMvmtHorz(i);
-								}
-							}
-							hitWall = false;
-						}
-					}
-					if (inSun)
-						player.UV--;
+					moveRight();
+					break;
+				case keys.ENTER:
+					enter = !enter;
 					break;
 				case keys.PAUSE:
 					pause = true;
@@ -814,10 +845,13 @@ function main() {
 				};
 			} else {
 				switch(evt.keyCode) {
+				case keys.ENTER:
+					enter = !enter;
+					break;
 				case keys.PAUSE:
 					pause = false;
 					break;
-				}
+				};
 			}
 		}, false);
 
@@ -844,10 +878,11 @@ function main() {
 	var inSun = false;
 	var inBattle = false;
 	var pause = false;
-
+	var enter = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		if (!pause) {
+
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();
@@ -887,16 +922,20 @@ function main() {
 				player.WATER -= 1;
 			}
 
-			//if at base, refill water and use base's water supply
-			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
+			//if at base, refill water and use base's water supply and press enter
+			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1 && enter) {
 				homeBase.WATER -= (player.WATERORIG - player.WATER);
 				player.WATER = player.WATERORIG;
+				enter = false;
 			}
-		} else {
+			
+		}
+		if (pause) {
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();
 		}
+		enter = false;
 	}
 
 	animate();

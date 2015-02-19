@@ -90,7 +90,7 @@ function main() {
 	var dayLength = 10;
 	//seconds
 	setInterval(function() {
-		if (!pause) {++counter;
+		if (!pause && !inVillage) {++counter;
 		}
 	}, 1000);
 
@@ -463,7 +463,7 @@ function main() {
 			c.font = "20px Arial";
 			c.strokeText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
 			c.fillText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
-			c.fillStyle = "rgba(0,50,50, 0.3)";
+			c.fillStyle = "rgba(0,50,50, 0.5)";
 			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
 
@@ -474,9 +474,9 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		c.strokeText("IN VILLAGE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
-		c.fillText("IN VILLAGE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
-		c.fillStyle = "rgba(0,50,50, 0.3)";
+		c.strokeText("IN VILLAGE", (canvasWidth / 2) - 35, (canvasHeight / 2) - 35);
+		c.fillText("IN VILLAGE", (canvasWidth / 2) - 35, (canvasHeight / 2) - 35);
+		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 	}
 
@@ -845,9 +845,6 @@ function main() {
 				};
 			} else {
 				switch(evt.keyCode) {
-				case keys.ENTER:
-					enter = !enter;
-					break;
 				case keys.PAUSE:
 					pause = false;
 					break;
@@ -879,6 +876,7 @@ function main() {
 	var inBattle = false;
 	var pause = false;
 	var enter = false;
+	var inVillage = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		if (!pause) {
@@ -899,43 +897,59 @@ function main() {
 				}
 			}
 
-			//sun out?
-			if ((Math.floor(counter / dayLength)) % 2 == 1) {
-				day = false;
-				inSun = false;
-				player.UV = player.UVORIG;
-			}
-			if ((Math.floor(counter / dayLength)) % 2 == 0) {
-				day = true;
+			if (inSun) {
+				enter = false;
 			}
 
-			//decrease water count
-			if (inSun && player.WATER > 0 && day) {
-				player.WATER -= 7;
-			}
+			if (enter) {
+				for (var i = 0; i < villages.length; i++) {
+					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
+						c.clearRect(0, 0, canvasWidth, canvasHeight);
+						drawAll();
+						drawUI();
+						drawVillageUI();
+						inVillage = true;
+					}
+				}
+			} else {
+				inVillage = false;
+				//sun out?
+				if ((Math.floor(counter / dayLength)) % 2 == 1) {
+					day = false;
+					inSun = false;
+					player.UV = player.UVORIG;
+				}
+				if ((Math.floor(counter / dayLength)) % 2 == 0) {
+					day = true;
+				}
 
-			if (!inSun && player.WATER > 0 && day) {
-				player.WATER -= 3;
-			}
+				//decrease water count
+				if (inSun && player.WATER > 0 && day) {
+					player.WATER -= 7;
+				}
 
-			if (player.WATER > 0 && !day) {
-				player.WATER -= 1;
-			}
+				if (!inSun && player.WATER > 0 && day) {
+					player.WATER -= 3;
+				}
 
+				if (player.WATER > 0 && !day) {
+					player.WATER -= 1;
+				}
+
+			}
 			//if at base, refill water and use base's water supply and press enter
 			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1 && enter) {
 				homeBase.WATER -= (player.WATERORIG - player.WATER);
 				player.WATER = player.WATERORIG;
 				enter = false;
 			}
-			
+
 		}
 		if (pause) {
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();
 		}
-		enter = false;
 	}
 
 	animate();

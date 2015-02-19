@@ -95,7 +95,9 @@ function main() {
 	var counter = 0;
 	var dayLength = 10;
 	//seconds
-	setInterval(function() {++counter;
+	setInterval(function() {
+		if (!pause) {++counter;
+		}
 	}, 1000);
 
 	// ----------------------------------------
@@ -200,7 +202,7 @@ function main() {
 	}
 
 	// ----------------------------------------
-	//     Rendering
+	//     Rendering/drawing functions
 	// ----------------------------------------
 
 	function setWorldTransform() {
@@ -395,6 +397,75 @@ function main() {
 
 	}
 
+	function drawUI() {
+		//draw ui sun
+		if (day) {
+			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
+			c.fillRect(canvasWidth / 4, 10, 50, 50);
+		} else {
+			c.fillStyle = 'rgba(50, 25, 100, 0.2)';
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
+		}
+
+		//text
+		var waterLevel = "ml: " + player.WATER;
+		var uvLevel = "Integrity: " + player.UV;
+		var hpLevel = "Health: " + player.HEALTH;
+		var speedLevel = "Speed: " + player.SPEED;
+		var attackLevel = "Attack: " + player.ATTACK;
+		var homeWaterLev = "Home ml: " + homeBase.WATER;
+		var time = Math.floor(counter / 60) + " : " + counter % 60;
+		var sunshine = "Sun out: " + day;
+		c.lineWidth = 7;
+		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
+		c.font = "15px Arial";
+		c.strokeText(sunshine, 50, 140);
+		c.fillText(sunshine, 50, 140);
+		c.strokeText(time, 50, 120);
+		c.fillText(time, 50, 120);
+		c.strokeText(homeWaterLev, 50, 100);
+		c.fillText(homeWaterLev, 50, 100);
+		c.strokeText(waterLevel, 50, 80);
+		c.fillText(waterLevel, 50, 80);
+		c.strokeText(speedLevel, 50, 60);
+		c.fillText(speedLevel, 50, 60);
+		c.strokeText(attackLevel, 50, 40);
+		c.fillText(attackLevel, 50, 40);
+		c.strokeText(hpLevel, 50, 20);
+		c.fillText(hpLevel, 50, 20);
+		c.strokeText(uvLevel, 50, 0);
+		c.fillText(uvLevel, 50, 0);
+
+		//draw water meter
+		steamY -= .01;
+		if (steamY < -5) {
+			steamY = 10;
+		}
+		var divWater = player.WATERORIG / (player.WATERORIG / 500);
+		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+		c.fillRect(5, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
+		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+		c.fillRect(10, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 10, 15, (player.WATERORIG / divWater + player.WATERORIG / divWater));
+		if (!inSun) {
+			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
+		} else {
+			c.fillStyle = 'rgba(255, 220, 255, 0.9)';
+			c.fillRect(steamX, steamY, 5, 5);
+			c.fillRect(steamX + 2, steamY - 4, 5, 5);
+			c.fillRect(steamX + 4, steamY + 6, 5, 5);
+			c.fillRect(steamX + 6, steamY - 3, 5, 5);
+			c.fillRect(steamX + 8, steamY + 7, 5, 5);
+			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
+		}
+		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
+
+		if (pause) {
+			c.fillText("PUASE", canvasWidth / 2, canvasHeight / 2);
+		}
+
+	}
+
 	var centerX = tiles_dimension / 2;
 	var centerY = tiles_dimension / 2;
 	var center = [centerX, centerY];
@@ -412,16 +483,20 @@ function main() {
 		RIGHT : 68,
 		RIGHT2 : 39,
 		DOWN : 87,
-		DOWN2 : 38
+		DOWN2 : 38,
+		PAUSE : 27
 	};
 
+	
+	// positons of all objects
 	var rockPos = new Array(200);
 	var humanEnemies = new Array(100);
 	var homeBase = new Array(2);
 	var villages = new Array(20);
 	var allObjects = new Array(252);
 	var shadows = new Array(252);
-
+	
+	//object stats
 	var player = {
 		X : 3,
 		Y : -3,
@@ -474,7 +549,11 @@ function main() {
 	for (var i = 0; i < humanEnemies.length; i++) {
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	}
-
+	
+	/////////////////////////////////////////////
+	//helper functions of the positons of objects
+	/////////////////////////////////////////////
+	
 	function decAll(i) {
 		rockPos[i]--;
 		shadows[i]--;
@@ -546,152 +625,176 @@ function main() {
 		}, 500);
 	}
 
-	//control player
+	//////////////////////////////////////////////////
+	//control player which moves all objects also 
+	//AI movement is in here UP and DOWN are flipped
+	///////////////////////////////////////////////////
 	var hitWall = false;
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
-			switch (evt.keyCode) {
-			//actually down
-			case keys.UP2:
-			case keys.UP:
-				if (player.Y < 0) {
-					player.Y++;
-					for (var i = 1; i < allObjects.length; i += 2) {
-						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-							player.Y--;
-							hitWall = true;
-						}
-						if (!hitWall) {
-							aiMvmtVert(i);
-						}
-					}
-					hitWall = false;
-				} else {
-					center[1] += 1;
-					for (var i = 1; i < allObjects.length; i += 2) {
-						decAll(i);
-						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-							center[1] -= 1;
-							hitWall = true;
-							for (var j = 1; j < allObjects.length; j += 2) {
-								inAll(j);
+			if (!pause) {
+				switch (evt.keyCode) {
+				//actually down
+				case keys.UP2:
+				case keys.UP:
+					if (player.Y < 0) {
+						player.Y++;
+						for (var i = 1; i < allObjects.length; i += 2) {
+							if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+								player.Y--;
+								hitWall = true;
+							}
+							if (!hitWall) {
+								aiMvmtVert(i);
 							}
 						}
-						if (!hitWall) {
-							aiMvmtVert(i);
-						}
-					}
-					hitWall = false;
-				}
-				if (inSun)
-					player.UV--;
-				break;
-			case keys.DOWN2:
-			case keys.DOWN:
-				if (player.Y > -5) {
-					player.Y--;
-					for (var i = 1; i < allObjects.length; i += 2) {
-						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-							player.Y++;
-							hitWall = true;
-						}
-						if (!hitWall) {
-							aiMvmtVert(i);
-						}
-					}
-					hitWall = false;
-				} else {
-					center[1] -= 1;
-					for (var i = 1; i < allObjects.length; i += 2) {
-						inAll(i);
-						if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+						hitWall = false;
+					} else {
+						if (center[1] < tiles_dimension - 1) {
 							center[1] += 1;
-							hitWall = true;
-							for (var j = 1; j < allObjects.length; j += 2) {
-								decAll(j);
+							for (var i = 1; i < allObjects.length; i += 2) {
+								decAll(i);
+								if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+									center[1] -= 1;
+									hitWall = true;
+									for (var j = 1; j < allObjects.length; j += 2) {
+										inAll(j);
+									}
+								}
+								if (!hitWall) {
+									aiMvmtVert(i);
+								}
+							}
+							hitWall = false;
+						}
+					}
+					if (inSun)
+						player.UV--;
+					break;
+				case keys.DOWN2:
+				case keys.DOWN:
+					if (player.Y > -5) {
+						player.Y--;
+						for (var i = 1; i < allObjects.length; i += 2) {
+							if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+								player.Y++;
+								hitWall = true;
+							}
+							if (!hitWall) {
+								aiMvmtVert(i);
 							}
 						}
-						if (!hitWall) {
-							aiMvmtVert(i);
+						hitWall = false;
+					} else {
+						if (center[1] > 5) {
+							center[1] -= 1;
+							for (var i = 1; i < allObjects.length; i += 2) {
+								inAll(i);
+								if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+									center[1] += 1;
+									hitWall = true;
+									for (var j = 1; j < allObjects.length; j += 2) {
+										decAll(j);
+									}
+								}
+								if (!hitWall) {
+									aiMvmtVert(i);
+								}
+							}
+							hitWall = false;
 						}
 					}
-					hitWall = false;
-				}
-				if (inSun)
-					player.UV--;
-				break;
-			case keys.LEFT2:
-			case keys.LEFT:
-				if (player.X > 0) {
-					player.X--;
-					for (var i = 0; i < allObjects.length; i += 2) {
-						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-							player.X++;
-							hitWall = true;
-						}
-						if (!hitWall) {
-							aiMvmtHorz(i);
-						}
-					}
-					hitWall = false;
-				} else {
-					center[0] -= 1;
-					for (var i = 0; i < allObjects.length; i += 2) {
-						inAll(i);
-						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-							center[0] += 1;
-							hitWall = true;
-							for (var j = 0; j < allObjects.length; j += 2) {
-								decAll(j);
+					if (inSun)
+						player.UV--;
+					break;
+				case keys.LEFT2:
+				case keys.LEFT:
+					if (player.X > 0) {
+						player.X--;
+						for (var i = 0; i < allObjects.length; i += 2) {
+							if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+								player.X++;
+								hitWall = true;
+							}
+							if (!hitWall) {
+								aiMvmtHorz(i);
 							}
 						}
-						if (!hitWall) {
-							aiMvmtHorz(i);
-						}
-					}
-					hitWall = false;
-				}
-				if (inSun)
-					player.UV--;
-				break;
-			case keys.RIGHT2:
-			case keys.RIGHT:
-				if (player.X < 5) {
-					player.X++;
-					for (var i = 0; i < allObjects.length; i += 2) {
-						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-							player.X--;
-							hitWall = true;
-						}
-						if (!hitWall) {
-							aiMvmtHorz(i);
-						}
-					}
-					hitWall = false;
-				} else {
-					center[0] += 1;
-					for (var i = 0; i < allObjects.length; i += 2) {
-						decAll(i);
-						if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+						hitWall = false;
+					} else {
+						if (center[0] > 0) {
 							center[0] -= 1;
-							hitWall = true;
-							for (var j = 0; j < allObjects.length; j += 2) {
-								inAll(j);
+							for (var i = 0; i < allObjects.length; i += 2) {
+								inAll(i);
+								if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+									center[0] += 1;
+									hitWall = true;
+									for (var j = 0; j < allObjects.length; j += 2) {
+										decAll(j);
+									}
+								}
+								if (!hitWall) {
+									aiMvmtHorz(i);
+								}
 							}
 						}
-						if (!hitWall) {
-							aiMvmtHorz(i);
+						hitWall = false;
+					}
+					if (inSun)
+						player.UV--;
+					break;
+				case keys.RIGHT2:
+				case keys.RIGHT:
+					if (player.X < 5) {
+						player.X++;
+						for (var i = 0; i < allObjects.length; i += 2) {
+							if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+								player.X--;
+								hitWall = true;
+							}
+							if (!hitWall) {
+								aiMvmtHorz(i);
+							}
+						}
+						hitWall = false;
+					} else {
+						if (center[0] < tiles_dimension - 6) {
+							center[0] += 1;
+							for (var i = 0; i < allObjects.length; i += 2) {
+								decAll(i);
+								if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+									center[0] -= 1;
+									hitWall = true;
+									for (var j = 0; j < allObjects.length; j += 2) {
+										inAll(j);
+									}
+								}
+								if (!hitWall) {
+									aiMvmtHorz(i);
+								}
+							}
+							hitWall = false;
 						}
 					}
-					hitWall = false;
+					if (inSun)
+						player.UV--;
+					break;
+				case keys.PAUSE:
+					pause = true;
+					break;
+				};
+			} else {
+				switch(evt.keyCode) {
+				case keys.PAUSE:
+					pause = false;
+					break;
 				}
-				if (inSun)
-					player.UV--;
-				break;
-			};
+			}
 		}, false);
+
 	}
 
+	//draw all objects
 	function drawAll() {
 		//draw floor
 		drawTiles(center);
@@ -705,71 +808,6 @@ function main() {
 		drawPlayer(player.X, player.Y);
 	}
 
-	function drawUI() {
-		//draw ui sun
-		if (day) {
-			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
-			c.fillRect(canvasWidth / 4, 10, 50, 50);
-		} else {
-			c.fillStyle = 'rgba(50, 25, 100, 0.2)';
-			c.fillRect(0, 0, canvasWidth, canvasHeight);
-		}
-
-		//text
-		var waterLevel = "ml: " + player.WATER;
-		var uvLevel = "Integrity: " + player.UV;
-		var hpLevel = "Health: " + player.HEALTH;
-		var speedLevel = "Speed: " + player.SPEED;
-		var attackLevel = "Attack: " + player.ATTACK;
-		var homeWaterLev = "Home ml: " + homeBase.WATER;
-		var time = Math.floor(counter / 60) + " : " + counter % 60;
-		var sunshine = "Sun out: " + day;
-		c.lineWidth = 7;
-		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
-		c.font = "15px Arial";
-		c.strokeText(sunshine, 50, 140);
-		c.fillText(sunshine, 50, 140);
-		c.strokeText(time, 50, 120);
-		c.fillText(time, 50, 120);
-		c.strokeText(homeWaterLev, 50, 100);
-		c.fillText(homeWaterLev, 50, 100);
-		c.strokeText(waterLevel, 50, 80);
-		c.fillText(waterLevel, 50, 80);
-		c.strokeText(speedLevel, 50, 60);
-		c.fillText(speedLevel, 50, 60);
-		c.strokeText(attackLevel, 50, 40);
-		c.fillText(attackLevel, 50, 40);
-		c.strokeText(hpLevel, 50, 20);
-		c.fillText(hpLevel, 50, 20);
-		c.strokeText(uvLevel, 50, 0);
-		c.fillText(uvLevel, 50, 0);
-
-		//draw water meter
-		steamY -= .01;
-		if (steamY < -5) {
-			steamY = 10;
-		}
-		var divWater = player.WATERORIG / (player.WATERORIG / 500);
-		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
-		c.fillRect(5, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
-		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
-		c.fillRect(10, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 10, 15, (player.WATERORIG / divWater + player.WATERORIG / divWater));
-		if (!inSun) {
-			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
-		} else {
-			c.fillStyle = 'rgba(255, 220, 255, 0.9)';
-			c.fillRect(steamX, steamY, 5, 5);
-			c.fillRect(steamX + 2, steamY - 4, 5, 5);
-			c.fillRect(steamX + 4, steamY + 6, 5, 5);
-			c.fillRect(steamX + 6, steamY - 3, 5, 5);
-			c.fillRect(steamX + 8, steamY + 7, 5, 5);
-			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
-		}
-		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
-
-	}
-
 	// ----------------------------------------
 	//     Animation
 	// ----------------------------------------
@@ -778,52 +816,69 @@ function main() {
 	var inBattle = false;
 	var steamX = 10;
 	var steamY = 10;
+
+	var pause = false;
+
 	function animate() {
 		requestAnimationFrame(animate);
-		c.clearRect(0, 0, canvasWidth, canvasHeight);
-		drawAll();
-		drawUI();
+		if (!pause) {
+			c.clearRect(0, 0, canvasWidth, canvasHeight);
+			drawAll();
+			drawUI();
 
-		//conditions
-		//if in shadow
-		for (var i = 0; i < shadows.length; i += 2) {
-			if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
+			//conditions
+			//if in shadow
+			for (var i = 0; i < shadows.length; i += 2) {
+				if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
+					inSun = false;
+					player.UV = player.UVORIG;
+					break;
+				} else {
+					inSun = true;
+				}
+			}
+
+			//sun out?
+			if ((Math.floor(counter / dayLength)) % 2 == 1) {
+				day = false;
 				inSun = false;
 				player.UV = player.UVORIG;
-				break;
-			} else {
-				inSun = true;
 			}
-		}
+			if ((Math.floor(counter / dayLength)) % 2 == 0) {
+				day = true;
+			}
 
-		//sun out?
-		if ((Math.floor(counter / dayLength)) % 2 == 1) {
-			day = false;
-			inSun = false;
-		}
-		if ((Math.floor(counter / dayLength)) % 2 == 0) {
-			day = true;
-		}
+			//decrease water count
+			if (inSun && player.WATER > 0 && day) {
+				player.WATER -= 5;
+			}
 
-		//decrease water count
-		if (inSun && player.WATER > 0 && day) {
-			player.WATER -= 5;
-		}
+			if (!inSun && player.WATER > 0 && day) {
+				player.WATER -= 3;
+			}
 
-		if (!inSun && player.WATER > 0 && day) {
-			player.WATER -= 3;
-		}
+			if (player.WATER > 0 && !day) {
+				player.WATER -= 1;
+			}
 
-		if (player.WATER > 0 && !day) {
-			player.WATER -= 1;
+			//if at base, refill water and use base's water supply
+			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
+				homeBase.WATER -= (player.WATERORIG - player.WATER);
+				player.WATER = player.WATERORIG;
+			}
+		} else {
+			c.clearRect(0, 0, canvasWidth, canvasHeight);
+			drawAll();
+			drawUI();
+			c.lineWidth = 10;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 0, 0, 1)';
+			c.font = "20px Arial";
+			c.strokeText("PAUSE", (canvasWidth / 2) - 10, (canvasHeight / 2) - 10);
+			c.fillText("PAUSE", (canvasWidth / 2) - 10, (canvasHeight / 2) - 10);
+			c.fillStyle = "rgba(100,100,100, 0.3)";
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
-
-		//if at base, refill water and use base's water supply
-		if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
-			homeBase.WATER -= (player.WATERORIG - player.WATER);
-			player.WATER = player.WATERORIG;
-		}
-
 	}
 
 	animate();

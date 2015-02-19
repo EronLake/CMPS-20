@@ -1,21 +1,64 @@
 var resCount = 2;
-//oh yeah baby!
 var img = new Image();
-img.onload = launchMe;
+//img.onload = launchMe;
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
 
 var img2 = new Image();
-img2.onload = launchMe;
+//img2.onload = launchMe;
 img2.src = '/Images/village_prototype.png';
 
-window.onload = launchMe;
 
-function launchMe() {
-	if (--resCount == 0) {
-		main();
+var canvas = document.getElementById('canvas');
+var c = canvas.getContext('2d');
+c.canvas.width = window.innerWidth;
+c.canvas.height = window.innerHeight;
+var canvasWidth = canvas.width;
+var canvasHeight = canvas.height;
+
+// --------------------------------------------
+//        Title Screen Setup
+// --------------------------------------------
+
+var titleScreen = true;
+addEventListener("keydown", function(key){ 
+    if(key.keyCode == 32){
+        titleScreen = false;
+    }
+});
+var titleImage = document.getElementById("title");
+function draw() {
+	//clears screen every loop
+	canvas.width = canvas.width;
+	if(titleScreen){
+		var titleimg = new Image();
+		titleimg.src = "http://i.imgur.com/nDxvHh5.png?5";
+		c.drawImage(titleimg,400,0,522,670); //display cover image
+		c.font = 'italic 40pt Calibri';
+		c.fillText("Scorching Sea", canvas.width/2 - 200, canvas.height/2 - 200);
+		c.font = 'italic 20pt Calibri';
+		c.fillText("press spacebar to play", canvas.width/2 - 220 , 175);
+		
+	}else{
+		clearInterval(refreshIntervalId); //stop game_loop after spacebar pressed
+		main(); //start playing
 	}
 }
+
+function game_loop() {
+	draw();
+	
+}
+var refreshIntervalId = setInterval(game_loop, 60);
+
+
+//window.onload = launchMe;
+
+//function launchMe() {
+	//if (--resCount == 0) {
+	//	main();
+	//}
+//}
 
 function main() {
 	hookKeys();
@@ -23,12 +66,7 @@ function main() {
 	// ----------------------------------------
 	//     Canvas Setup
 	// ----------------------------------------
-	var canvas = document.getElementById('canvas');
-	var c = canvas.getContext('2d');
-	c.canvas.width = window.innerWidth;
-	c.canvas.height = window.innerHeight;
-	var canvasWidth = canvas.width;
-	var canvasHeight = canvas.height;
+
 	c.textBaseline = 'top';
 	c.font = '10px sans-serif';
 	c.fillStyle = '#00FFFF';

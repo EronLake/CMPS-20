@@ -1,4 +1,3 @@
-var resCount = 2;
 var img = new Image();
 //img.onload = launchMe;
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
@@ -8,6 +7,9 @@ var img2 = new Image();
 //img2.onload = launchMe;
 img2.src = '/Images/village_prototype.png';
 
+// ----------------------------------------
+//     Canvas Setup
+// ----------------------------------------
 
 var canvas = document.getElementById('canvas');
 var c = canvas.getContext('2d');
@@ -21,55 +23,47 @@ var canvasHeight = canvas.height;
 // --------------------------------------------
 
 var titleScreen = true;
-addEventListener("keydown", function(key){ 
-    if(key.keyCode == 32){
-        titleScreen = false;
-    }
+addEventListener("keydown", function(key) {
+	if (key.keyCode == 32) {
+		titleScreen = false;
+	}
 });
+
 var titleImage = document.getElementById("title");
 function draw() {
 	//clears screen every loop
 	canvas.width = canvas.width;
-	if(titleScreen){
+	if (titleScreen) {
 		var titleimg = new Image();
 		titleimg.src = "http://i.imgur.com/nDxvHh5.png?5";
-		c.drawImage(titleimg,400,0,522,670); //display cover image
+		c.drawImage(titleimg, 400, 0, 522, 670);
+		//display cover image
 		c.font = 'italic 40pt Calibri';
-		c.fillText("Scorching Sea", canvas.width/2 - 200, canvas.height/2 - 200);
+		c.fillText("Scorching Sea", canvas.width / 2 - 200, canvas.height / 2 - 200);
 		c.font = 'italic 20pt Calibri';
-		c.fillText("press spacebar to play", canvas.width/2 - 220 , 175);
-		
-	}else{
-		clearInterval(refreshIntervalId); //stop game_loop after spacebar pressed
-		main(); //start playing
+		c.fillText("press spacebar to play", canvas.width / 2 - 220, 175);
+
+	} else {
+		clearInterval(refreshIntervalId);
+		//stop game_loop after spacebar pressed
+		main();
+		//start playing
 	}
 }
 
 function game_loop() {
 	draw();
-	
+
 }
+
 var refreshIntervalId = setInterval(game_loop, 60);
 
-
-//window.onload = launchMe;
-
-//function launchMe() {
-	//if (--resCount == 0) {
-	//	main();
-	//}
-//}
+// ----------------------------------------
+//     Main Game
+// ----------------------------------------
 
 function main() {
 	hookKeys();
-
-	// ----------------------------------------
-	//     Canvas Setup
-	// ----------------------------------------
-
-	c.textBaseline = 'top';
-	c.font = '10px sans-serif';
-	c.fillStyle = '#00FFFF';
 
 	// ----------------------------------------
 	//     Tiles Setup
@@ -397,6 +391,8 @@ function main() {
 
 	}
 
+	var steamX = 10;
+	var steamY = 10;
 	function drawUI() {
 		//draw ui sun
 		if (day) {
@@ -461,7 +457,14 @@ function main() {
 		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
 
 		if (pause) {
-			c.fillText("PUASE", canvasWidth / 2, canvasHeight / 2);
+			c.lineWidth = 10;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 0, 0, 1)';
+			c.font = "20px Arial";
+			c.strokeText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
+			c.fillText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
+			c.fillStyle = "rgba(0,50,50, 0.3)";
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
 
 	}
@@ -487,16 +490,19 @@ function main() {
 		PAUSE : 27
 	};
 
-	
-	// positons of all objects
+	//-----------------------------------------
+	// Create Objects
+	//-----------------------------------------
+
+	var objectSize = 322;
 	var rockPos = new Array(200);
-	var humanEnemies = new Array(100);
 	var homeBase = new Array(2);
-	var villages = new Array(20);
-	var allObjects = new Array(252);
-	var shadows = new Array(252);
+	var villages = new Array(120);
+	var allObjects = new Array(objectSize);
+	var shadows = new Array(objectSize);
 	
-	//object stats
+	var humanEnemies = new Array(50);
+
 	var player = {
 		X : 3,
 		Y : -3,
@@ -514,6 +520,10 @@ function main() {
 		HEALTHPACK : 5
 	};
 
+	//------------------------------------------
+	// Create Object Random Positions
+	//------------------------------------------
+
 	var i = 0;
 	//create rocks and shadow positions
 	for (; i < rockPos.length; i++) {
@@ -527,15 +537,33 @@ function main() {
 	}
 
 	//create villages positions
-	for (var j = 0; j < villages.length; j++) {
-		villages[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
-		allObjects[i] = villages[j];
-		if (!(j % 2 == 0)) {
-			shadows[i] = villages[j] + 1;
-		} else {
-			shadows[i] = villages[j];
+	for (var j = 0; j < villages.length; j = j + 12) {
+		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		villages[j + 2] = villages[j] + 1;
+		villages[j + 3] = villages[j + 1];
+		villages[j + 4] = villages[j] + 2;
+		villages[j + 5] = villages[j + 1];
+
+		villages[j + 6] = villages[j];
+		villages[j + 7] = villages[j + 1] - 1;
+		villages[j + 8] = villages[j] + 1;
+		villages[j + 9] = villages[j + 1] - 1;
+		villages[j + 10] = villages[j] + 2;
+		villages[j + 11] = villages[j + 1] - 1;
+
+		for (var x = 0; x < 12; x++) {
+			allObjects[i + x] = villages[j + x];
+			if (!(x % 2 == 0) && x < 6) {
+				shadows[i + x] = villages[j + x] + 1;
+			} else {
+				shadows[i + x] = villages[j + x];
+			}
+			if(x > 6){
+				shadows[i+x] = -tiles_dimension;
+			}
 		}
-		i++;
+		i += 12;
 	}
 
 	homeBase[0] = player.X;
@@ -549,11 +577,11 @@ function main() {
 	for (var i = 0; i < humanEnemies.length; i++) {
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	}
-	
-	/////////////////////////////////////////////
-	//helper functions of the positons of objects
-	/////////////////////////////////////////////
-	
+
+	//-------------------------------------------
+	//helper functions for hookKeys()
+	//-------------------------------------------
+
 	function decAll(i) {
 		rockPos[i]--;
 		shadows[i]--;
@@ -572,7 +600,7 @@ function main() {
 		allObjects[i]++;
 	}
 
-	//collision
+	//collision if player is near enemy
 	function detection(i) {
 		for (var j = -1; j <= 1; j++) {
 			for (var k = -1; k <= 1; k++) {
@@ -604,7 +632,7 @@ function main() {
 		}, 500);
 	}
 
-	// left right d+1, -1
+	// ai movement left right when near d+1, -1
 	function aiMvmtHorz(i) {
 		setTimeout(function() {
 			if ((humanEnemies[i]) < player.X && (humanEnemies[i]) > player.X - 7) {
@@ -625,10 +653,11 @@ function main() {
 		}, 500);
 	}
 
-	//////////////////////////////////////////////////
-	//control player which moves all objects also 
+	//-------------------------------------------------
+	//control player which moves all objects also
 	//AI movement is in here UP and DOWN are flipped
-	///////////////////////////////////////////////////
+	//-------------------------------------------------
+
 	var hitWall = false;
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
@@ -811,12 +840,9 @@ function main() {
 	// ----------------------------------------
 	//     Animation
 	// ----------------------------------------
-	var landMoveSpeed = 0.07;
+
 	var inSun = false;
 	var inBattle = false;
-	var steamX = 10;
-	var steamY = 10;
-
 	var pause = false;
 
 	function animate() {
@@ -850,7 +876,7 @@ function main() {
 
 			//decrease water count
 			if (inSun && player.WATER > 0 && day) {
-				player.WATER -= 5;
+				player.WATER -= 7;
 			}
 
 			if (!inSun && player.WATER > 0 && day) {
@@ -870,14 +896,6 @@ function main() {
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();
-			c.lineWidth = 10;
-			c.fillStyle = 'rgba(255, 255, 255, 1)';
-			c.strokeStyle = 'rgba(0, 0, 0, 1)';
-			c.font = "20px Arial";
-			c.strokeText("PAUSE", (canvasWidth / 2) - 10, (canvasHeight / 2) - 10);
-			c.fillText("PAUSE", (canvasWidth / 2) - 10, (canvasHeight / 2) - 10);
-			c.fillStyle = "rgba(100,100,100, 0.3)";
-			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
 	}
 

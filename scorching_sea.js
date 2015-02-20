@@ -465,15 +465,31 @@ function main() {
 			c.font = "20px Arial";
 			c.strokeText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
 			c.fillText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
-			
+
 		}
 
 	}
 
-	function drawVillageUI() {
+	function drawVillageUI(i) {
 		var health;
 		var water;
 		var item;
+		console.log(i);
+		if(i%12 == 0){
+			health = villageItems[i];
+			water = villageItems[i+1];
+			item = villageItems[i+2];
+		}
+		if(i%12 == 2){
+			health = villageItems[i-2];
+			water = villageItems[i-1];
+			item = villageItems[i];
+		}
+		if(i%12 == 4){
+			health = villageItems[i-4];
+			water = villageItems[i-3];
+			item = villageItems[i-2];
+		}
 		var healthAmount = "Health Pack: " + health;
 		var waterAmount = "ml: " + water;
 		var itemAmount = "item: " + item;
@@ -483,23 +499,38 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		c.strokeText("IN VILLAGE", (canvasWidth / 3) - 10 , (canvasHeight / 3) - 30);
+		c.strokeText("IN VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("IN VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.strokeText(healthAmount, (canvasWidth/3), canvasHeight/3);
-		c.fillText(healthAmount, (canvasWidth/3), canvasHeight/3);
-		c.strokeText(waterAmount, (canvasWidth/3) + 10, (canvasHeight/3)+30);
-		c.fillText(waterAmount, (canvasWidth/3) + 10, (canvasHeight/3)+30);
-		c.strokeText(itemAmount, (canvasWidth/3) + 20, (canvasHeight/3)+60);
-		c.fillText(itemAmount, (canvasWidth/3) + 20, (canvasHeight/3)+60);
-		
+		c.strokeText(healthAmount, (canvasWidth / 3), canvasHeight / 3);
+		c.fillText(healthAmount, (canvasWidth / 3), canvasHeight / 3);
+		c.strokeText(waterAmount, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.fillText(waterAmount, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.strokeText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+		c.fillText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+
 	}
-	
-	function drawBattleScreen(i){
-		//ui stuff
-		
+
+	function drawBattleScreen(i) {
+		var yourHealth = "Health: " + player.HEALTH;
+		var yourSpeed = "Speed: " + player.SPEED;
+		var yourAttack = "Attack: " + player.ATTACK;
+		c.fillStyle = "rgba(0,25,75, 0.25)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 10;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "20px Arial";
+		c.strokeText("IN BATTLE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("IN BATTLE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
+		c.fillText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
+		c.strokeText(yourSpeed, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
+		c.fillText(yourSpeed, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
+		c.strokeText(yourAttack, (canvasWidth / 4) + 20, (canvasHeight / 3) + 60);
+		c.fillText(yourAttack, (canvasWidth / 4) + 20, (canvasHeight / 3) + 60);
 		//if win move enemy
-		humanEnemies[i] = -tiles_dimension;
-		humanEnemies[i+1] = -tiles_dimension;
+		//humanEnemies[i] = -tiles_dimension;
+		//humanEnemies[i + 1] = -tiles_dimension;
 	}
 
 	var centerX = tiles_dimension / 2;
@@ -536,6 +567,9 @@ function main() {
 	var shadows = new Array(objectSize);
 
 	var humanEnemies = new Array(50);
+	
+	var villageItems = new Array(villages.length);
+	var humanEnemiesStats = new Array(humanEnemies.length);
 
 	var player = {
 		X : 3,
@@ -572,6 +606,11 @@ function main() {
 
 	//create villages positions
 	for (var j = 0; j < villages.length; j = j + 12) {
+		villageItems[j] = Math.floor(Math.random() * (5));
+		villageItems[j + 1] = Math.floor(Math.random() * (1000));
+		villageItems[j + 2] = Math.floor(Math.random() * (2));
+		console.log(j, villageItems[j],villageItems[j+1],villageItems[j+2]);
+		
 		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		villages[j + 2] = villages[j] + 1;
@@ -642,10 +681,6 @@ function main() {
 					//push battle
 					player.HEALTH--;
 					inBattle = true;
-					if(inBattle){
-						drawBattleScreen(i);
-					}
-					inBattle = false;
 					break;
 				}
 			}
@@ -849,23 +884,23 @@ function main() {
 				//actually down
 				case keys.UP2:
 				case keys.UP:
-					if(!inVillage)
+					if (!inVillage)
 						moveDown();
 					break;
 				case keys.DOWN2:
 				case keys.DOWN:
-					if(!inVillage)
-					moveUp();
+					if (!inVillage)
+						moveUp();
 					break;
 				case keys.LEFT2:
 				case keys.LEFT:
-					if(!inVillage)
-					moveLeft();
+					if (!inVillage)
+						moveLeft();
 					break;
 				case keys.RIGHT2:
 				case keys.RIGHT:
-					if(!inVillage)
-					moveRight();
+					if (!inVillage)
+						moveRight();
 					break;
 				case keys.ENTER:
 					enter = !enter;
@@ -932,18 +967,25 @@ function main() {
 			if (inSun) {
 				enter = false;
 			}
+			if (inBattle) {
+				//c.clearRect(0, 0, canvasWidth, canvasHeight);
+				//drawAll();
+				//drawUI();
+				//drawBattleScreen(i);
+			}
 
 			if (enter) {
-				for (var i = 0; i < villages.length; i+=2) {
+				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						c.clearRect(0, 0, canvasWidth, canvasHeight);
 						drawAll();
 						drawUI();
-						drawVillageUI();
+						drawVillageUI(i);
 						inVillage = true;
 					}
 				}
-			} else {
+			}
+			if (!enter) {
 				inVillage = false;
 				//sun out?
 				if ((Math.floor(counter / dayLength)) % 2 == 1) {

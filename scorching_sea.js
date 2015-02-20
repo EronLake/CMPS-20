@@ -416,22 +416,22 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
-		c.strokeText(sunshine, 50, 140);
-		c.fillText(sunshine, 50, 140);
-		c.strokeText(time, 50, 120);
-		c.fillText(time, 50, 120);
-		c.strokeText(homeWaterLev, 50, 100);
-		c.fillText(homeWaterLev, 50, 100);
-		c.strokeText(waterLevel, 50, 80);
-		c.fillText(waterLevel, 50, 80);
-		c.strokeText(speedLevel, 50, 60);
-		c.fillText(speedLevel, 50, 60);
-		c.strokeText(attackLevel, 50, 40);
-		c.fillText(attackLevel, 50, 40);
-		c.strokeText(hpLevel, 50, 20);
-		c.fillText(hpLevel, 50, 20);
-		c.strokeText(uvLevel, 50, 0);
-		c.fillText(uvLevel, 50, 0);
+		c.strokeText(sunshine, 50, 160);
+		c.fillText(sunshine, 50, 160);
+		c.strokeText(time, 50, 140);
+		c.fillText(time, 50, 140);
+		c.strokeText(homeWaterLev, 50, 120);
+		c.fillText(homeWaterLev, 50, 120);
+		c.strokeText(waterLevel, 50, 100);
+		c.fillText(waterLevel, 50, 100);
+		c.strokeText(speedLevel, 50, 80);
+		c.fillText(speedLevel, 50, 80);
+		c.strokeText(attackLevel, 50, 60);
+		c.fillText(attackLevel, 50, 60);
+		c.strokeText(hpLevel, 50, 40);
+		c.fillText(hpLevel, 50, 40);
+		c.strokeText(uvLevel, 50, 20);
+		c.fillText(uvLevel, 50, 20);
 
 		//draw water meter
 		steamY -= .01;
@@ -457,27 +457,49 @@ function main() {
 		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
 
 		if (pause) {
+			c.fillStyle = "rgba(0,50,50, 0.5)";
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
 			c.lineWidth = 10;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 0, 0, 1)';
 			c.font = "20px Arial";
 			c.strokeText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
 			c.fillText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
-			c.fillStyle = "rgba(0,50,50, 0.5)";
-			c.fillRect(0, 0, canvasWidth, canvasHeight);
+			
 		}
 
 	}
 
 	function drawVillageUI() {
+		var health;
+		var water;
+		var item;
+		var healthAmount = "Health Pack: " + health;
+		var waterAmount = "ml: " + water;
+		var itemAmount = "item: " + item;
+		c.fillStyle = "rgba(0,25,75, 0.25)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		c.strokeText("IN VILLAGE", (canvasWidth / 2) - 35, (canvasHeight / 2) - 35);
-		c.fillText("IN VILLAGE", (canvasWidth / 2) - 35, (canvasHeight / 2) - 35);
-		c.fillStyle = "rgba(0,25,75, 0.25)";
-		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.strokeText("IN VILLAGE", (canvasWidth / 3) - 10 , (canvasHeight / 3) - 30);
+		c.fillText("IN VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText(healthAmount, (canvasWidth/3), canvasHeight/3);
+		c.fillText(healthAmount, (canvasWidth/3), canvasHeight/3);
+		c.strokeText(waterAmount, (canvasWidth/3) + 10, (canvasHeight/3)+30);
+		c.fillText(waterAmount, (canvasWidth/3) + 10, (canvasHeight/3)+30);
+		c.strokeText(itemAmount, (canvasWidth/3) + 20, (canvasHeight/3)+60);
+		c.fillText(itemAmount, (canvasWidth/3) + 20, (canvasHeight/3)+60);
+		
+	}
+	
+	function drawBattleScreen(i){
+		//ui stuff
+		
+		//if win move enemy
+		humanEnemies[i] = -tiles_dimension;
+		humanEnemies[i+1] = -tiles_dimension;
 	}
 
 	var centerX = tiles_dimension / 2;
@@ -619,6 +641,11 @@ function main() {
 				if (humanEnemies[i] + j == player.X && humanEnemies[i + 1] + k == player.Y) {
 					//push battle
 					player.HEALTH--;
+					inBattle = true;
+					if(inBattle){
+						drawBattleScreen(i);
+					}
+					inBattle = false;
 					break;
 				}
 			}
@@ -822,18 +849,22 @@ function main() {
 				//actually down
 				case keys.UP2:
 				case keys.UP:
-					moveDown();
+					if(!inVillage)
+						moveDown();
 					break;
 				case keys.DOWN2:
 				case keys.DOWN:
+					if(!inVillage)
 					moveUp();
 					break;
 				case keys.LEFT2:
 				case keys.LEFT:
+					if(!inVillage)
 					moveLeft();
 					break;
 				case keys.RIGHT2:
 				case keys.RIGHT:
+					if(!inVillage)
 					moveRight();
 					break;
 				case keys.ENTER:
@@ -877,6 +908,7 @@ function main() {
 	var pause = false;
 	var enter = false;
 	var inVillage = false;
+	var inBattle = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		if (!pause) {
@@ -902,7 +934,7 @@ function main() {
 			}
 
 			if (enter) {
-				for (var i = 0; i < villages.length; i++) {
+				for (var i = 0; i < villages.length; i+=2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						c.clearRect(0, 0, canvasWidth, canvasHeight);
 						drawAll();

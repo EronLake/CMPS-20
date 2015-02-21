@@ -6,7 +6,10 @@
 //(maybe just arrow keys to compact and simplicity)
 //if fast enough player kills enemy and
 //gets its water, else player loses hp
-//will create an overall faster game
+//
+//Another battle system could be a draw system
+//similar to the old western ways/a focus
+//on reflexes.
 //
 //find utilities in towns to help
 //player find the cordinates of the
@@ -989,9 +992,7 @@ function main() {
 	var inVillage = false;
 	function animate() {
 		requestAnimationFrame(animate);
-		var currCount = counter;
 		if (!pause) {
-
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();
@@ -1013,9 +1014,6 @@ function main() {
 			}
 			
 			if (inBattle) {
-				//c.clearRect(0, 0, canvasWidth, canvasHeight);
-				//drawAll();
-				//drawUI();
 				//drawBattleScreen(i);
 			}
 
@@ -1023,9 +1021,6 @@ function main() {
 			if (enter) {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
-						c.clearRect(0, 0, canvasWidth, canvasHeight);
-						drawAll();
-						drawUI();
 						drawVillageUI(i);
 						inVillage = true;
 						break;

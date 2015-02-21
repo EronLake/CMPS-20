@@ -1,3 +1,24 @@
+//IMPORTANT NOTES:
+//scrap the whole rpg system
+//focus on how fast the player
+//can press the keys
+//4 random keys will appear in a battle
+//(maybe just arrow keys to compact and simplicity)
+//if fast enough player kills enemy and
+//gets its water, else player loses hp
+//will create an overall faster game
+//
+//find utilities in towns to help
+//player find the cordinates of the
+//sacred water source to win game
+//cost water though
+//ex: map, where water is by quadrents,
+//cordinate indicator, quadrent indicator,
+//shovel <-- need this to win
+//
+//implement more files because this 
+//one is too big
+
 var img = new Image();
 //img.onload = launchMe;
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
@@ -38,10 +59,14 @@ function draw() {
 		titleimg.src = "http://i.imgur.com/nDxvHh5.png?5";
 		c.drawImage(titleimg, 400, 0, 522, 670);
 		//display cover image
-		c.font = 'italic 40pt Calibri';
-		c.fillText("Scorching Sea", canvas.width / 2 - 200, canvas.height / 2 - 200);
-		c.font = 'italic 20pt Calibri';
-		c.fillText("press spacebar to play", canvas.width / 2 - 220, 175);
+		c.lineWidth = 15;
+		c.font = "40px Arial";
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeText("SCORCHING SEA", canvas.width / 3 , canvas.height / 2 - 200);
+		c.fillText("SCORCHING SEA", canvas.width / 3 , canvas.height / 2 - 200);
+		c.strokeText("press spacebar to play", canvas.width / 2 - 200, canvas.height/2 + 200);
+		c.fillText("press spacebar to play", canvas.width / 2 - 200, canvas.height/2 + 200);
 
 	} else {
 		clearInterval(refreshIntervalId);
@@ -407,8 +432,6 @@ function main() {
 		var waterLevel = "ml: " + player.WATER;
 		var uvLevel = "Integrity: " + player.UV;
 		var hpLevel = "Health: " + player.HEALTH;
-		var speedLevel = "Speed: " + player.SPEED;
-		var attackLevel = "Attack: " + player.ATTACK;
 		var homeWaterLev = "Home ml: " + homeBase.WATER;
 		var time = Math.floor(counter / 60) + " : " + counter % 60;
 		var sunshine = "Sun out: " + day;
@@ -416,18 +439,14 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
-		c.strokeText(sunshine, 50, 160);
-		c.fillText(sunshine, 50, 160);
-		c.strokeText(time, 50, 140);
-		c.fillText(time, 50, 140);
-		c.strokeText(homeWaterLev, 50, 120);
-		c.fillText(homeWaterLev, 50, 120);
-		c.strokeText(waterLevel, 50, 100);
-		c.fillText(waterLevel, 50, 100);
-		c.strokeText(speedLevel, 50, 80);
-		c.fillText(speedLevel, 50, 80);
-		c.strokeText(attackLevel, 50, 60);
-		c.fillText(attackLevel, 50, 60);
+		c.strokeText(sunshine, 50, 120);
+		c.fillText(sunshine, 50, 120);
+		c.strokeText(time, 50, 100);
+		c.fillText(time, 50, 100);
+		c.strokeText(homeWaterLev, 50, 80);
+		c.fillText(homeWaterLev, 50, 80);
+		c.strokeText(waterLevel, 50, 60);
+		c.fillText(waterLevel, 50, 60);
 		c.strokeText(hpLevel, 50, 40);
 		c.fillText(hpLevel, 50, 40);
 		c.strokeText(uvLevel, 50, 20);
@@ -532,8 +551,6 @@ function main() {
 
 	function drawBattleScreen(i) {
 		var yourHealth = "Health: " + player.HEALTH;
-		var yourSpeed = "Speed: " + player.SPEED;
-		var yourAttack = "Attack: " + player.ATTACK;
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -544,10 +561,6 @@ function main() {
 		c.fillText("IN BATTLE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.strokeText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
 		c.fillText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
-		c.strokeText(yourSpeed, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
-		c.fillText(yourSpeed, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
-		c.strokeText(yourAttack, (canvasWidth / 4) + 20, (canvasHeight / 3) + 60);
-		c.fillText(yourAttack, (canvasWidth / 4) + 20, (canvasHeight / 3) + 60);
 		//if win move enemy
 		//humanEnemies[i] = -tiles_dimension;
 		//humanEnemies[i + 1] = -tiles_dimension;
@@ -586,13 +599,10 @@ function main() {
 		UVORIG : 25,
 		UV : 25,
 		HEALTH : 100,
-		SPEED : 10,
-		ATTACK : 10
 	};
 
 	var homeBase = {
-		WATER : 50000,
-		HEALTHPACK : 5
+		WATER : 50000
 	};
 
 	//------------------------------------------
@@ -886,12 +896,12 @@ function main() {
 	var keys = {
 		LEFT : 65,
 		LEFT2 : 37,
-		UP : 83,
-		UP2 : 40,
+		UP : 87, 
+		UP2 : 38,
 		RIGHT : 68,
 		RIGHT2 : 39,
-		DOWN : 87,
-		DOWN2 : 38,
+		DOWN : 83,
+		DOWN2 : 40,
 		ONE: 49,
 		TWO: 50,
 		THREE: 51,
@@ -904,14 +914,13 @@ function main() {
 		window.addEventListener('keydown', function(evt) {
 			if (!pause) {
 				switch (evt.keyCode) {
-				//actually down
-				case keys.UP2:
-				case keys.UP:
+				case keys.DOWN2:
+				case keys.DOWN:
 					if (!inVillage)
 						moveDown();
 					break;
-				case keys.DOWN2:
-				case keys.DOWN:
+				case keys.UP2:
+				case keys.UP:
 					if (!inVillage)
 						moveUp();
 					break;
@@ -978,7 +987,6 @@ function main() {
 	var pause = false;
 	var enter = false;
 	var inVillage = false;
-	var inBattle = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		var currCount = counter;
@@ -1011,6 +1019,7 @@ function main() {
 				//drawBattleScreen(i);
 			}
 
+			//if press enter and in village go to a village ui
 			if (enter) {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
@@ -1024,6 +1033,7 @@ function main() {
 				}
 			}
 			
+			//flow of stats based on conditions here
 			if (!enter) {
 				inVillage = false;
 				//sun out?
@@ -1059,6 +1069,7 @@ function main() {
 				}
 
 			}
+			
 			//if at base, refill water and use base's water supply and press enter
 			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1 && enter) {
 				homeBase.WATER -= (player.WATERORIG - player.WATER);

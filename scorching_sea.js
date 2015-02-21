@@ -119,7 +119,7 @@ function main() {
 	var dayLength = 10;
 	//seconds
 	setInterval(function() {
-		if (!pause && !inVillage) {++counter;
+		if (!pause && !inVillage && !inBattle) {++counter;
 		}
 	}, 1000);
 
@@ -553,21 +553,43 @@ function main() {
 
 	}
 
-	function drawBattleScreen(i) {
+	var hurt = false;
+	var drawStart = 100;
+	var drawEnd = 130;
+	function drawBattleScreen(i, count, playerCount) {
 		var yourHealth = "Health: " + player.HEALTH;
+		var yourWater = "ml: " + player.WATER;
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
-		c.lineWidth = 10;
+		c.lineWidth = 20;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "60px Arial";
+		if(count > drawStart){
+			c.strokeText("DRAW", (canvasWidth / 2) - 50, (canvasHeight / 2) - 20);
+			c.fillText("DRAW", (canvasWidth / 2) - 50, (canvasHeight / 2) - 20);
+		}
+		c.lineWidth = 10;
 		c.font = "20px Arial";
 		c.strokeText("IN BATTLE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("IN BATTLE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.strokeText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
 		c.fillText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
-		//if win move enemy
-		//humanEnemies[i] = -tiles_dimension;
-		//humanEnemies[i + 1] = -tiles_dimension;
+		c.strokeText(yourWater, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
+		c.fillText(yourWater, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
+		if((playerCount > (drawStart)) && (playerCount < (drawEnd)) && playerCount != 0 && hurt == true){
+		   	console.log(playerCount);
+		   	humanEnemies[i] = -tiles_dimension;
+		   	humanEnemies[i + 1] = -tiles_dimension;
+		   	playerCount = 0;
+		   	inBattle = false;
+		}
+		if(hurt == true && ((playerCount > drawEnd) || (playerCount < drawStart)) && playerCount != 0){
+			player.HEALTH -= 10;
+			player.WATER -= 1000;
+		}
+		hurt = false;
+		
 	}
 
 	var centerX = tiles_dimension / 2;
@@ -700,8 +722,8 @@ function main() {
 			for (var k = -1; k <= 1; k++) {
 				if (humanEnemies[i] + j == player.X && humanEnemies[i + 1] + k == player.Y) {
 					//push battle
-					player.HEALTH--;
 					inBattle = true;
+					enemyPosition = i;
 					break;
 				}
 			}
@@ -910,7 +932,8 @@ function main() {
 		TWO: 50,
 		THREE: 51,
 		ENTER : 13,
-		PAUSE : 27
+		PAUSE : 27,
+		SPACE : 32
 	};
 
 	var hitWall = false;
@@ -920,22 +943,22 @@ function main() {
 				switch (evt.keyCode) {
 				case keys.DOWN2:
 				case keys.DOWN:
-					if (!inVillage)
+					if (!inVillage && !inBattle)
 						moveDown();
 					break;
 				case keys.UP2:
 				case keys.UP:
-					if (!inVillage)
+					if (!inVillage && !inBattle)
 						moveUp();
 					break;
 				case keys.LEFT2:
 				case keys.LEFT:
-					if (!inVillage)
+					if (!inVillage && !inBattle)
 						moveLeft();
 					break;
 				case keys.RIGHT2:
 				case keys.RIGHT:
-					if (!inVillage)
+					if (!inVillage && !inBattle)
 						moveRight();
 					break;
 				case keys.ONE:
@@ -955,6 +978,14 @@ function main() {
 					break;
 				case keys.PAUSE:
 					pause = true;
+					break;
+				case keys.SPACE:
+					if(inBattle){
+						playerCount = count;
+						count = 0;
+						hurt = true;
+						randomDrawSpeed = Math.random() * 100;
+					}
 					break;
 				};
 			} else {
@@ -991,13 +1022,16 @@ function main() {
 	var pause = false;
 	var enter = false;
 	var inVillage = false;
+	var count = 0;
+	var playerCount = 0;
+	var enemyPosition = -1;
+	var randomDrawSpeed = 0;
 	function animate() {
 		requestAnimationFrame(animate);
 		if (!pause) {
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();
-
 			//conditions
 			//if in shadow
 			for (var i = 0; i < shadows.length; i += 2) {
@@ -1015,7 +1049,8 @@ function main() {
 			}
 			
 			if (inBattle) {
-				//drawBattleScreen(i);
+				count++;
+				drawBattleScreen(enemyPosition, count, playerCount);
 			}
 
 			//if press enter and in village go to a village ui
@@ -1030,7 +1065,7 @@ function main() {
 			}
 			
 			//flow of stats based on conditions here
-			if (!enter) {
+			if (!enter && !inBattle) {
 				inVillage = false;
 				//sun out?
 				if ((Math.floor(counter / dayLength)) % 2 == 1) {

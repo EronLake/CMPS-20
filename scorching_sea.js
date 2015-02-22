@@ -1143,6 +1143,7 @@ function main() {
 				if (cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y && drinkCac == true) {
 					player.WATER += 1000;
 					cactusPos[i] = -tiles_dimension;
+					allObjects[200 + i] = -tiles_dimension;
 					shadows[200 + i] = -tiles_dimension;
 					break;
 				}

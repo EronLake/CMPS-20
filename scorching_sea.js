@@ -1069,6 +1069,9 @@ function main() {
 						hurt = true;
 						//randomDrawSpeed = Math.random() * 100;
 					}
+					if(!inBattle){
+						drinkCac = true;			
+					}
 					break;
 				};
 			} else {
@@ -1106,6 +1109,7 @@ function main() {
 	var pause = false;
 	var enter = false;
 	var inVillage = false;
+	var drinkCac = false;	
 	var count = 0;
 	var playerCount = 0;
 	var enemyPosition = -1;
@@ -1118,7 +1122,7 @@ function main() {
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();
-			//conditions
+			//---------------------conditions-----------------------
 			//if in shadow
 			for (var i = 0; i < shadows.length; i += 2) {
 				if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
@@ -1129,7 +1133,17 @@ function main() {
 					inSun = true;
 				}
 			}
-
+//if near cactus	
+			for (var i = 0; i < cactusPos.length; i += 2) {
+				if (cactusPos[i] == player.X && cactusPos[i + 1]+1 == player.Y && drinkCac == true) {
+					player.WATER += 1000;
+					cactusPos[i] = -tiles_dimension;
+					shadows[i + rockPos.length] = -tiles_dimension;
+					break;	
+				}
+			}
+			drinkCac = false;
+			
 			if (inSun) {
 				enter = false;
 			}
@@ -1144,6 +1158,7 @@ function main() {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						drawVillageUI(i);
+						
 						inVillage = true;
 						break;
 					}

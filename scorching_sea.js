@@ -263,6 +263,17 @@ function main() {
 		c.fillRect(-35, -22, 45, 40);
 		c.restore();
 	}
+//cacti that replenish water when destroyed	
+	function drawCactus(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(0, 51, 0)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-35, -22, 25, 40);
+		c.restore();
+	}
 
 	function drawPlayer(colOffset, rowOffset) {
 		var pt = [0, 0];
@@ -652,11 +663,12 @@ function main() {
 	//-----------------------------------------
 
 	var rockPos = new Array(200);
+	var cactusPos = new Array(100);
 	var homeBase = new Array(2);
 	var villages = new Array(120);
 	var promiseWater = new Array(2);
 
-	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length;
+	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length;
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
@@ -695,6 +707,19 @@ function main() {
 			shadows[i] = rockPos[i];
 		}
 	}
+	
+	//creates cactus positions
+	for (var j = 0; j < cactusPos.length; j++) {
+		cactusPos[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		allObjects[i] = rockPos[j];
+		if (!(i % 2 == 0)) {
+			shadows[i] = cactusPos[j] + 1;
+		} else {
+			shadows[i] = cactusPos[j];
+		}
+		i++;
+	}
+
 
 	//create villages positions
 	for (var j = 0; j < villages.length; j = j + 12) {
@@ -751,6 +776,7 @@ function main() {
 
 	function decAll(i) {
 		rockPos[i]--;
+		cactusPos[i]--;
 		shadows[i]--;
 		humanEnemies[i]--;
 		homeBase[i]--;
@@ -761,6 +787,7 @@ function main() {
 
 	function inAll(i) {
 		rockPos[i]++;
+		cactusPos[i]++;
 		shadows[i]++;
 		humanEnemies[i]++;
 		homeBase[i]++;
@@ -1060,6 +1087,7 @@ function main() {
 		for (var i = 0; i < allObjects.length; i += 2) {
 			drawTile(shadows[i], shadows[i + 1], 1.0);
 			drawRock(rockPos[i], rockPos[i + 1]);
+			drawCactus(cactusPos[i], cactusPos[i +1]);
 			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
 			drawVillage(villages[i], villages[i + 1]);
 		}

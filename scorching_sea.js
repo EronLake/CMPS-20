@@ -37,16 +37,24 @@ var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 
 // --------------------------------------------
-//        Title Screen Setup
+//        Title and Instruction Screens Setup
 // --------------------------------------------
-/*
+<<<<<<< HEAD
+
+=======
+var instrScreen = false;
+>>>>>>> bfb6d1d35856e2c9c9e4ce17ea2578802038467c
 var titleScreen = true;
 addEventListener("keydown", function(key) {
-	if (key.keyCode == 32) {
+	if (key.keyCode == 32 && instrScreen == false) {
 		titleScreen = false;
+		instrScreen = true;
+	}
+	else if(key.keyCode == 32 && instrScreen == true && titleScreen == false){
+		instrScreen = false;	
 	}
 });
-
+//c.textAlign = "center"
 var titleImage = document.getElementById("title");
 function draw() {
 	//clears screen every loop
@@ -58,27 +66,34 @@ function draw() {
 		//display cover image
 		c.lineWidth = 15;
 		c.font = "40px Arial";
+		c.textAlign = "center";
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeText("SCORCHING SEA", canvas.width / 3, canvas.height / 2 - 200);
-		c.fillText("SCORCHING SEA", canvas.width / 3, canvas.height / 2 - 200);
-		c.strokeText("press spacebar to play", canvas.width / 2 - 200, canvas.height / 2 + 200);
-		c.fillText("press spacebar to play", canvas.width / 2 - 200, canvas.height / 2 + 200);
-
-	} else {
+		c.strokeText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
+		c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
+		c.strokeText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
+		c.fillText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
+	}else if(titleScreen == false && instrScreen == true){
+		c.fillRect(0,0,canvas.width,canvas.height);
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.font = "40px Arial";
+		c.fillText("Instructions", canvas.width/2 - 150, canvas.height/2 - 200);
+		c.font = "20px Arial";
+		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", canvas.width/2 - 150, canvas.height/2 - 175);
+		c.fillText("keep an eye on your water and hp meters", canvas.width/2 - 150, canvas.height/2 -150);
+		c.fillText("You will need both to survive", canvas.width/2 - 150, canvas.height/2 - 100);
+		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", canvas.width/2 - 150, canvas.height/2 - 50);
+		c.fillText("Refill water at main base that is marked by aqua square", canvas.width/2 - 150, canvas.height/2 - 25);
+		c.fillText("Fight enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width/2 - 150, canvas.height/2);
+	}else if(titleScreen == false && instrScreen == false ) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
 		main();
 		//start playing
 	}
 }
-*/
 
-$.getScript("start_screen.js", function(){
 
-   alert("Script loaded and executed.");
-   // Use anything defined in the loaded script...
-});
 
 function game_loop() {
 	draw();
@@ -255,6 +270,17 @@ function main() {
 		c.fillRect(-35, -22, 45, 40);
 		c.restore();
 	}
+//cacti that replenish water when destroyed	
+	function drawCactus(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(0, 51, 0)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-35, -22, 25, 40);
+		c.restore();
+	}
 
 	function drawPlayer(colOffset, rowOffset) {
 		var pt = [0, 0];
@@ -342,7 +368,7 @@ function main() {
 	function drawTile(colOffset, rowOffset, tileValue) {
 		var pt = [0, 0];
 		c.beginPath();
-		c.fillStyle = 'hsl(' + (tileValue) + ',75%,75%)';
+		c.fillStyle = 'hsla(' + (tileValue) + ',25%,25%,.5)';
 		projectFromCenter(colOffset - 0.5, rowOffset - 0.5, pt);
 		if (pt[1] > canvasHeight)
 			return;
@@ -617,16 +643,17 @@ function main() {
 
 	function gameOverUI() {
 		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
+		c.textAlign = "center";
 		c.fillStyle = "rgba(25, 25, 55, 0.90)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 15;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "30px Arial";
-		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2) - 370, (canvasHeight / 2)-60);
-		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2) - 370, (canvasHeight / 2)-60);
-		c.strokeText(time, (canvasWidth / 2) - 100, (canvasHeight / 2) + 60);
-		c.fillText(time, (canvasWidth / 2) - 100, (canvasHeight / 2) + 60);
+		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2)-60);
+		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2)-60);
+		c.strokeText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
+		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
 
 	}
 
@@ -644,11 +671,12 @@ function main() {
 	//-----------------------------------------
 
 	var rockPos = new Array(200);
+	var cactusPos = new Array(100);
 	var homeBase = new Array(2);
 	var villages = new Array(120);
 	var promiseWater = new Array(2);
 
-	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length;
+	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length;
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
@@ -662,8 +690,8 @@ function main() {
 		Y : -3,
 		WATERORIG : 20000,
 		WATER : 20000,
-		UVORIG : 25,
-		UV : 25,
+		UVORIG : 50,
+		UV : 50,
 		HEALTH : 100,
 		SHOVEL : false
 	};
@@ -687,6 +715,19 @@ function main() {
 			shadows[i] = rockPos[i];
 		}
 	}
+	
+	//creates cactus positions
+	for (var j = 0; j < cactusPos.length; j++) {
+		cactusPos[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		allObjects[i] = rockPos[j];
+		if (!(i % 2 == 0)) {
+			shadows[i] = cactusPos[j] + 1;
+		} else {
+			shadows[i] = cactusPos[j];
+		}
+		i++;
+	}
+
 
 	//create villages positions
 	for (var j = 0; j < villages.length; j = j + 12) {
@@ -743,6 +784,7 @@ function main() {
 
 	function decAll(i) {
 		rockPos[i]--;
+		cactusPos[i]--;
 		shadows[i]--;
 		humanEnemies[i]--;
 		homeBase[i]--;
@@ -753,6 +795,7 @@ function main() {
 
 	function inAll(i) {
 		rockPos[i]++;
+		cactusPos[i]++;
 		shadows[i]++;
 		humanEnemies[i]++;
 		homeBase[i]++;
@@ -1052,6 +1095,7 @@ function main() {
 		for (var i = 0; i < allObjects.length; i += 2) {
 			drawTile(shadows[i], shadows[i + 1], 1.0);
 			drawRock(rockPos[i], rockPos[i + 1]);
+			drawCactus(cactusPos[i], cactusPos[i +1]);
 			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
 			drawVillage(villages[i], villages[i + 1]);
 		}

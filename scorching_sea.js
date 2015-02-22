@@ -10,7 +10,8 @@
 //cost water though
 //ex: map, where water is by quadrents,
 //cordinate indicator, quadrent indicator,
-//shovel <-- need this to win
+//shovel <-- need this to win,
+//town finder, etc...
 //
 //implement more files because this
 //one is too big
@@ -20,9 +21,9 @@ var img = new Image();
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
 
-var img2 = new Image();
+//var img2 = new Image();
 //img2.onload = launchMe;
-img2.src = '/Images/village_prototype.png';
+//img2.src = '/Images/village_prototype.png';
 
 // ----------------------------------------
 //     Canvas Setup
@@ -89,7 +90,7 @@ function main() {
 	// ----------------------------------------
 	//     Tiles Setup
 	// ----------------------------------------
-	var tiles_dimension = 100;
+	var tiles_dimension = 200;
 
 	var tileCount = 0;
 	var tileMap = new Array();
@@ -111,7 +112,7 @@ function main() {
 	var dayLength = 10;
 	//seconds
 	setInterval(function() {
-		if (!pause && !inVillage && !inBattle) {++counter;
+		if (!pause && !inVillage && !inBattle && player.HEALTH > 0) {++counter;
 		}
 	}, 1000);
 
@@ -414,6 +415,7 @@ function main() {
 
 	var steamX = 10;
 	var steamY = 10;
+	var mini = tiles_dimension;
 	function drawUI() {
 		//draw ui sun
 		if (day) {
@@ -447,6 +449,12 @@ function main() {
 		c.fillText(hpLevel, 50, 40);
 		c.strokeText(uvLevel, 50, 20);
 		c.fillText(uvLevel, 50, 20);
+		if (player.SHOVEL == true) {
+			c.strokeText("Items:", 50, 140);
+			c.fillText("Items:", 50, 140);
+			c.strokeText("Shovel", 70, 160);
+			c.fillText("Shovel", 70, 160);
+		}
 
 		//draw water meter
 		steamY -= .01;
@@ -512,7 +520,16 @@ function main() {
 		}
 		var healthAmount = "Health Pack: " + health;
 		var waterAmount = "ml found: " + water;
-		var itemAmount = "item: " + item;
+		if (item == 0)
+			var itemAmount = "Item: Nothing";
+		if (item == 1)
+			var itemAmount = "Item: Shovel";
+		if (item == 2)
+			var itemAmount = "Item: planned item";
+		if (item == 3)
+			var itemAmount = "Item: planned item";
+		if (item == 4)
+			var itemAmount = "Item: planned item";
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -542,13 +559,19 @@ function main() {
 			villageItems[place + 1] -= villageItems[place + 1];
 			buyWater = false;
 		}
+		if (buyItem) {
+			if (item == 1)
+				player.SHOVEL = true;
+			villageItems[place + 2] = 0;
+			buyItem = false;
+		}
 
 	}
 
 	var hurt = false;
-	var drawStart = 100;
-	var drawEnd = 530;
+	var drawStart = 60;
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
+		var drawEnd = Math.random() * (90 - 75) + 75;
 		var yourHealth = "Health: " + player.HEALTH;
 		var yourWater = "ml: " + player.WATER;
 		c.fillStyle = "rgba(0,25,75, 0.25)";
@@ -558,8 +581,8 @@ function main() {
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "60px Arial";
 		if (count > (drawStart + randDrawSpeed)) {
-			c.strokeText("DRAW", (canvasWidth / 2) - 50, (canvasHeight / 2) - 20);
-			c.fillText("DRAW", (canvasWidth / 2) - 50, (canvasHeight / 2) - 20);
+			c.strokeText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
+			c.fillText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
 		}
 		c.lineWidth = 10;
 		c.font = "20px Arial";
@@ -573,7 +596,7 @@ function main() {
 			humanEnemies[i] = -tiles_dimension;
 			humanEnemies[i + 1] = -tiles_dimension;
 			playerCount = 0;
-			player.WATER += Math.floor((Math.random() * (500 - 250)) + 250);
+			player.WATER += Math.floor((Math.random() * (1000 - 500)) + 500);
 			inBattle = false;
 		}
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
@@ -582,6 +605,21 @@ function main() {
 			playerCount = 0;
 		}
 		hurt = false;
+
+	}
+
+	function gameOverUI() {
+		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
+		c.fillStyle = "rgba(25, 25, 55, 0.90)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 15;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "30px Arial";
+		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2) - 370, (canvasHeight / 2)-60);
+		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2) - 370, (canvasHeight / 2)-60);
+		c.strokeText(time, (canvasWidth / 2) - 100, (canvasHeight / 2) + 60);
+		c.fillText(time, (canvasWidth / 2) - 100, (canvasHeight / 2) + 60);
 
 	}
 
@@ -598,14 +636,16 @@ function main() {
 	// Create Objects
 	//-----------------------------------------
 
-	var objectSize = 322;
 	var rockPos = new Array(200);
 	var homeBase = new Array(2);
 	var villages = new Array(120);
+	var promiseWater = new Array(2);
+
+	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length;
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
-	var humanEnemies = new Array(50);
+	var humanEnemies = new Array(20);
 
 	var villageItems = new Array(villages.length);
 	var humanEnemiesStats = new Array(humanEnemies.length);
@@ -618,6 +658,7 @@ function main() {
 		UVORIG : 25,
 		UV : 25,
 		HEALTH : 100,
+		SHOVEL : false
 	};
 
 	var homeBase = {
@@ -644,8 +685,7 @@ function main() {
 	for (var j = 0; j < villages.length; j = j + 12) {
 		villageItems[j] = Math.floor(Math.random() * (5));
 		villageItems[j + 1] = Math.floor((Math.random() * (1000 - 500)) + 500);
-		villageItems[j + 2] = Math.floor(Math.random() * (2));
-		console.log(j, villageItems[j], villageItems[j + 1], villageItems[j + 2]);
+		villageItems[j + 2] = Math.floor(Math.random() * (5));
 
 		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
@@ -675,12 +715,15 @@ function main() {
 		i += 12;
 	}
 
+	//create home base
 	homeBase[0] = player.X;
 	homeBase[1] = player.Y - 1;
 	allObjects[i] = homeBase[0];
 	shadows[i] = homeBase[0];
 	allObjects[++i] = homeBase[1];
 	shadows[i] = player.Y;
+	promiseWater[0] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+	promiseWater[1] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 
 	//create human enemy positions
 	for (var i = 0; i < humanEnemies.length; i++) {
@@ -698,6 +741,7 @@ function main() {
 		homeBase[i]--;
 		villages[i]--;
 		allObjects[i]--;
+		promiseWater[i]--;
 	}
 
 	function inAll(i) {
@@ -707,6 +751,7 @@ function main() {
 		homeBase[i]++;
 		villages[i]++;
 		allObjects[i]++;
+		promiseWater[i]++;
 	}
 
 	//collision if player is near enemy
@@ -717,6 +762,7 @@ function main() {
 					//push battle
 					inBattle = true;
 					enemyPosition = i;
+					randomDrawSpeed = Math.random() * 100;
 					break;
 				}
 			}
@@ -934,24 +980,20 @@ function main() {
 		window.addEventListener('keydown', function(evt) {
 			if (!pause) {
 				switch (evt.keyCode) {
-				case keys.DOWN2:
 				case keys.DOWN:
-					if (!inVillage && !inBattle)
+					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveDown();
 					break;
-				case keys.UP2:
 				case keys.UP:
-					if (!inVillage && !inBattle)
+					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveUp();
 					break;
-				case keys.LEFT2:
 				case keys.LEFT:
-					if (!inVillage && !inBattle)
+					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveLeft();
 					break;
-				case keys.RIGHT2:
 				case keys.RIGHT:
-					if (!inVillage && !inBattle)
+					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveRight();
 					break;
 				case keys.ONE:
@@ -967,7 +1009,11 @@ function main() {
 						buyItem = true;
 					break;
 				case keys.ENTER:
-					enter = !enter;
+					if (!inBattle) {
+						enter = !enter;
+						if (player.SHOVEL == true)
+							dig = true;
+					}
 					break;
 				case keys.PAUSE:
 					pause = true;
@@ -977,7 +1023,7 @@ function main() {
 						playerCount = count;
 						count = 0;
 						hurt = true;
-						randomDrawSpeed = Math.random() * 100;
+						//randomDrawSpeed = Math.random() * 100;
 					}
 					break;
 				};
@@ -1019,8 +1065,10 @@ function main() {
 	var playerCount = 0;
 	var enemyPosition = -1;
 	var randomDrawSpeed = 0;
+	var dig = false;
 	function animate() {
 		requestAnimationFrame(animate);
+		console.log(promiseWater[0], promiseWater[1]);
 		if (!pause) {
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
@@ -1041,13 +1089,13 @@ function main() {
 				enter = false;
 			}
 
-			if (inBattle) {
+			if (inBattle && !enter) {
 				count++;
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
 			}
 
 			//if press enter and in village go to a village ui
-			if (enter) {
+			if (enter && !inBattle) {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						drawVillageUI(i);
@@ -1057,8 +1105,13 @@ function main() {
 				}
 			}
 
+			//if death
+			if (player.HEALTH < 1) {
+				gameOverUI();
+			}
+
 			//flow of stats based on conditions here
-			if (!enter && !inBattle) {
+			if (!enter && !inBattle && player.HEALTH > 0) {
 				inVillage = false;
 				//sun out?
 				if ((Math.floor(counter / dayLength)) % 2 == 1) {
@@ -1088,6 +1141,13 @@ function main() {
 					player.HEALTH--;
 				}
 
+				//if found sacred water
+				if (player.X == promiseWater[0] && player.Y == promiseWater[1] && dig == true) {
+					//code
+				}
+				if (player.UV < 1) {
+					player.HEALTH--;
+				}
 			}
 
 			//if at base, refill water and use base's water supply and press enter
@@ -1097,12 +1157,10 @@ function main() {
 				enter = false;
 			}
 
-			if (player.HEALTH < 1) {
-				//game over
-			}
+			dig = false;
 
 		}
-		if (pause) {
+		if (pause && player.HEALTH > 0) {
 			c.clearRect(0, 0, canvasWidth, canvasHeight);
 			drawAll();
 			drawUI();

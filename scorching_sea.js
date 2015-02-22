@@ -37,26 +37,23 @@ var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 
 // --------------------------------------------
-//        Title and Instruction Screens Setup
+//        Title Screen Setup
 // --------------------------------------------
-var instrScreen = false;
+
 var titleScreen = true;
 addEventListener("keydown", function(key) {
-	if (key.keyCode == 32 && instrScreen == false) {
+	if (key.keyCode == 32) {
 		titleScreen = false;
-		instrScreen = true;
-	}
-	else if(key.keyCode == 32 && instrScreen == true && titleScreen == false){
-		instrScreen = false;	
 	}
 });
-//c.textAlign = "center"
+
 var titleImage = document.getElementById("title");
 function draw() {
 	//clears screen every loop
 	canvas.width = canvas.width;
 	if (titleScreen) {
 		var titleimg = new Image();
+		c.textAlign = "center";
 		titleimg.src = "http://i.imgur.com/nDxvHh5.png?5";
 		c.drawImage(titleimg, 400, 0, 522, 670);
 		//display cover image
@@ -64,23 +61,12 @@ function draw() {
 		c.font = "40px Arial";
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeText("SCORCHING SEA", canvas.width / 3, canvas.height / 2 - 200);
-		c.fillText("SCORCHING SEA", canvas.width / 3, canvas.height / 2 - 200);
-		c.strokeText("press spacebar to play", canvas.width / 2 - 200, canvas.height / 2 + 200);
-		c.fillText("press spacebar to play", canvas.width / 2 - 200, canvas.height / 2 + 200);
-	}else if(titleScreen == false && instrScreen == true){
-		c.fillRect(0,0,canvas.width,canvas.height);
-		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.font = "40px Arial";
-		c.fillText("Instructions", canvas.width/2 - 150, canvas.height/2 - 200);
-		c.font = "20px Arial";
-		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", canvas.width/2 - 150, canvas.height/2 - 175);
-		c.fillText("keep an eye on your water and hp meters", canvas.width/2 - 150, canvas.height/2 -150);
-		c.fillText("You will need both to survive", canvas.width/2 - 150, canvas.height/2 - 100);
-		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", canvas.width/2 - 150, canvas.height/2 - 50);
-		c.fillText("Refill water at main base that is marked by aqua square", canvas.width/2 - 150, canvas.height/2 - 25);
-		c.fillText("Fight enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width/2 - 150, canvas.height/2);
-	}else if(titleScreen == false && instrScreen == false ) {
+		c.strokeText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
+		c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
+		c.strokeText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
+		c.fillText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
+
+	} else {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
 		main();
@@ -105,7 +91,7 @@ function main() {
 	// ----------------------------------------
 	//     Tiles Setup
 	// ----------------------------------------
-	var tiles_dimension = 200;
+	var tiles_dimension = 100;
 
 	var tileCount = 0;
 	var tileMap = new Array();
@@ -350,7 +336,7 @@ function main() {
 	function drawTile(colOffset, rowOffset, tileValue) {
 		var pt = [0, 0];
 		c.beginPath();
-		c.fillStyle = 'hsl(' + (tileValue) + ',75%,75%)';
+		c.fillStyle = 'hsla(' + (tileValue) + ',25%,25%,.5)';
 		projectFromCenter(colOffset - 0.5, rowOffset - 0.5, pt);
 		if (pt[1] > canvasHeight)
 			return;
@@ -625,16 +611,17 @@ function main() {
 
 	function gameOverUI() {
 		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
+		c.textAlign = "center";
 		c.fillStyle = "rgba(25, 25, 55, 0.90)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 15;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "30px Arial";
-		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2) - 370, (canvasHeight / 2)-60);
-		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2) - 370, (canvasHeight / 2)-60);
-		c.strokeText(time, (canvasWidth / 2) - 100, (canvasHeight / 2) + 60);
-		c.fillText(time, (canvasWidth / 2) - 100, (canvasHeight / 2) + 60);
+		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
+		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
+		c.strokeText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
+		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
 
 	}
 
@@ -670,8 +657,8 @@ function main() {
 		Y : -3,
 		WATERORIG : 20000,
 		WATER : 20000,
-		UVORIG : 25,
-		UV : 25,
+		UVORIG : 40,
+		UV : 40,
 		HEALTH : 100,
 		SHOVEL : false
 	};

@@ -37,16 +37,20 @@ var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 
 // --------------------------------------------
-//        Title Screen Setup
+//        Title and Instruction Screens Setup
 // --------------------------------------------
-
+var instrScreen = false;
 var titleScreen = true;
 addEventListener("keydown", function(key) {
-	if (key.keyCode == 32) {
+	if (key.keyCode == 32 && instrScreen == false) {
 		titleScreen = false;
+		instrScreen = true;
+	}
+	else if(key.keyCode == 32 && instrScreen == true && titleScreen == false){
+		instrScreen = false;	
 	}
 });
-
+//c.textAlign = "center"
 var titleImage = document.getElementById("title");
 function draw() {
 	//clears screen every loop
@@ -64,8 +68,19 @@ function draw() {
 		c.fillText("SCORCHING SEA", canvas.width / 3, canvas.height / 2 - 200);
 		c.strokeText("press spacebar to play", canvas.width / 2 - 200, canvas.height / 2 + 200);
 		c.fillText("press spacebar to play", canvas.width / 2 - 200, canvas.height / 2 + 200);
-
-	} else {
+	}else if(titleScreen == false && instrScreen == true){
+		c.fillRect(0,0,canvas.width,canvas.height);
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.font = "40px Arial";
+		c.fillText("Instructions", canvas.width/2 - 150, canvas.height/2 - 200);
+		c.font = "20px Arial";
+		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", canvas.width/2 - 150, canvas.height/2 - 175);
+		c.fillText("keep an eye on your water and hp meters", canvas.width/2 - 150, canvas.height/2 -150);
+		c.fillText("You will need both to survive", canvas.width/2 - 150, canvas.height/2 - 100);
+		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", canvas.width/2 - 150, canvas.height/2 - 50);
+		c.fillText("Refill water at main base that is marked by aqua square", canvas.width/2 - 150, canvas.height/2 - 25);
+		c.fillText("Fight enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width/2 - 150, canvas.height/2);
+	}else if(titleScreen == false && instrScreen == false ) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
 		main();

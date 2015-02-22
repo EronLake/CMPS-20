@@ -39,7 +39,7 @@ var canvasHeight = canvas.height;
 // --------------------------------------------
 //        Title Screen Setup
 // --------------------------------------------
-
+/*
 var titleScreen = true;
 addEventListener("keydown", function(key) {
 	if (key.keyCode == 32) {
@@ -72,6 +72,13 @@ function draw() {
 		//start playing
 	}
 }
+*/
+
+$.getScript("start_screen.js", function(){
+
+   alert("Script loaded and executed.");
+   // Use anything defined in the loaded script...
+});
 
 function game_loop() {
 	draw();

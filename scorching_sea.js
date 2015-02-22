@@ -713,7 +713,7 @@ function main() {
 	//creates cactus positions
 	for (var j = 0; j < cactusPos.length; j++) {
 		cactusPos[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
-		allObjects[i] = rockPos[j];
+		allObjects[i] = cactusPos[j];
 		if (!(i % 2 == 0)) {
 			shadows[i] = cactusPos[j] + 1;
 		} else {

@@ -45,9 +45,8 @@ addEventListener("keydown", function(key) {
 	if (key.keyCode == 32 && instrScreen == false) {
 		titleScreen = false;
 		instrScreen = true;
-	}
-	else if(key.keyCode == 32 && instrScreen == true && titleScreen == false){
-		instrScreen = false;	
+	} else if (key.keyCode == 32 && instrScreen == true && titleScreen == false) {
+		instrScreen = false;
 	}
 });
 //c.textAlign = "center"
@@ -69,19 +68,19 @@ function draw() {
 		c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
 		c.strokeText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
 		c.fillText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
-	}else if(titleScreen == false && instrScreen == true){
-		c.fillRect(0,0,canvas.width,canvas.height);
+	} else if (titleScreen == false && instrScreen == true) {
+		c.fillRect(0, 0, canvas.width, canvas.height);
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.font = "40px Arial";
-		c.fillText("Instructions", canvas.width/2 - 150, canvas.height/2 - 200);
+		c.fillText("Instructions", canvas.width / 2 - 150, canvas.height / 2 - 200);
 		c.font = "20px Arial";
-		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", canvas.width/2 - 150, canvas.height/2 - 175);
-		c.fillText("keep an eye on your water and hp meters", canvas.width/2 - 150, canvas.height/2 -150);
-		c.fillText("You will need both to survive", canvas.width/2 - 150, canvas.height/2 - 100);
-		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", canvas.width/2 - 150, canvas.height/2 - 50);
-		c.fillText("Refill water at main base that is marked by aqua square", canvas.width/2 - 150, canvas.height/2 - 25);
-		c.fillText("Fight enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width/2 - 150, canvas.height/2);
-	}else if(titleScreen == false && instrScreen == false ) {
+		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", canvas.width / 2 - 150, canvas.height / 2 - 175);
+		c.fillText("keep an eye on your water and hp meters", canvas.width / 2 - 150, canvas.height / 2 - 150);
+		c.fillText("You will need both to survive", canvas.width / 2 - 150, canvas.height / 2 - 100);
+		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", canvas.width / 2 - 150, canvas.height / 2 - 50);
+		c.fillText("Refill water at main base that is marked by aqua square", canvas.width / 2 - 150, canvas.height / 2 - 25);
+		c.fillText("Fight enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width / 2 - 150, canvas.height / 2);
+	} else if (titleScreen == false && instrScreen == false) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
 		main();
@@ -264,7 +263,8 @@ function main() {
 		c.fillRect(-35, -22, 45, 40);
 		c.restore();
 	}
-//cacti that replenish water when destroyed	
+
+	//cacti that replenish water when destroyed
 	function drawCactus(colOffset, rowOffset) {
 		var pt = [0, 0];
 		c.beginPath();
@@ -286,14 +286,17 @@ function main() {
 		c.save();
 		c.translate(pt[0], pt[1]);
 		c.fillRect(-15, -30, 20, 35);
+		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
+		c.transform(1, 0, -.7, 1, 5, 0);
+		c.fillRect(-15, 5, 20, 25);
 		c.lineWidth = 5;
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-		c.font = "10px Arial";
-		c.strokeText(waterLevel, -30, 20);
-		c.fillText(waterLevel, -30, 20);
-		c.strokeText(uvLevel, -20, 0);
-		c.fillText(uvLevel, -20, 0);
+		//c.font = "10px Arial";
+		//c.strokeText(waterLevel, -30, 20);
+		//c.fillText(waterLevel, -30, 20);
+		//c.strokeText(uvLevel, -20, 0);
+		//c.fillText(uvLevel, -20, 0);
 		c.restore();
 	}
 
@@ -336,6 +339,9 @@ function main() {
 		c.save();
 		c.translate(pt[0], pt[1]);
 		c.fillRect(-15, -30, 20, 35);
+		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
+		c.transform(1, 0, -.7, 1, 5, 0);
+		c.fillRect(-15, 5, 20, 25);
 		c.restore();
 	}
 
@@ -644,8 +650,8 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "30px Arial";
-		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2)-60);
-		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2)-60);
+		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
+		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
 		c.strokeText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
 		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
 
@@ -709,7 +715,7 @@ function main() {
 			shadows[i] = rockPos[i];
 		}
 	}
-	
+
 	//creates cactus positions
 	for (var j = 0; j < cactusPos.length; j++) {
 		cactusPos[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
@@ -721,7 +727,6 @@ function main() {
 		}
 		i++;
 	}
-
 
 	//create villages positions
 	for (var j = 0; j < villages.length; j = j + 12) {
@@ -1069,8 +1074,8 @@ function main() {
 						hurt = true;
 						//randomDrawSpeed = Math.random() * 100;
 					}
-					if(!inBattle){
-						drinkCac = true;			
+					if (!inBattle) {
+						drinkCac = true;
 					}
 					break;
 				};
@@ -1092,7 +1097,7 @@ function main() {
 		for (var i = 0; i < allObjects.length; i += 2) {
 			drawTile(shadows[i], shadows[i + 1], 1.0);
 			drawRock(rockPos[i], rockPos[i + 1]);
-			drawCactus(cactusPos[i], cactusPos[i +1]);
+			drawCactus(cactusPos[i], cactusPos[i + 1]);
 			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
 			drawVillage(villages[i], villages[i + 1]);
 		}
@@ -1109,7 +1114,7 @@ function main() {
 	var pause = false;
 	var enter = false;
 	var inVillage = false;
-	var drinkCac = false;	
+	var drinkCac = false;
 	var count = 0;
 	var playerCount = 0;
 	var enemyPosition = -1;
@@ -1133,17 +1138,17 @@ function main() {
 					inSun = true;
 				}
 			}
-//if near cactus	
+			//if near cactus
 			for (var i = 0; i < cactusPos.length; i += 2) {
-				if (cactusPos[i] == player.X && cactusPos[i + 1]+1 == player.Y && drinkCac == true) {
+				if (cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y && drinkCac == true) {
 					player.WATER += 1000;
 					cactusPos[i] = -tiles_dimension;
-					shadows[i + rockPos.length] = -tiles_dimension;
-					break;	
+					shadows[200 + i] = -tiles_dimension;
+					break;
 				}
 			}
 			drinkCac = false;
-			
+
 			if (inSun) {
 				enter = false;
 			}
@@ -1158,7 +1163,7 @@ function main() {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						drawVillageUI(i);
-						
+
 						inVillage = true;
 						break;
 					}

@@ -1240,6 +1240,7 @@ function main() {
 			//if near cactus
 			for (var i = 0; i < cactusPos.length; i += 2) {
 				if (cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y && drinkCac == true) {
+					document.getElementById('audiotag1').play();
 					player.WATER += 1000;
 					cactusPos[i] = -tiles_dimension;
 					allObjects[200 + i] = -tiles_dimension;

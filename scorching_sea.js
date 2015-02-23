@@ -25,6 +25,9 @@ img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //img2.onload = launchMe;
 //img2.src = '/Images/village_prototype.png';
 
+//var imgRock1 = new Image();
+//imgRock1.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock1.png';
+
 // ----------------------------------------
 //     Canvas Setup
 // ----------------------------------------
@@ -260,6 +263,7 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
+		//c.drawImage(imgRock1, -32, -22, 45, 40);
 		c.fillRect(-35, -22, 45, 40);
 		c.restore();
 	}
@@ -335,6 +339,20 @@ function main() {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(100, 150, 100)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-15, -30, 20, 35);
+		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
+		c.transform(1, 0, -.7, 1, 5, 0);
+		c.fillRect(-15, 5, 20, 25);
+		c.restore();
+	}
+
+	function drawFishEnemy(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(200, 125, 75)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
@@ -680,7 +698,9 @@ function main() {
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
-	var humanEnemies = new Array(20);
+	var humanEnemies = new Array(40);
+	var fishEnemies = new Array(40);
+	var fishOrig = new Array(fishEnemies.length);
 
 	var villageItems = new Array(villages.length);
 	var humanEnemiesStats = new Array(humanEnemies.length);
@@ -777,6 +797,11 @@ function main() {
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	}
 
+	for (var i = 0; i < fishEnemies.length; i++) {
+		fishEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		fishOrig[i] = fishEnemies[i];
+	}
+
 	//-------------------------------------------
 	//helper functions for hookKeys()
 	//-------------------------------------------
@@ -786,6 +811,8 @@ function main() {
 		cactusPos[i]--;
 		shadows[i]--;
 		humanEnemies[i]--;
+		fishEnemies[i]--;
+		fishOrig[i]--;
 		homeBase[i]--;
 		villages[i]--;
 		allObjects[i]--;
@@ -797,6 +824,8 @@ function main() {
 		cactusPos[i]++;
 		shadows[i]++;
 		humanEnemies[i]++;
+		fishEnemies[i]++;
+		fishOrig[i]++;
 		homeBase[i]++;
 		villages[i]++;
 		allObjects[i]++;
@@ -1102,6 +1131,7 @@ function main() {
 			drawCactus(cactusPos[i], cactusPos[i + 1]);
 			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
 			drawVillage(villages[i], villages[i + 1]);
+			drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
 		}
 		drawHomeBase(homeBase[0], homeBase[1]);
 		drawPlayer(player.X, player.Y);
@@ -1122,6 +1152,7 @@ function main() {
 	var enemyPosition = -1;
 	var randomDrawSpeed = 0;
 	var dig = false;
+	var despawnFish = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		console.log(promiseWater[0], promiseWater[1]);
@@ -1140,7 +1171,7 @@ function main() {
 					inSun = true;
 				}
 			}
-			
+
 			//if near cactus
 			for (var i = 0; i < cactusPos.length; i += 2) {
 				if (cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y && drinkCac == true) {
@@ -1190,6 +1221,7 @@ function main() {
 
 				if ((Math.floor(counter / dayLength)) % 2 == 0) {
 					day = true;
+					despawnFish = true;
 				}
 
 				//decrease water count
@@ -1209,10 +1241,10 @@ function main() {
 					player.HEALTH--;
 				}
 
-				if(player.WATER > player.WATERORIG){
+				if (player.WATER > player.WATERORIG) {
 					player.WATER = player.WATERORIG;
 				}
-				
+
 				//if found sacred water
 				if (player.X == promiseWater[0] && player.Y == promiseWater[1] && dig == true) {
 					//code
@@ -1220,6 +1252,20 @@ function main() {
 				if (player.UV < 1) {
 					player.HEALTH--;
 				}
+				
+				if (despawnFish == true) {
+					for (var i = 0; i < fishEnemies.length; i+=2) {
+						fishEnemies[i] = -tiles_dimension;
+					}
+				} 
+				else {
+					for (var i = 0; i < fishEnemies.length; i+=2) {
+						fishEnemies[i] = fishOrig[i];
+					}
+				}
+			
+				
+				despawnFish = false;
 			}
 
 			//if at base, refill water and use base's water supply and press enter

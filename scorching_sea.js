@@ -843,6 +843,10 @@ function main() {
 					randomDrawSpeed = Math.random() * 100;
 					break;
 				}
+				if (fishEnemies[i] + j == player.X && fishEnemies[i + 1] + k == player.Y && !day) {
+					player.HEALTH--;
+					break;
+				}
 			}
 		}
 	}
@@ -862,7 +866,9 @@ function main() {
 					humanEnemies[i]--;
 					detection(i - 1);
 				}
+				return;
 			}
+
 		}, 500);
 	}
 
@@ -876,9 +882,47 @@ function main() {
 				}
 				return;
 			}
-
 			if ((humanEnemies[i]) > player.X && (humanEnemies[i]) < player.X + 7) {
 				if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+					humanEnemies[i]--;
+					detection(i);
+				}
+				return;
+			}
+
+		}, 500);
+	}
+
+	function fishAiMvmtVert(i) {
+		setTimeout(function() {
+			if ((fishEnemies[i]) > player.Y - 7 && (fishEnemies[i]) < player.Y) {
+				if (player.X - fishEnemies[i - 1] < 7 && player.X - fishEnemies[i - 1] > -7) {
+					fishEnemies[i]++;
+					detection(i - 1);
+				}
+				return;
+			}
+			if ((fishEnemies[i]) < player.Y + 7 && (fishEnemies[i]) > player.Y) {
+				if (player.X - fishEnemies[i - 1] < 7 && player.X - fishEnemies[i - 1] > -7) {
+					fishEnemies[i]--;
+					detection(i - 1);
+				}
+				return;
+			}
+		}, 500);
+	}
+
+	function fishAiMvmtHorz(i) {
+		setTimeout(function() {
+			if ((fishEnemies[i]) < player.X && (fishEnemies[i]) > player.X - 7) {
+				if (player.Y - fishEnemies[i + 1] < 7 && player.Y - fishEnemies[i + 1] > -7) {
+					fishEnemies[i]++;
+					detection(i);
+				}
+				return;
+			}
+			if ((fishEnemies[i]) > player.X && (fishEnemies[i]) < player.X + 7) {
+				if (player.Y - fishEnemies[i + 1] < 7 && player.Y - fishEnemies[i + 1] > -7) {
 					humanEnemies[i]--;
 					detection(i);
 				}
@@ -897,6 +941,8 @@ function main() {
 				}
 				if (!hitWall) {
 					aiMvmtVert(i);
+					if (!day)
+						fishAiMvmtVert(i);
 				}
 			}
 			hitWall = false;
@@ -914,13 +960,17 @@ function main() {
 					}
 					if (!hitWall) {
 						aiMvmtVert(i);
+						if (!day)
+							fishAiMvmtVert(i);
 					}
 				}
 				hitWall = false;
 			}
 		}
-		if (inSun)
+		if (inSun) {
 			player.UV--;
+			player.WATER -= 2;
+		}
 	}
 
 	function moveDown() {
@@ -933,6 +983,8 @@ function main() {
 				}
 				if (!hitWall) {
 					aiMvmtVert(i);
+					if (!day)
+						fishAiMvmtVert(i);
 				}
 			}
 			hitWall = false;
@@ -950,13 +1002,17 @@ function main() {
 					}
 					if (!hitWall) {
 						aiMvmtVert(i);
+						if (!day)
+							fishAiMvmtVert(i);
 					}
 				}
 				hitWall = false;
 			}
 		}
-		if (inSun)
+		if (inSun) {
 			player.UV--;
+			player.WATER -= 2;
+		}
 	}
 
 	function moveLeft() {
@@ -969,6 +1025,8 @@ function main() {
 				}
 				if (!hitWall) {
 					aiMvmtHorz(i);
+					if (!day)
+						fishAiMvmtHorz(i);
 				}
 			}
 			hitWall = false;
@@ -986,13 +1044,17 @@ function main() {
 					}
 					if (!hitWall) {
 						aiMvmtHorz(i);
+						if (!day)
+							fishAiMvmtHorz(i);
 					}
 				}
 			}
 			hitWall = false;
 		}
-		if (inSun)
+		if (inSun) {
 			player.UV--;
+			player.WATER -= 2;
+		}
 	}
 
 	function moveRight() {
@@ -1005,6 +1067,8 @@ function main() {
 				}
 				if (!hitWall) {
 					aiMvmtHorz(i);
+					if (!day)
+						fishAiMvmtHorz(i);
 				}
 			}
 			hitWall = false;
@@ -1022,13 +1086,17 @@ function main() {
 					}
 					if (!hitWall) {
 						aiMvmtHorz(i);
+						if (!day)
+							fishAiMvmtHorz(i);
 					}
 				}
 				hitWall = false;
 			}
 		}
-		if (inSun)
+		if (inSun) {
 			player.UV--;
+			player.WATER -= 2;
+		}
 	}
 
 	//-------------------------------------------------
@@ -1131,7 +1199,9 @@ function main() {
 			drawCactus(cactusPos[i], cactusPos[i + 1]);
 			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
 			drawVillage(villages[i], villages[i + 1]);
-			drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
+			if (!day) {
+				drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
+			}
 		}
 		drawHomeBase(homeBase[0], homeBase[1]);
 		drawPlayer(player.X, player.Y);
@@ -1152,7 +1222,6 @@ function main() {
 	var enemyPosition = -1;
 	var randomDrawSpeed = 0;
 	var dig = false;
-	var despawnFish = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		console.log(promiseWater[0], promiseWater[1]);
@@ -1221,7 +1290,6 @@ function main() {
 
 				if ((Math.floor(counter / dayLength)) % 2 == 0) {
 					day = true;
-					despawnFish = true;
 				}
 
 				//decrease water count
@@ -1252,20 +1320,7 @@ function main() {
 				if (player.UV < 1) {
 					player.HEALTH--;
 				}
-				
-				if (despawnFish == true) {
-					for (var i = 0; i < fishEnemies.length; i+=2) {
-						fishEnemies[i] = -tiles_dimension;
-					}
-				} 
-				else {
-					for (var i = 0; i < fishEnemies.length; i+=2) {
-						fishEnemies[i] = fishOrig[i];
-					}
-				}
-			
-				
-				despawnFish = false;
+
 			}
 
 			//if at base, refill water and use base's water supply and press enter

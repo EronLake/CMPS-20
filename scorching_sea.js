@@ -459,16 +459,18 @@ function main() {
 
 	}
 
-	var steamX = 10;
+	var steamX = 8;
 	var steamY = 10;
 	var mini = tiles_dimension;
 	function drawUI() {
 		//draw ui sun
 		if (day) {
 			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
-			c.fillRect(canvasWidth / 4, 10, 50, 50);
+			c.fillRect(canvasWidth / 2, 10, 50, 50);
+			c.fillStyle = "rgba(50, 25, 100, " + (.1 + counter % dayLength) / (dayLength * 3) + ")";
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		} else {
-			c.fillStyle = 'rgba(50, 25, 100, 0.2)';
+			c.fillStyle = "rgba(50, 25, 100, " + (.4 - (counter % dayLength) / (dayLength * 3)) + ")";
 			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
 
@@ -482,21 +484,21 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
-		c.strokeText(time, 50, 100);
-		c.fillText(time, 50, 100);
-		c.strokeText(homeWaterLev, 50, 80);
-		c.fillText(homeWaterLev, 50, 80);
-		c.strokeText(waterLevel, 50, 60);
-		c.fillText(waterLevel, 50, 60);
-		c.strokeText(hpLevel, 50, 40);
-		c.fillText(hpLevel, 50, 40);
-		c.strokeText(uvLevel, 50, 20);
-		c.fillText(uvLevel, 50, 20);
+		c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + 100);
+		c.fillText(time, canvasWidth / 8, canvasHeight / 8 + 100);
+		c.strokeText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + 80);
+		c.fillText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + 80);
+		c.strokeText(waterLevel, canvasWidth / 8, canvasHeight / 8 + 60);
+		c.fillText(waterLevel, canvasWidth / 8, canvasHeight / 8 + 60);
+		c.strokeText(hpLevel, canvasWidth / 8, canvasHeight / 8 + 40);
+		c.fillText(hpLevel, canvasWidth / 8, canvasHeight / 8 + 40);
+		c.strokeText(uvLevel, canvasWidth / 8, canvasHeight / 8 + 20);
+		c.fillText(uvLevel, canvasWidth / 8, canvasHeight / 8 + 20);
 		if (player.SHOVEL == true) {
-			c.strokeText("Items:", 50, 120);
-			c.fillText("Items:", 50, 120);
-			c.strokeText("Shovel", 70, 140);
-			c.fillText("Shovel", 70, 140);
+			c.strokeText("Items:", canvasWidth / 8, canvasHeight / 8 + 120);
+			c.fillText("Items:", canvasWidth / 8, canvasHeight / 8 + 120);
+			c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + 140);
+			c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + 140);
 		}
 
 		//draw water meter
@@ -506,21 +508,21 @@ function main() {
 		}
 		var divWater = player.WATERORIG / (player.WATERORIG / 500);
 		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
-		c.fillRect(5, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
+		c.fillRect(canvasWidth / 12, canvasHeight / 8 + ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
 		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
-		c.fillRect(10, ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 10, 15, (player.WATERORIG / divWater + player.WATERORIG / divWater));
+		c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 10, 15, (player.WATERORIG / divWater + player.WATERORIG / divWater));
 		if (!inSun) {
 			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
 		} else {
-			c.fillStyle = 'rgba(255, 220, 255, 0.9)';
-			c.fillRect(steamX, steamY, 5, 5);
-			c.fillRect(steamX + 2, steamY - 4, 5, 5);
-			c.fillRect(steamX + 4, steamY + 6, 5, 5);
-			c.fillRect(steamX + 6, steamY - 3, 5, 5);
-			c.fillRect(steamX + 8, steamY + 7, 5, 5);
+			c.fillStyle = "rgba(255, 220, 255, 0.9)";
+			c.fillRect(canvasWidth / 12 + steamX, canvasHeight / 8 + steamY, 5, 5);
+			c.fillRect(canvasWidth / 12 + steamX + 2, canvasHeight / 8 + steamY - 4, 5, 5);
+			c.fillRect(canvasWidth / 12 + steamX + 4, canvasHeight / 8 + steamY + 6, 5, 5);
+			c.fillRect(canvasWidth / 12 + steamX + 6, canvasHeight / 8 + steamY - 3, 5, 5);
+			c.fillRect(canvasWidth / 12 + steamX + 8, canvasHeight / 8 + steamY + 7, 5, 5);
 			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
-		c.fillRect(10, +player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
+		c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
 
 		if (pause) {
 			c.fillStyle = "rgba(0,50,50, 0.5)";
@@ -937,14 +939,14 @@ function main() {
 		setTimeout(function() {
 			if ((fishEnemies[i]) > player.Y - 9 && (fishEnemies[i]) < player.Y) {
 				if (player.X - fishEnemies[i - 1] < 9 && player.X - fishEnemies[i - 1] > -9) {
-					fishEnemies[i]+=2;
+					fishEnemies[i] += 2;
 					detection(i - 1);
 				}
 				return;
 			}
 			if ((fishEnemies[i]) < player.Y + 9 && (fishEnemies[i]) > player.Y) {
 				if (player.X - fishEnemies[i - 1] < 9 && player.X - fishEnemies[i - 1] > -9) {
-					fishEnemies[i]-=2;
+					fishEnemies[i] -= 2;
 					detection(i - 1);
 				}
 				return;
@@ -956,14 +958,14 @@ function main() {
 		setTimeout(function() {
 			if ((fishEnemies[i]) < player.X && (fishEnemies[i]) > player.X - 9) {
 				if (player.Y - fishEnemies[i + 1] < 9 && player.Y - fishEnemies[i + 1] > -9) {
-					fishEnemies[i]+=2;
+					fishEnemies[i] += 2;
 					detection(i);
 				}
 				return;
 			}
 			if ((fishEnemies[i]) > player.X && (fishEnemies[i]) < player.X + 9) {
 				if (player.Y - fishEnemies[i + 1] < 9 && player.Y - fishEnemies[i + 1] > -9) {
-					fishEnemies[i]-=2;
+					fishEnemies[i] -= 2;
 					detection(i);
 				}
 				return;
@@ -1367,7 +1369,7 @@ function main() {
 				if (player.X == promiseWater[0] && player.Y == promiseWater[1] && dig == true) {
 					//code
 				}
-				
+
 				if (player.UV < 1) {
 					player.HEALTH--;
 				}

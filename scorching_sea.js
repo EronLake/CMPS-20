@@ -39,7 +39,6 @@ var canvasHeight = canvas.height;
 // --------------------------------------------
 //        Title and Instruction Screens Setup
 // --------------------------------------------
-
 var instrScreen = false;
 var titleScreen = true;
 addEventListener("keydown", function(key) {
@@ -88,8 +87,6 @@ function draw() {
 		//start playing
 	}
 }
-
-
 
 function game_loop() {
 	draw();
@@ -683,7 +680,7 @@ function main() {
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
-	var humanEnemies = new Array(200);
+	var humanEnemies = new Array(20);
 
 	var villageItems = new Array(villages.length);
 	var humanEnemiesStats = new Array(humanEnemies.length);
@@ -807,7 +804,6 @@ function main() {
 	}
 
 	//collision if player is near enemy
-	// i is position of character
 	function detection(i) {
 		for (var j = -1; j <= 1; j++) {
 			for (var k = -1; k <= 1; k++) {
@@ -816,54 +812,10 @@ function main() {
 					inBattle = true;
 					enemyPosition = i;
 					randomDrawSpeed = Math.random() * 100;
-					fight();
 					break;
 				}
 			}
 		}
-	}
-	
-	function fight() {
-	    var keyNum = 0;
-	    var keySym;
-	    var keyPosX = 0;
-	    var hitKeys = new Array();
-	    printKeys = true;
-	    for(var i = 0; i < 4; ++i) {
-	    	keyNum = Math.random();
-	    	if(keyNum >=0 && keyNum < .25){
-	    		keySym = "w";
-	    		drawKey(keySym, keyPosX);
-	    		hitKeys.push(keyNum);
-	    	}
-	    	else if (keyNum >= .25 && keyNum < .50) {
-	    		keySym = "a";
-	    		drawKey(keySym, keyPosX);
-	    		hitKeys.push(keyNum);
-	    	}
-	    	else if (keyNum >= .50 && keyNum < .75) {
-	    		keySym = "s";
-	    		drawKey(keySym, keyPosX);
-	    		hitKeys.push(keyNum);
-	    	}
-	    	else {
-	    		keySym = "d";
-	    		drawKey(keySym, keyPosX);
-	    		hitKeys.push(keyNum);
-	    	}
-	    	keyPosX += 20;
-	    }
-
-	} 
-	
-	function drawKey(keySym, keyPosX) {
-		c.lineWidth = 5;
-		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		c.font = "20px Arial";
-		c.strokeText(keySym, (canvasWidth / 6) + keyPosX, (canvasHeight / 10));
-		c.fillText(keySym, (canvasWidth / 6) + keyPosX, (canvasHeight / 10));
-		console.log("draw key works");
 	}
 
 	//ai movement up down when near +1,-1
@@ -1056,13 +1008,13 @@ function main() {
 	//-------------------------------------------------
 
 	var keys = {
-		LEFTA : 65,
+		LEFT : 65,
 		LEFT2 : 37,
-		UPW : 87,
+		UP : 87,
 		UP2 : 38,
-		RIGHTD : 68,
+		RIGHT : 68,
 		RIGHT2 : 39,
-		DOWNS : 83,
+		DOWN : 83,
 		DOWN2 : 40,
 		ONE : 49,
 		TWO : 50,
@@ -1077,19 +1029,19 @@ function main() {
 		window.addEventListener('keydown', function(evt) {
 			if (!pause) {
 				switch (evt.keyCode) {
-				case keys.DOWNS:
+				case keys.DOWN:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveDown();
 					break;
-				case keys.UPW:
+				case keys.UP:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveUp();
 					break;
-				case keys.LEFTA:
+				case keys.LEFT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveLeft();
 					break;
-				case keys.RIGHTD:
+				case keys.RIGHT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveRight();
 					break;
@@ -1159,7 +1111,6 @@ function main() {
 
 	var inSun = false;
 	var inBattle = false;
-	var printKeys = false;
 	var pause = false;
 	var enter = false;
 	var inVillage = false;
@@ -1206,11 +1157,6 @@ function main() {
 			if (inBattle && !enter) {
 				count++;
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
-			}
-			
-			// If the fight has begun
-			if(printKeys) {
-				drawKey(keySym, keyPosX);
 			}
 
 			//if press enter and in village go to a village ui

@@ -828,6 +828,7 @@ function main() {
 	}
 
 	//collision if player is near enemy
+	// i is position of character
 	function detection(i) {
 		for (var j = -1; j <= 1; j++) {
 			for (var k = -1; k <= 1; k++) {
@@ -836,6 +837,8 @@ function main() {
 					inBattle = true;
 					enemyPosition = i;
 					randomDrawSpeed = Math.random() * 100;
+					printKeys = true;
+					fight();
 					break;
 				}
 				if (fishEnemies[i] + j == player.X && fishEnemies[i + 1] + k == player.Y && !day) {
@@ -844,6 +847,48 @@ function main() {
 				}
 			}
 		}
+	}
+	
+	function fight() {		
+		var keyNum = 0;		
+   	 	// var keySym;		
+	    // var keyPosX = 0;			
+	    printKeys = true;		
+	    for(var i = 0; i < 4; ++i) {		
+	    	keyNum = Math.random();		
+	    	if(keyNum >=0 && keyNum < .25){		
+	    		keySym = "w";		
+	    		//drawKey(keySym, keyPosX);		
+	    		hitKeys.push(keyNum);		
+	    	}		
+	    	else if (keyNum >= .25 && keyNum < .50) {		
+	    		keySym = "a";		
+	    		//drawKey(keySym, keyPosX);		
+	    		hitKeys.push(keyNum);		
+	    	}		
+	    	else if (keyNum >= .50 && keyNum < .75) {		
+	    		keySym = "s";		
+	    		//drawKey(keySym, keyPosX);		
+	    		hitKeys.push(keyNum);		
+	    	}		
+	    	else {		
+	    		keySym = "d";		
+	    		//drawKey(keySym, keyPosX);		
+	    		hitKeys.push(keyNum);		
+	    	}		
+	    	keyPosX += 20;		
+	    }		
+		
+	} 		
+			
+	function drawKey(keySym, keyPosX, hitKeys) {		
+		c.lineWidth = 5;		
+		c.fillStyle = 'rgba(255, 255, 255, 1)';		
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';		
+		c.font = "20px Arial";		
+		c.strokeText(keySym, (canvasWidth / 6) + keyPosX, (canvasHeight / 10));		
+		c.fillText(keySym, (canvasWidth / 6) + keyPosX, (canvasHeight / 10));		
+		console.log("draw key works");		
 	}
 
 	//ai movement up down when near +1,-1
@@ -1099,6 +1144,7 @@ function main() {
 	//AI movement is in here UP and DOWN are flipped
 	//-------------------------------------------------
 
+	// The keys without numbers are WASD keys
 	var keys = {
 		LEFT : 65,
 		LEFT2 : 37,
@@ -1208,10 +1254,14 @@ function main() {
 
 	var inSun = false;
 	var inBattle = false;
+	var printKeys = false;
 	var pause = false;
 	var enter = false;
 	var inVillage = false;
 	var drinkCac = false;
+	var keySym;
+	var hitKeys = new Array();
+	var keyPosX = 0;
 	var count = 0;
 	var playerCount = 0;
 	var enemyPosition = -1;
@@ -1257,6 +1307,9 @@ function main() {
 			if (inBattle && !enter) {
 				count++;
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
+			}
+			if(printKeys) {		
+				drawKey(keySym, keyPosX, hitKeys );		
 			}
 
 			//if press enter and in village go to a village ui

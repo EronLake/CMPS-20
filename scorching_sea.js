@@ -105,7 +105,7 @@ function main() {
 	// ----------------------------------------
 	//     Tiles Setup
 	// ----------------------------------------
-	var tiles_dimension = 200;
+	var tiles_dimension = 100;
 
 	var tileCount = 0;
 	var tileMap = new Array();
@@ -697,7 +697,7 @@ function main() {
 	};
 
 	var homeBase = {
-		WATER : 50000
+		WATER : 25000
 	};
 
 	//------------------------------------------
@@ -1072,10 +1072,12 @@ function main() {
 						playerCount = count;
 						count = 0;
 						hurt = true;
-						//randomDrawSpeed = Math.random() * 100;
 					}
 					if (!inBattle) {
 						drinkCac = true;
+						enter = !enter;
+						if (player.SHOVEL == true)
+							dig = true;
 					}
 					break;
 				};
@@ -1138,6 +1140,7 @@ function main() {
 					inSun = true;
 				}
 			}
+			
 			//if near cactus
 			for (var i = 0; i < cactusPos.length; i += 2) {
 				if (cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y && drinkCac == true) {
@@ -1164,7 +1167,6 @@ function main() {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						drawVillageUI(i);
-
 						inVillage = true;
 						break;
 					}
@@ -1207,6 +1209,10 @@ function main() {
 					player.HEALTH--;
 				}
 
+				if(player.WATER > player.WATERORIG){
+					player.WATER = player.WATERORIG;
+				}
+				
 				//if found sacred water
 				if (player.X == promiseWater[0] && player.Y == promiseWater[1] && dig == true) {
 					//code

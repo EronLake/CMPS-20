@@ -1174,25 +1174,25 @@ function main() {
 				case keys.DOWN:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveDown();
-					else if(!inVillage && inBattle && printKeys)
+					//else if(!inVillage && inBattle && printKeys)
 						//input_key_seq(hitKeys)
 					break;
 				case keys.UP:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveUp();
-					else if(!inVillage && inBattle && printKeys)
+					//else if(!inVillage && inBattle && printKeys)
 						//input_key_seq(hitKeys)
 					break;
 				case keys.LEFT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveLeft();
-					else if(!inVillage && inBattle && printKeys)
+					//else if(!inVillage && inBattle && printKeys)
 						//input_key_seq(hitKeys)
 					break;
 				case keys.RIGHT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveRight();
-					else if(!inVillage && inBattle && printKeys)
+					//else if(!inVillage && inBattle && printKeys)
 						//input_key_seq(hitKeys)
 					break;
 				case keys.ONE:

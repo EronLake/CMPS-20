@@ -643,6 +643,7 @@ function main() {
 			playerCount = 0;
 			player.WATER += Math.floor((Math.random() * (1000 - 500)) + 500);
 			inBattle = false;
+			printKeys = false;
 		}
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			player.HEALTH -= Math.floor((Math.random() * 10) + 1);
@@ -861,35 +862,36 @@ function main() {
 	    	if(keyNum >=0 && keyNum < .25){		
 	    		keySym = "w";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keyNum);		
+	    		hitKeys.push(keySym);		
 	    	}		
 	    	else if (keyNum >= .25 && keyNum < .50) {		
 	    		keySym = "a";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keyNum);		
+	    		hitKeys.push(keySym);		
 	    	}		
 	    	else if (keyNum >= .50 && keyNum < .75) {		
 	    		keySym = "s";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keyNum);		
+	    		hitKeys.push(keySym);		
 	    	}		
 	    	else {		
 	    		keySym = "d";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keyNum);		
-	    	}		
-	    	keyPosX += 20;		
+	    		hitKeys.push(keySym);		
+	    	}				
 	    }		
 		
 	} 		
 			
-	function drawKey(keySym, keyPosX, hitKeys) {		
-		c.lineWidth = 5;		
-		c.fillStyle = 'rgba(255, 255, 255, 1)';		
-		c.strokeStyle = 'rgba(0, 0, 0, 1)';		
-		c.font = "20px Arial";		
-		c.strokeText(keySym, (canvasWidth / 6) + keyPosX, (canvasHeight / 10));		
-		c.fillText(keySym, (canvasWidth / 6) + keyPosX, (canvasHeight / 10));		
+	function drawKey(keySym, hitKeys) {
+		for(var i = 0; i < hitKeys.length; ++i)	{
+			c.lineWidth = 5;		
+			c.fillStyle = 'rgba(255, 255, 255, 1)';		
+			c.strokeStyle = 'rgba(0, 0, 0, 1)';		
+			c.font = "20px Arial";		
+			c.strokeText(hitKeys[i], (canvasWidth / 6) + i*20, (canvasHeight / 10));		
+			c.fillText(hitKeys[i], (canvasWidth / 6) + i*20, (canvasHeight / 10));
+		}			
 		console.log("draw key works");		
 	}
 
@@ -1172,18 +1174,26 @@ function main() {
 				case keys.DOWN:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveDown();
+					else if(!inVillage && inBattle && printKeys)
+						//input_key_seq(hitKeys)
 					break;
 				case keys.UP:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveUp();
+					else if(!inVillage && inBattle && printKeys)
+						//input_key_seq(hitKeys)
 					break;
 				case keys.LEFT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveLeft();
+					else if(!inVillage && inBattle && printKeys)
+						//input_key_seq(hitKeys)
 					break;
 				case keys.RIGHT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveRight();
+					else if(!inVillage && inBattle && printKeys)
+						//input_key_seq(hitKeys)
 					break;
 				case keys.ONE:
 					if (inVillage)
@@ -1263,7 +1273,6 @@ function main() {
 	var drinkCac = false;
 	var keySym;
 	var hitKeys = new Array();
-	var keyPosX = 0;
 	var count = 0;
 	var playerCount = 0;
 	var enemyPosition = -1;
@@ -1311,7 +1320,7 @@ function main() {
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
 			}
 			if(printKeys) {		
-				drawKey(keySym, keyPosX, hitKeys );		
+				drawKey(keySym, hitKeys );		
 			}
 
 			//if press enter and in village go to a village ui

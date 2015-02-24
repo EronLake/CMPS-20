@@ -643,7 +643,7 @@ function main() {
 			playerCount = 0;
 			player.WATER += Math.floor((Math.random() * (1000 - 500)) + 500);
 			inBattle = false;
-			printKeys = false;
+			humBat = false;
 		}
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			player.HEALTH -= Math.floor((Math.random() * 10) + 1);
@@ -652,6 +652,44 @@ function main() {
 		}
 		hurt = false;
 
+	}
+	function drawBattleScreen_fish(i, count, playerCount) {
+		//var drawEnd = Math.random() * (90 - 70) + 70;
+		var yourHealth = "Health: " + player.HEALTH;
+		var yourWater = "ml: " + player.WATER;
+		c.fillStyle = "rgba(0,25,75, 0.25)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 20;
+		//c.fillStyle = 'rgba(255, 255, 255, 1)';
+		//c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		
+		// Display prompt fight on screen
+		c.lineWidth = 10;
+		c.font = "20px Arial";
+		c.strokeText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
+		c.fillText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
+		c.strokeText(yourWater, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
+		c.fillText(yourWater, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
+		// If you successfuly beat the fish, delete fish from grid and gain reward
+		if (hurt == true && keysDone == true) {
+			fishEnemies[i] = -tiles_dimension;
+			fishEnemies[i + 1] = -tiles_dimension;
+			playerCount = 0;
+			player.WATER += Math.floor((Math.random() * (1000 - 500)) + 500);
+			inBattle = false;
+			fishBat = false;
+			currKey = 0;
+			
+		}
+		//If you do not beat the fish, lose some health and continue fight
+		if (hurt == true ) {
+			player.HEALTH -= Math.floor((Math.random() * 10) + 1);
+			player.WATER -= Math.floor((Math.random() * (500 - 250)) + 250);
+			playerCount = 0;
+		}
+		hurt = false;
 	}
 
 	function gameOverUI() {
@@ -838,14 +876,17 @@ function main() {
 				if (humanEnemies[i] + j == player.X && humanEnemies[i + 1] + k == player.Y) {
 					//push battle
 					inBattle = true;
+					humBat = true;
 					enemyPosition = i;
 					randomDrawSpeed = Math.random() * 100;
-					printKeys = true;
-					fight();
 					break;
 				}
 				if (fishEnemies[i] + j == player.X && fishEnemies[i + 1] + k == player.Y && !day) {
-					player.HEALTH--;
+					//player.HEALTH--;
+					inBattle = true;
+					enemyPosition = i;
+					fishBat = true;
+					fight();
 					break;
 				}
 			}
@@ -860,30 +901,49 @@ function main() {
 	    for(var i = 0; i < 4; ++i) {		
 	    	keyNum = Math.random();		
 	    	if(keyNum >=0 && keyNum < .25){		
-	    		keySym = "w";		
+	    		//keySym = "w";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keySym);		
+	    		hitKeys.push("W");		
 	    	}		
 	    	else if (keyNum >= .25 && keyNum < .50) {		
-	    		keySym = "a";		
+	    		//keySym = "a";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keySym);		
+	    		hitKeys.push("A");		
 	    	}		
 	    	else if (keyNum >= .50 && keyNum < .75) {		
-	    		keySym = "s";		
+	    		//keySym = "s";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keySym);		
+	    		hitKeys.push("S");		
 	    	}		
 	    	else {		
-	    		keySym = "d";		
+	    		//keySym = "d";		
 	    		//drawKey(keySym, keyPosX);		
-	    		hitKeys.push(keySym);		
+	    		hitKeys.push("D");		
 	    	}				
 	    }		
 		
 	} 		
+	
+	function changeKeyColor(hitKeys) {
+		for(var i = 0; i < currKey; ++i) {
+			//Outline finished keys red
+			c.lineWidth = 5;		
+			c.fillStyle = 'rgba(255, 255, 255, 1)';		
+			c.strokeStyle = 'rgba(255, 0, 0, 1)';		
+			c.font = "20px Arial";		
+			c.strokeText(hitKeys[i], (canvasWidth / 6) + i*20, (canvasHeight / 10));		
+			c.fillText(hitKeys[i], (canvasWidth / 6) + i*20, (canvasHeight / 10));
+		}
+		//Outline current key green
+			c.lineWidth = 5;		
+			c.fillStyle = 'rgba(255, 255, 255, 1)';		
+			c.strokeStyle = 'rgba(0, 255, 43, 1)';		
+			c.font = "20px Arial";		
+			c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey*20, (canvasHeight / 10));		
+			c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey*20, (canvasHeight / 10));
+	}
 			
-	function drawKey(keySym, hitKeys) {
+	function drawKeys(hitKeys) {
 		for(var i = 0; i < hitKeys.length; ++i)	{
 			c.lineWidth = 5;		
 			c.fillStyle = 'rgba(255, 255, 255, 1)';		
@@ -892,9 +952,23 @@ function main() {
 			c.strokeText(hitKeys[i], (canvasWidth / 6) + i*20, (canvasHeight / 10));		
 			c.fillText(hitKeys[i], (canvasWidth / 6) + i*20, (canvasHeight / 10));
 		}			
-		console.log("draw key works");		
+		console.log("size of array: " + hitKeys.length);		
 	}
-
+	
+	function execKeys(hitkeys, matchKey) {
+		// Keeps track of the current index we are at
+		//var curr = 0;
+		if(hitKeys[currKey] == matchKey) {
+			//changeColor = true;
+			currKey++;
+		}
+		//setCurr(curr);
+	}
+	
+	/*function setCurr(curr) {
+		return curr;
+	}
+*/
 	//ai movement up down when near +1,-1
 	function aiMvmtVert(i) {
 		setTimeout(function() {
@@ -1149,6 +1223,7 @@ function main() {
 	//-------------------------------------------------
 
 	// The keys without numbers are WASD keys
+	var matchKey;
 	var keys = {
 		LEFT : 65,
 		LEFT2 : 37,
@@ -1163,7 +1238,8 @@ function main() {
 		THREE : 51,
 		ENTER : 13,
 		PAUSE : 27,
-		SPACE : 32
+		SPACE : 32,
+		DoN_E: 69
 	};
 
 	var hitWall = false;
@@ -1174,26 +1250,30 @@ function main() {
 				case keys.DOWN:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveDown();
-					//else if(!inVillage && inBattle && printKeys)
-						//input_key_seq(hitKeys)
+					else if(!inVillage && fishBat && inBattle)
+						matchKey = "S";
+						execKeys(hitKeys, matchKey)
 					break;
 				case keys.UP:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveUp();
-					//else if(!inVillage && inBattle && printKeys)
-						//input_key_seq(hitKeys)
+					else if(!inVillage && fishBat && inBattle)
+						matchKey = "W";
+						execKeys(hitKeys, matchKey)
 					break;
 				case keys.LEFT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveLeft();
-					//else if(!inVillage && inBattle && printKeys)
-						//input_key_seq(hitKeys)
+					else if(!inVillage && fishBat && inBattle)
+						matchKey = "A";
+						execKeys(hitKeys, matchKey)
 					break;
 				case keys.RIGHT:
 					if (!inVillage && !inBattle && player.HEALTH > 1)
 						moveRight();
-					//else if(!inVillage && inBattle && printKeys)
-						//input_key_seq(hitKeys)
+					else if(!inVillage && fishBat && inBattle)
+						matchKey = "D";
+						execKeys(hitKeys, matchKey)
 					break;
 				case keys.ONE:
 					if (inVillage)
@@ -1217,6 +1297,10 @@ function main() {
 				case keys.PAUSE:
 					pause = true;
 					break;
+				case keys.DoN_E:
+					if(day) day = false;
+					else day = true;
+				
 				case keys.SPACE:
 					if (inBattle) {
 						playerCount = count;
@@ -1271,8 +1355,13 @@ function main() {
 	var enter = false;
 	var inVillage = false;
 	var drinkCac = false;
-	var keySym;
+	var fishBat = false;
+	var humBat = false;
+	//var changeColor = false;
+	var keysDone = false;
+	//var keySym;
 	var hitKeys = new Array();
+	var currKey = 0;
 	var count = 0;
 	var playerCount = 0;
 	var enemyPosition = -1;
@@ -1314,13 +1403,18 @@ function main() {
 			if (inSun) {
 				enter = false;
 			}
-
-			if (inBattle && !enter) {
+			// If Party encounters a Human battle
+			if (inBattle && !enter && !fishBat && humBat) {
 				count++;
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
 			}
-			if(printKeys) {		
-				drawKey(keySym, hitKeys );		
+			
+			// If in a Fish battle, display keys on screen
+			if(fishBat && !enter && inBattle && !humBat) {
+				count++;
+				drawBattleScreen_fish(enemyPosition, count, playerCount);
+				changeKeyColor(hitKeys);
+				drawKeys(hitKeys);		
 			}
 
 			//if press enter and in village go to a village ui

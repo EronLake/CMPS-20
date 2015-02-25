@@ -98,6 +98,8 @@ var refreshIntervalId = setInterval(game_loop, 60);
 // ----------------------------------------
 
 function main() {
+	document.getElementById("overworld").volume = 0.01;	
+	document.getElementById("overworld").play();	
 	hookKeys();
 
 	// ----------------------------------------
@@ -1175,6 +1177,8 @@ function main() {
 					center[1] += moveSpeed;
 					moveOthersY(-1);
 					hitWall = true;
+					document.getElementById("footstep").volume = 0.05;
+					document.getElementById("footstep").play();
 					for (var j = 1; j < allObjects.length; j += 2) {
 						decAll(j);
 						horz--;
@@ -1221,6 +1225,8 @@ function main() {
 					center[1] -= moveSpeed;
 					moveOthersY(1);
 					hitWall = true;
+					document.getElementById("footstep").volume = 0.05;
+				    document.getElementById("footstep").play();
 					for (var j = 1; j < allObjects.length; j += 2) {
 						inAll(j);
 					}
@@ -1266,6 +1272,8 @@ function main() {
 					center[0] += moveSpeed;
 					moveOthersX(-1);
 					hitWall = true;
+					document.getElementById("footstep").volume = 0.05;
+				    document.getElementById("footstep").play();
 					for (var j = 0; j < allObjects.length; j += 2) {
 						decAll(j);
 					}
@@ -1311,6 +1319,8 @@ function main() {
 					center[0] -= moveSpeed;
 					moveOthersX(1);
 					hitWall = true;
+					document.getElementById("footstep").volume = 0.05;
+				    document.getElementById("footstep").play();
 					for (var j = 0; j < allObjects.length; j += 2) {
 						inAll(j);
 					}
@@ -1588,10 +1598,11 @@ function main() {
 				}
 			}
 
-			//if near cactus
+			//destroy cactus and replenish water
 			for (var i = 0; i < cactusPos.length; i += 2) {
 				if (cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y && drinkCac == true) {
-					document.getElementById('audiotag1').play();
+					//document.getElementById('drink').volume =0.05;
+					document.getElementById('drink').play();
 					player.WATER += 100;
 					cactusPos[i] = -tiles_dimension;
 					allObjects[200 + i] = -tiles_dimension;
@@ -1624,6 +1635,10 @@ function main() {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						drawVillageUI(i);
 						inVillage = true;
+						document.getElementById("overworld").pause();
+						document.getElementById("overworld").currentTime = 0;	
+						document.getElementById('village').volume = 0.1;
+						document.getElementById('village').play();
 						break;
 					}
 				}
@@ -1654,6 +1669,9 @@ function main() {
 			//flow of stats based on conditions here
 			if (!enter && !inBattle && !gameOver && !inHome) {
 				inVillage = false;
+				document.getElementById("overworld").play();
+				document.getElementById('village').pause();
+				document.getElementById('village').currentTime = 0;
 				//sun out?
 				if ((Math.floor(counter / dayLength)) % 2 == 1) {
 					day = false;

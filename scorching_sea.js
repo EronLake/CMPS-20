@@ -150,16 +150,12 @@ function main() {
 
 	// how many tiles do we show in the back ?
 	var viewBackDepth = 17;
-	//13
 	// how many tiles do we show in the front ?
 	var viewFrontDepth = 23;
-	//14
 	// how many tiles do we show on the left ?
 	var viewLeftDepth = 12;
-	//10
 	// how many tiles do we show on the right ?
 	var viewRightDepth = 13;
-	//16
 
 	// tile offset from 0,0 at which we start shadowing.
 	var shadowStart = 9;
@@ -598,7 +594,7 @@ function main() {
 		var gottenHealth = false;
 		if (buyHealth && health > 0 && player.WATER - 1000 > 0) {
 			villageItems[place] -= 1;
-			if ((player.HEALTH < player2.HEALTH && player.HEALTH < player3.HEALTH && player.HEALTH < player4.HEALTH) && numOfPlayers > 0 && gottenHealth == false) {
+			if (player.HEALTH < player2.HEALTH && player.HEALTH < player3.HEALTH && player.HEALTH < player4.HEALTH && numOfPlayers > 0 && gottenHealth == false) {
 				player.HEALTH += 10;
 				gottenHealth = true;
 			}
@@ -614,6 +610,7 @@ function main() {
 				player4.HEALTH += 10;
 				gottenHealth = true;
 			}
+			//WRITE CODE IF SOMEONE DIES
 			player.WATER -= 1000;
 			buyHealth = false;
 		}
@@ -679,6 +676,7 @@ function main() {
 				}
 			}
 		}
+		
 		if ((playerCount > (drawStart + randDrawSpeed)) && (playerCount < (drawEnd + randDrawSpeed)) && playerCount != 0 && hurt == true) {
 			humanEnemies[i] = -tiles_dimension;
 			humanEnemies[i + 1] = -tiles_dimension;
@@ -817,14 +815,20 @@ function main() {
 	};
 
 	var player2 = {
+		X : 3,
+		Y : -3,
 		HEALTH : 100
 	};
 
 	var player3 = {
+		X : 3,
+		Y : -3,
 		HEALTH : 100
 	};
 
 	var player4 = {
+		X : 3,
+		Y : -3,
 		HEALTH : 100
 	};
 
@@ -1123,6 +1127,24 @@ function main() {
 
 	var moveSpeed = 1;
 
+	function moveOthersY(i) {
+		if (player.HEALTH != 0)
+			player2.Y += moveSpeed * i;
+		if (player.HEALTH != 0 && player2.HEALTH != 0)
+			player3.Y += moveSpeed * i;
+		if (player.HEALTH != 0 && player2.HEALTH != 0 && player3.HEALTH != 0)
+			player4.Y += moveSpeed * i;
+	}
+
+	function moveOthersX(i) {
+		if (player.HEALTH != 0)
+			player2.X += moveSpeed * i;
+		if (player.HEALTH != 0 && player2.HEALTH != 0)
+			player3.X += moveSpeed * i;
+		if (player.HEALTH != 0 && player2.HEALTH != 0 && player3.HEALTH != 0)
+			player4.X += moveSpeed * i;
+	}
+
 	function moveUp() {
 		/*
 		 if (player.Y > -5) {
@@ -1142,10 +1164,12 @@ function main() {
 		 } else {*/
 		if (center[1] > 3) {
 			center[1] -= moveSpeed;
+			moveOthersY(1);
 			for (var i = 1; i < allObjects.length; i += 2) {
 				inAll(i);
 				if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 					center[1] += moveSpeed;
+					moveOthersY(-1);
 					hitWall = true;
 					for (var j = 1; j < allObjects.length; j += 2) {
 						decAll(j);
@@ -1185,10 +1209,12 @@ function main() {
 		 } else {*/
 		if (center[1] < tiles_dimension + 2) {
 			center[1] += moveSpeed;
+			moveOthersY(-1);
 			for (var i = 1; i < allObjects.length; i += 2) {
 				decAll(i);
 				if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 					center[1] -= moveSpeed;
+					moveOthersY(1);
 					hitWall = true;
 					for (var j = 1; j < allObjects.length; j += 2) {
 						inAll(j);
@@ -1228,10 +1254,12 @@ function main() {
 		 } else {*/
 		if (center[0] > -3) {
 			center[0] -= moveSpeed;
+			moveOthersX(1);
 			for (var i = 0; i < allObjects.length; i += 2) {
 				inAll(i);
 				if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 					center[0] += moveSpeed;
+					moveOthersX(-1);
 					hitWall = true;
 					for (var j = 0; j < allObjects.length; j += 2) {
 						decAll(j);
@@ -1271,10 +1299,12 @@ function main() {
 		 } else {*/
 		if (center[0] < tiles_dimension - 4) {
 			center[0] += moveSpeed;
+			moveOthersX(-1);
 			for (var i = 0; i < allObjects.length; i += 2) {
 				decAll(i);
 				if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 					center[0] -= moveSpeed;
+					moveOthersX(1);
 					hitWall = true;
 					for (var j = 0; j < allObjects.length; j += 2) {
 						inAll(j);
@@ -1294,6 +1324,38 @@ function main() {
 			player.WATER -= 1 * numOfPlayers;
 		}
 	}
+
+	var othersSpeed = .1;
+	setInterval(function() {
+		if (player2.X > 3)
+			player2.X -= othersSpeed;
+		if (player2.X < 3)
+			player2.X += othersSpeed;
+		if (player2.Y > -3)
+			player2.Y -= othersSpeed;
+		if (player2.Y < -3)
+			player2.Y += othersSpeed;
+	}, 20);
+	setInterval(function() {
+		if (player3.X > 3)
+			player3.X -= othersSpeed;
+		if (player3.X < 3)
+			player3.X += othersSpeed;
+		if (player3.Y > -3)
+			player3.Y -= othersSpeed;
+		if (player3.Y < -3)
+			player3.Y += othersSpeed;
+	}, 30);
+	setInterval(function() {
+		if (player4.X > 3)
+			player4.X -= othersSpeed;
+		if (player4.X < 3)
+			player4.X += othersSpeed;
+		if (player4.Y > -3)
+			player4.Y -= othersSpeed;
+		if (player4.Y < -3)
+			player4.Y += othersSpeed;
+	}, 40);
 
 	//-------------------------------------------------
 	//control player which moves all objects also
@@ -1435,16 +1497,14 @@ function main() {
 			}
 		}
 		drawHomeBase(homeBase[0], homeBase[1]);
-
-		if (player.HEALTH > 1 && numOfPlayers > 3)
-			drawPlayer(player.X - .3, player.Y - .3);
-		if (player2.HEALTH > 1 && numOfPlayers > 2)
-			drawPlayer(player.X + .3, player.Y - .3);
-		if (player3.HEALTH > 1 && numOfPlayers > 1)
-			drawPlayer(player.X - .3, player.Y + .3);
-		if (player4.HEALTH > 1 && numOfPlayers > 0)
+		if (player4.HEALTH > 1 && numOfPlayers > 3)
+			drawPlayer(player4.X - .3, player4.Y - .3);
+		if (player3.HEALTH > 1 && numOfPlayers > 2)
+			drawPlayer(player3.X - .3, player3.Y + .3);
+		if (player2.HEALTH > 1 && numOfPlayers > 1)
+			drawPlayer(player2.X + .3, player2.Y - .3);
+		if (player.HEALTH > 1 && numOfPlayers > 0)
 			drawPlayer(player.X + .3, player.Y + .3);
-
 	}
 
 	//decrease variables if situation
@@ -1509,6 +1569,7 @@ function main() {
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();
+		console.log(displayCenterX, displayCenterY);
 		if (!pause) {
 			//---------------------conditions-----------------------
 			//if in shadow

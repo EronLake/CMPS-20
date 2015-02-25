@@ -676,7 +676,7 @@ function main() {
 				}
 			}
 		}
-		
+
 		if ((playerCount > (drawStart + randDrawSpeed)) && (playerCount < (drawEnd + randDrawSpeed)) && playerCount != 0 && hurt == true) {
 			humanEnemies[i] = -tiles_dimension;
 			humanEnemies[i + 1] = -tiles_dimension;
@@ -922,6 +922,7 @@ function main() {
 	//helper functions for hookKeys()
 	//-------------------------------------------
 
+	var speed = .1;
 	function decAll(i) {
 		rockPos[i] -= moveSpeed;
 		cactusPos[i] -= moveSpeed;
@@ -1069,15 +1070,15 @@ function main() {
 	// ai movement left right when near d+1, -1
 	function aiMvmtHorz(i) {
 		setTimeout(function() {
-			if ((humanEnemies[i]) < player.X && (humanEnemies[i]) > player.X - 7) {
-				if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+			if ((humanEnemies[i]) < player.X && (humanEnemies[i]) > player.X - 6) {
+				if (player.Y - humanEnemies[i + 1] < 6 && player.Y - humanEnemies[i + 1] > -6) {
 					humanEnemies[i]++;
 					detection(i);
 				}
 				return;
 			}
 			if ((humanEnemies[i]) > player.X && (humanEnemies[i]) < player.X + 7) {
-				if (player.Y - humanEnemies[i + 1] < 7 && player.Y - humanEnemies[i + 1] > -7) {
+				if (player.Y - humanEnemies[i + 1] < 6 && player.Y - humanEnemies[i + 1] > -6) {
 					humanEnemies[i]--;
 					detection(i);
 				}
@@ -1089,15 +1090,15 @@ function main() {
 
 	function fishAiMvmtVert(i) {
 		setTimeout(function() {
-			if ((fishEnemies[i]) > player.Y - 9 && (fishEnemies[i]) < player.Y) {
-				if (player.X - fishEnemies[i - 1] < 9 && player.X - fishEnemies[i - 1] > -9) {
+			if ((fishEnemies[i]) > player.Y - 8 && (fishEnemies[i]) < player.Y) {
+				if (player.X - fishEnemies[i - 1] < 8 && player.X - fishEnemies[i - 1] > -8) {
 					fishEnemies[i] += 2;
 					detection(i - 1);
 				}
 				return;
 			}
-			if ((fishEnemies[i]) < player.Y + 9 && (fishEnemies[i]) > player.Y) {
-				if (player.X - fishEnemies[i - 1] < 9 && player.X - fishEnemies[i - 1] > -9) {
+			if ((fishEnemies[i]) < player.Y + 8 && (fishEnemies[i]) > player.Y) {
+				if (player.X - fishEnemies[i - 1] < 8 && player.X - fishEnemies[i - 1] > -8) {
 					fishEnemies[i] -= 2;
 					detection(i - 1);
 				}
@@ -1108,15 +1109,15 @@ function main() {
 
 	function fishAiMvmtHorz(i) {
 		setTimeout(function() {
-			if ((fishEnemies[i]) < player.X && (fishEnemies[i]) > player.X - 9) {
-				if (player.Y - fishEnemies[i + 1] < 9 && player.Y - fishEnemies[i + 1] > -9) {
+			if ((fishEnemies[i]) < player.X && (fishEnemies[i]) > player.X - 8) {
+				if (player.Y - fishEnemies[i + 1] < 8 && player.Y - fishEnemies[i + 1] > -8) {
 					fishEnemies[i] += 2;
 					detection(i);
 				}
 				return;
 			}
-			if ((fishEnemies[i]) > player.X && (fishEnemies[i]) < player.X + 9) {
-				if (player.Y - fishEnemies[i + 1] < 9 && player.Y - fishEnemies[i + 1] > -9) {
+			if ((fishEnemies[i]) > player.X && (fishEnemies[i]) < player.X + 8) {
+				if (player.Y - fishEnemies[i + 1] < 8 && player.Y - fishEnemies[i + 1] > -8) {
 					fishEnemies[i] -= 2;
 					detection(i);
 				}
@@ -1145,6 +1146,8 @@ function main() {
 			player4.X += moveSpeed * i;
 	}
 
+	var vert = 0;
+	var horz = 0;
 	function moveUp() {
 		/*
 		 if (player.Y > -5) {
@@ -1167,12 +1170,14 @@ function main() {
 			moveOthersY(1);
 			for (var i = 1; i < allObjects.length; i += 2) {
 				inAll(i);
+				vert++;
 				if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 					center[1] += moveSpeed;
 					moveOthersY(-1);
 					hitWall = true;
 					for (var j = 1; j < allObjects.length; j += 2) {
 						decAll(j);
+						horz--;
 					}
 				}
 				if (!hitWall) {
@@ -1325,7 +1330,7 @@ function main() {
 		}
 	}
 
-	var othersSpeed = .1;
+	var othersSpeed = .25;
 	setInterval(function() {
 		if (player2.X > 3)
 			player2.X -= othersSpeed;
@@ -1345,7 +1350,7 @@ function main() {
 			player3.Y -= othersSpeed;
 		if (player3.Y < -3)
 			player3.Y += othersSpeed;
-	}, 30);
+	}, 25);
 	setInterval(function() {
 		if (player4.X > 3)
 			player4.X -= othersSpeed;
@@ -1355,7 +1360,7 @@ function main() {
 			player4.Y -= othersSpeed;
 		if (player4.Y < -3)
 			player4.Y += othersSpeed;
-	}, 40);
+	}, 30);
 
 	//-------------------------------------------------
 	//control player which moves all objects also

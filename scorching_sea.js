@@ -476,32 +476,49 @@ function main() {
 		var hpLevel4 = "P4 Health: " + player4.HEALTH;
 		var homeWaterLev = "Home ml: " + homeBase.WATER;
 		var time = Math.floor(counter / 60) + " : " + counter % 60;
+		var line = 20;
 		c.lineWidth = 7;
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
-		c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + 160);
-		c.fillText(time, canvasWidth / 8, canvasHeight / 8 + 160);
-		c.strokeText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + 140);
-		c.fillText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + 140);
-		c.strokeText(waterLevel, canvasWidth / 8, canvasHeight / 8 + 120);
-		c.fillText(waterLevel, canvasWidth / 8, canvasHeight / 8 + 120);
-		c.strokeText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + 100);
-		c.fillText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + 100);
-		c.strokeText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + 80);
-		c.fillText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + 80);
-		c.strokeText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + 60);
-		c.fillText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + 60);
-		c.strokeText(hpLevel, canvasWidth / 8, canvasHeight / 8 + 40);
-		c.fillText(hpLevel, canvasWidth / 8, canvasHeight / 8 + 40);
-		c.strokeText(uvLevel, canvasWidth / 8, canvasHeight / 8 + 20);
-		c.fillText(uvLevel, canvasWidth / 8, canvasHeight / 8 + 20);
+
+		c.strokeText(uvLevel, canvasWidth / 8, canvasHeight / 8 + line);
+		c.fillText(uvLevel, canvasWidth / 8, canvasHeight / 8 + line);
+		line += 20;
+		c.strokeText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
+		c.fillText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
+		if (numOfPlayers > 1) {
+			line += 20;
+			c.strokeText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
+			c.fillText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
+		}
+		if (numOfPlayers > 2) {
+			line += 20;
+			c.strokeText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
+			c.fillText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
+		}
+		if (numOfPlayers > 3) {
+			line += 20;
+			c.strokeText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
+			c.fillText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
+		}
+		line += 20;
+		c.strokeText(waterLevel, canvasWidth / 8, canvasHeight / 8 + line);
+		c.fillText(waterLevel, canvasWidth / 8, canvasHeight / 8 + line);
+		line += 20;
+		c.strokeText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
+		c.fillText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
+		line += 20;
+		c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + line);
+		c.fillText(time, canvasWidth / 8, canvasHeight / 8 + line);
 
 		if (player.SHOVEL == true) {
-			c.strokeText("Items:", canvasWidth / 8, canvasHeight / 8 + 180);
-			c.fillText("Items:", canvasWidth / 8, canvasHeight / 8 + 180);
-			c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + 200);
-			c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + 200);
+			line += 20;
+			c.strokeText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
+			c.fillText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
+			line += 20;
+			c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+			c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
 		}
 
 		//draw water meter
@@ -626,6 +643,8 @@ function main() {
 
 	var hurt = false;
 	var drawStart = 60;
+	var enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
+	;
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (84 - 64) + 64;
@@ -640,6 +659,9 @@ function main() {
 		var yourHealth3 = "P3 Health: " + player3.HEALTH;
 		var yourHealth4 = "P4 Health: " + player4.HEALTH;
 		var yourWater = "ml: " + player.WATER;
+		var enemyHealth = "Enemy Health: " + enemyHp;
+		var line = 30;
+		var indent = 10;
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 20;
@@ -656,30 +678,42 @@ function main() {
 		c.fillText("GET READY TO DRAW", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.strokeText(yourWater, (canvasWidth / 4), (canvasHeight / 3));
 		c.fillText(yourWater, (canvasWidth / 4), (canvasHeight / 3));
-		if (numOfPlayers > 0) {
-			c.strokeText(yourHealth, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
-			c.fillText(yourHealth, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
-			if (numOfPlayers > 1) {
-				c.strokeText(yourHealth2, (canvasWidth / 4) + 20, (canvasHeight / 3) + 60);
-				c.fillText(yourHealth2, (canvasWidth / 4) + 20, (canvasHeight / 3) + 60);
-				if (numOfPlayers > 2) {
-					c.strokeText(yourHealth3, (canvasWidth / 4) + 30, (canvasHeight / 3) + 90);
-					c.fillText(yourHealth3, (canvasWidth / 4) + 30, (canvasHeight / 3) + 90);
-					if (numOfPlayers > 3) {
-						c.strokeText(yourHealth4, (canvasWidth / 4) + 40, (canvasHeight / 3) + 120);
-						c.fillText(yourHealth4, (canvasWidth / 4) + 40, (canvasHeight / 3) + 120);
-					}
+		c.strokeText(yourHealth, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+		c.fillText(yourHealth, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+		if (numOfPlayers > 1) {
+			line += 30;
+			indent += 10;
+			c.strokeText(yourHealth2, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+			c.fillText(yourHealth2, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+			if (numOfPlayers > 2) {
+				line += 30;
+				indent += 10;
+				c.strokeText(yourHealth3, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+				c.fillText(yourHealth3, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+				if (numOfPlayers > 3) {
+					line += 30;
+					indent += 10;
+					c.strokeText(yourHealth4, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+					c.fillText(yourHealth4, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
 				}
 			}
 		}
+		line += 30;
+		indent += 10;
+		c.strokeText(enemyHealth, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
+		c.fillText(enemyHealth, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
 
 		if ((playerCount > (drawStart + randDrawSpeed)) && (playerCount < (drawEnd + randDrawSpeed)) && playerCount != 0 && hurt == true) {
-			humanEnemies[i] = -tiles_dimension;
-			humanEnemies[i + 1] = -tiles_dimension;
-			playerCount = 0;
-			player.WATER += Math.floor((Math.random() * (500 - 100)) + 100);
-			inBattle = false;
-			humBat = false;
+			enemyHp -= Math.floor(Math.random() * (75 - 25) + 25);
+			if (enemyHp <= 0) {
+				humanEnemies[i] = -tiles_dimension;
+				humanEnemies[i + 1] = -tiles_dimension;
+				playerCount = 0;
+				player.WATER += Math.floor((Math.random() * (500 - 100)) + 100);
+				inBattle = false;
+				humBat = false;
+				enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
+			}
 		}
 
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
@@ -765,6 +799,18 @@ function main() {
 		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
 	}
 
+	function winScreen() {
+		c.textAlign = "center";
+		c.fillStyle = "rgba(225, 255, 255, 0.90)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 15;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "30px Arial";
+		c.strokeText("FOUND ATLANTIS", (canvasWidth / 2), (canvasHeight / 2) - 60);
+		c.fillText("FOUND ATLANTIS", (canvasWidth / 2), (canvasHeight / 2) - 60);
+	}
+
 	var centerX = tiles_dimension / 2;
 	var centerY = tiles_dimension / 2;
 	var center = [centerX, centerY];
@@ -807,7 +853,7 @@ function main() {
 		UVORIG : 50,
 		UV : 50,
 		HEALTH : 100,
-		SHOVEL : false
+		SHOVEL : true
 	};
 
 	var player2 = {
@@ -1284,28 +1330,28 @@ function main() {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
-					if (!inVillage && !inBattle && !gameOver && !inHome)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						moveDown();
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "S";
 					execKeys(hitKeys, matchKey);
 					break;
 				case keys.UP:
-					if (!inVillage && !inBattle && !gameOver && !inHome)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						moveUp();
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "W";
 					execKeys(hitKeys, matchKey);
 					break;
 				case keys.LEFT:
-					if (!inVillage && !inBattle && !gameOver && !inHome)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						moveLeft();
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "A";
 					execKeys(hitKeys, matchKey);
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						moveRight();
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "D";
@@ -1398,7 +1444,7 @@ function main() {
 
 	//decrease variables if situation
 	setInterval(function() {
-		if (!inBattle && !gameOver && !inHome && !pause) {
+		if (!inBattle && !gameOver && !inHome && !pause && !youWin) {
 			if (inSun && player.WATER > 0 && day) {
 				player.WATER -= 5 * numOfPlayers;
 			}
@@ -1425,7 +1471,6 @@ function main() {
 	}, 400);
 
 	function normalStats() {
-
 		if (player.HEALTH < 0) {
 			player.HEALTH = 0;
 		}
@@ -1488,10 +1533,11 @@ function main() {
 	var nearHome = false;
 	var inHome = true;
 	var howMuchWaterLosing = 0;
+	var youWin = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
-		//console.log(promiseWater[0], promiseWater[1]);
+		console.log(promiseWater[0], promiseWater[1]);
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();
@@ -1526,13 +1572,13 @@ function main() {
 				enter = false;
 			}
 			// If Party encounters a Human battle
-			if (inBattle && !enter && !fishBat && humBat && !inVillage && !inHome) {
+			if (inBattle && !enter && !fishBat && humBat && !inVillage && !inHome && !gameOver && !youWin) {
 				count++;
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
 			}
 
 			// If in a Fish battle, display keys on screen
-			if (fishBat && !enter && inBattle && !humBat && !inVillage && !inHome) {
+			if (fishBat && !enter && inBattle && !humBat && !inVillage && !inHome && !gameOver && !youWin) {
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				changeKeyColor(hitKeys);
@@ -1575,9 +1621,12 @@ function main() {
 			if (inHome == true && nearHome == true && counter == 0) {
 				homeUI();
 			}
+			if(youWin){
+				winScreen();
+			}
 
 			//flow of stats based on conditions here
-			if (!inBattle && !gameOver && !inHome) {
+			if (!inBattle && !gameOver && !inHome && !youWin) {
 				inVillage = false;
 				document.getElementById("overworld").play();
 				document.getElementById('village').pause();
@@ -1594,8 +1643,8 @@ function main() {
 				}
 
 				//if found sacred water
-				if (player.X == promiseWater[0] && player.Y == promiseWater[1] && dig == true) {
-					//code you win print time and how many servivors
+				if (0 == promiseWater[0] && 0 == promiseWater[1] && dig == true) {
+					youWin = true;
 				}
 
 			}

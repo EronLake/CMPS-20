@@ -1,10 +1,6 @@
 //IMPORTANT NOTES:
-//4 random keys will appear in a battle
-//(maybe just arrow keys to compact and simplicity)
-//if fast enough player kills enemy and
-//gets its water, else player loses hp
 //
-//find utilities in towns to help
+//find utilities/clues in towns to help
 //player find the cordinates of the
 //sacred water source to win game
 //cost water though
@@ -308,7 +304,6 @@ function main() {
 		c.strokeText(homeWaterLev, -35, -32);
 		c.fillText(homeWaterLev, -35, -32);
 		c.restore();
-
 	}
 
 	function drawVillage(colOffset, rowOffset) {
@@ -320,7 +315,6 @@ function main() {
 		c.translate(pt[0], pt[1]);
 		c.fillRect(-35, -22, 45, 40);
 		c.restore();
-
 	}
 
 	function drawEnemy(colOffset, rowOffset) {
@@ -475,13 +469,23 @@ function main() {
 		var hpLevel3 = "P3 Health: " + player3.HEALTH;
 		var hpLevel4 = "P4 Health: " + player4.HEALTH;
 		var homeWaterLev = "Home ml: " + homeBase.WATER;
+		var homeDir = "Home is: ";
+		if (homeBase[1] < player.Y) {
+			homeDir += "North ";
+		} else {
+			homeDir += "South ";
+		}
+		if (homeBase[0] > player.X) {
+			homeDir += "West";
+		} else {
+			homeDir += "East";
+		}
 		var time = Math.floor(counter / 60) + " : " + counter % 60;
 		var line = 20;
 		c.lineWidth = 7;
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
 		c.font = "15px Arial";
-
 		c.strokeText(uvLevel, canvasWidth / 8, canvasHeight / 8 + line);
 		c.fillText(uvLevel, canvasWidth / 8, canvasHeight / 8 + line);
 		line += 20;
@@ -512,13 +516,39 @@ function main() {
 		c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + line);
 		c.fillText(time, canvasWidth / 8, canvasHeight / 8 + line);
 
-		if (player.SHOVEL == true) {
+		if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true) {
 			line += 20;
 			c.strokeText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
 			c.fillText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
-			line += 20;
-			c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
-			c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+			if (player.SHOVEL == true) {
+				line += 20;
+				c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+				c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+			}
+			if (player.DETECTOR == true) {
+				line += 20;
+				if (promiseWater[0] > -10 && promiseWater[0] < 10 && promiseWater[1] > -10 && promiseWater[1] < 10 && (counter + player.WATER) % 2 == 0) {
+					c.fillStyle = 'rgba(255, 100, 100, 0.75)';
+				}
+				c.strokeText("Detector", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+				c.fillText("Detector", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+				c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+			}
+			if (player.COMPASS == true) {
+				line += 20;
+				c.strokeText(homeDir, canvasWidth / 8 + 20, canvasHeight / 8 + line);
+				c.fillText(homeDir, canvasWidth / 8 + 20, canvasHeight / 8 + line);
+			}
+			if (player.MAP == true) {
+				line += 20;
+				c.strokeText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+				c.fillText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+				c.fillStyle = 'rgba(255, 255, 255, 0.5)';
+				c.fillRect(150, 400, tiles_dimension, tiles_dimension);
+				c.fillStyle = 'rgba(0, 0, 0, 1)';
+				c.fillRect(150 + center[0] - 1, 400 + center[1] - 1, 3, 3);
+				c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+			}
 		}
 
 		//draw water meter
@@ -558,6 +588,11 @@ function main() {
 
 	}
 
+	function clues() {
+		var finalX = promiseWater[0];
+		var finalY = promiseWater[1];
+	}
+
 	var buyHealth = false;
 	var buyWater = false;
 	var buyItem = false;
@@ -590,11 +625,11 @@ function main() {
 		if (item == 1)
 			var itemAmount = "Item: Shovel";
 		if (item == 2)
-			var itemAmount = "Item: planned item";
+			var itemAmount = "Item: Detector";
 		if (item == 3)
-			var itemAmount = "Item: planned item";
+			var itemAmount = "Item: Compass";
 		if (item == 4)
-			var itemAmount = "Item: planned item";
+			var itemAmount = "Item: Map";
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -635,16 +670,21 @@ function main() {
 		if (buyItem) {
 			if (item == 1)
 				player.SHOVEL = true;
+			if (item == 2)
+				player.DETECTOR = true;
+			if (item == 3)
+				player.COMPASS = true;
+			if (item == 4)
+				player.MAP = true;
 			villageItems[place + 2] = 0;
+			player.WATER -= 2500;
 			buyItem = false;
 		}
-
 	}
 
 	var hurt = false;
 	var drawStart = 60;
 	var enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
-	;
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (84 - 64) + 64;
@@ -773,7 +813,6 @@ function main() {
 			inBattle = false;
 			fishBat = false;
 			currKey = 0;
-
 		}
 		//If you do not beat the fish, lose some health and continue fight
 		if (hurt == true) {
@@ -811,8 +850,8 @@ function main() {
 		c.fillText("FOUND ATLANTIS", (canvasWidth / 2), (canvasHeight / 2) - 60);
 	}
 
-	var centerX = tiles_dimension / 2;
-	var centerY = tiles_dimension / 2;
+	var centerX = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));
+	var centerY = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));
 	var center = [centerX, centerY];
 	drawTiles(center);
 
@@ -853,7 +892,10 @@ function main() {
 		UVORIG : 50,
 		UV : 50,
 		HEALTH : 100,
-		SHOVEL : true
+		SHOVEL : true,
+		DETECTOR : true,
+		COMPASS : true,
+		MAP : true
 	};
 
 	var player2 = {
@@ -1268,34 +1310,40 @@ function main() {
 	}, 20);
 
 	setInterval(function() {
-		if (player2.X > 3)
-			player2.X -= othersSpeed;
-		if (player2.X < 3)
-			player2.X += othersSpeed;
-		if (player2.Y > -3)
-			player2.Y -= othersSpeed;
-		if (player2.Y < -3)
-			player2.Y += othersSpeed;
+		if (!inVillage && !inBattle) {
+			if (player2.X > 3)
+				player2.X -= othersSpeed;
+			if (player2.X < 3)
+				player2.X += othersSpeed;
+			if (player2.Y > -3)
+				player2.Y -= othersSpeed;
+			if (player2.Y < -3)
+				player2.Y += othersSpeed;
+		}
 	}, 20);
 	setInterval(function() {
-		if (player3.X > 3)
-			player3.X -= othersSpeed;
-		if (player3.X < 3)
-			player3.X += othersSpeed;
-		if (player3.Y > -3)
-			player3.Y -= othersSpeed;
-		if (player3.Y < -3)
-			player3.Y += othersSpeed;
+		if (!inVillage && !inBattle) {
+			if (player3.X > 3)
+				player3.X -= othersSpeed;
+			if (player3.X < 3)
+				player3.X += othersSpeed;
+			if (player3.Y > -3)
+				player3.Y -= othersSpeed;
+			if (player3.Y < -3)
+				player3.Y += othersSpeed;
+		}
 	}, 25);
 	setInterval(function() {
-		if (player4.X > 3)
-			player4.X -= othersSpeed;
-		if (player4.X < 3)
-			player4.X += othersSpeed;
-		if (player4.Y > -3)
-			player4.Y -= othersSpeed;
-		if (player4.Y < -3)
-			player4.Y += othersSpeed;
+		if (!inVillage && !inBattle) {
+			if (player4.X > 3)
+				player4.X -= othersSpeed;
+			if (player4.X < 3)
+				player4.X += othersSpeed;
+			if (player4.Y > -3)
+				player4.Y -= othersSpeed;
+			if (player4.Y < -3)
+				player4.Y += othersSpeed;
+		}
 	}, 30);
 
 	//-------------------------------------------------
@@ -1404,6 +1452,9 @@ function main() {
 					if (nearHome) {
 						inHome = false;
 					}
+					if (inVillage) {
+						inVillage = !inVillage;
+					}
 					break;
 				};
 			} else {
@@ -1444,7 +1495,7 @@ function main() {
 
 	//decrease variables if situation
 	setInterval(function() {
-		if (!inBattle && !gameOver && !inHome && !pause && !youWin) {
+		if (!inBattle && !gameOver && !inHome && !pause && !youWin && !inVillage) {
 			if (inSun && player.WATER > 0 && day) {
 				player.WATER -= 5 * numOfPlayers;
 			}
@@ -1537,7 +1588,9 @@ function main() {
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
-		console.log(promiseWater[0], promiseWater[1]);
+		//console.log(promiseWater[0], promiseWater[1]);
+		//console.log(inVillage);
+		console.log(homeBase[0], homeBase[1]);
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();
@@ -1589,8 +1642,8 @@ function main() {
 			if (enter && !inBattle) {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
-						drawVillageUI(i);
 						inVillage = true;
+						drawVillageUI(i);
 						document.getElementById("overworld").pause();
 						document.getElementById("overworld").currentTime = 0;
 						document.getElementById('village').volume = 0.1;
@@ -1621,13 +1674,13 @@ function main() {
 			if (inHome == true && nearHome == true && counter == 0) {
 				homeUI();
 			}
-			if(youWin){
+			if (youWin) {
 				winScreen();
 			}
 
 			//flow of stats based on conditions here
 			if (!inBattle && !gameOver && !inHome && !youWin) {
-				inVillage = false;
+				//inVillage = false;
 				document.getElementById("overworld").play();
 				document.getElementById('village').pause();
 				document.getElementById('village').currentTime = 0;

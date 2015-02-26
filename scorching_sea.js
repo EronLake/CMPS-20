@@ -945,30 +945,6 @@ function main() {
 		promiseWater[i] += moveSpeed;
 	}
 
-	//collision if player is near enemy
-	// i is position of character
-	function detection(i) {
-		for (var j = -1; j <= 1; j++) {
-			for (var k = -1; k <= 1; k++) {
-				if (humanEnemies[i] + j == player.X && humanEnemies[i + 1] + k == player.Y) {
-					//push battle
-					inBattle = true;
-					humBat = true;
-					enemyPosition = i;
-					randomDrawSpeed = Math.random() * 100;
-					break;
-				}
-				if (fishEnemies[i] + j == player.X && fishEnemies[i + 1] + k == player.Y && !day) {
-					inBattle = true;
-					enemyPosition = i;
-					fishBat = true;
-					fight();
-					break;
-				}
-			}
-		}
-	}
-
 	function fight() {
 		var keyNum = 0;
 		// var keySym;
@@ -1039,89 +1015,9 @@ function main() {
 	}
 
 	/*function setCurr(curr) {
-	return curr;
-	}
-	*/
-	//ai movement up down when near +1,-1
-
-	function aiMvmtVert(i) {
-		setTimeout(function() {
-			if ((humanEnemies[i]) > player.Y - 7 && (humanEnemies[i]) < player.Y) {
-				if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-					humanEnemies[i]++;
-					//detection(i - 1);
-				}
-				return;
-			}
-			if ((humanEnemies[i]) < player.Y + 7 && (humanEnemies[i]) > player.Y) {
-				if (player.X - humanEnemies[i - 1] < 7 && player.X - humanEnemies[i - 1] > -7) {
-					humanEnemies[i]--;
-					//detection(i - 1);
-				}
-				return;
-			}
-
-		}, 500);
-	}
-
-	// ai movement left right when near d+1, -1
-	function aiMvmtHorz(i) {
-		setTimeout(function() {
-			if ((humanEnemies[i]) < player.X && (humanEnemies[i]) > player.X - 6) {
-				if (player.Y - humanEnemies[i + 1] < 6 && player.Y - humanEnemies[i + 1] > -6) {
-					humanEnemies[i]++;
-					//detection(i);
-				}
-				return;
-			}
-			if ((humanEnemies[i]) > player.X && (humanEnemies[i]) < player.X + 7) {
-				if (player.Y - humanEnemies[i + 1] < 6 && player.Y - humanEnemies[i + 1] > -6) {
-					humanEnemies[i]--;
-					//detection(i);
-				}
-				return;
-			}
-
-		}, 500);
-	}
-
-	function fishAiMvmtVert(i) {
-		setTimeout(function() {
-			if ((fishEnemies[i]) > player.Y - 8 && (fishEnemies[i]) < player.Y) {
-				if (player.X - fishEnemies[i - 1] < 8 && player.X - fishEnemies[i - 1] > -8) {
-					fishEnemies[i] += 2;
-					detection(i - 1);
-				}
-				return;
-			}
-			if ((fishEnemies[i]) < player.Y + 8 && (fishEnemies[i]) > player.Y) {
-				if (player.X - fishEnemies[i - 1] < 8 && player.X - fishEnemies[i - 1] > -8) {
-					fishEnemies[i] -= 2;
-					detection(i - 1);
-				}
-				return;
-			}
-		}, 400);
-	}
-
-	function fishAiMvmtHorz(i) {
-		setTimeout(function() {
-			if ((fishEnemies[i]) < player.X && (fishEnemies[i]) > player.X - 8) {
-				if (player.Y - fishEnemies[i + 1] < 8 && player.Y - fishEnemies[i + 1] > -8) {
-					fishEnemies[i] += 2;
-					detection(i);
-				}
-				return;
-			}
-			if ((fishEnemies[i]) > player.X && (fishEnemies[i]) < player.X + 8) {
-				if (player.Y - fishEnemies[i + 1] < 8 && player.Y - fishEnemies[i + 1] > -8) {
-					fishEnemies[i] -= 2;
-					detection(i);
-				}
-				return;
-			}
-		}, 400);
-	}
+	 return curr;
+	 }
+	 */
 
 	var moveSpeed = 1;
 
@@ -1146,22 +1042,6 @@ function main() {
 	var vert = 0;
 	var horz = 0;
 	function moveUp() {
-		/*
-		 if (player.Y > -5) {
-		 player.Y--;
-		 for (var i = 1; i < allObjects.length; i += 2) {
-		 if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-		 player.Y++;
-		 hitWall = true;
-		 }
-		 if (!hitWall) {
-		 aiMvmtVert(i);
-		 if (!day)
-		 fishAiMvmtVert(i);
-		 }
-		 }
-		 hitWall = false;
-		 } else {*/
 		if (center[1] > 3) {
 			center[1] -= moveSpeed;
 			moveOthersY(1);
@@ -1179,38 +1059,19 @@ function main() {
 						horz--;
 					}
 				}
-				if (!hitWall) {
-					//aiMvmtVert(i);
-					if (!day)
-						fishAiMvmtVert(i);
-				}
 			}
 			hitWall = false;
 		}
-		//}
 		if (inSun && player.WATER > 0) {
-			player.UV--;
+			if (player.UV > 0) {
+				player.UV--;
+			}
 			player.WATER -= 1 * numOfPlayers;
 		}
 
 	}
 
 	function moveDown() {
-		/*if (player.Y < 0) {
-		 player.Y += 1;
-		 for (var i = 1; i < allObjects.length; i += 2) {
-		 if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-		 player.Y -= 1;
-		 hitWall = true;
-		 }
-		 if (!hitWall) {
-		 aiMvmtVert(i);
-		 if (!day)
-		 fishAiMvmtVert(i);
-		 }
-		 }
-		 hitWall = false;
-		 } else {*/
 		if (center[1] < tiles_dimension + 2) {
 			center[1] += moveSpeed;
 			moveOthersY(-1);
@@ -1226,38 +1087,18 @@ function main() {
 						inAll(j);
 					}
 				}
-				if (!hitWall) {
-					//aiMvmtVert(i);
-					if (!day)
-						fishAiMvmtVert(i);
-				}
 			}
 			hitWall = false;
 		}
-		//}
 		if (inSun && player.WATER > 0) {
-			player.UV--;
+			if (player.UV > 0) {
+				player.UV--;
+			}
 			player.WATER -= 1 * numOfPlayers;
 		}
 	}
 
 	function moveLeft() {
-		/*
-		 if (player.X > 0) {
-		 player.X -= 1;
-		 for (var i = 0; i < allObjects.length; i += 2) {
-		 if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-		 player.X += 1;
-		 hitWall = true;
-		 }
-		 if (!hitWall) {
-		 aiMvmtHorz(i);
-		 if (!day)
-		 fishAiMvmtHorz(i);
-		 }
-		 }
-		 hitWall = false;
-		 } else {*/
 		if (center[0] > -3) {
 			center[0] -= moveSpeed;
 			moveOthersX(1);
@@ -1273,38 +1114,18 @@ function main() {
 						decAll(j);
 					}
 				}
-				if (!hitWall) {
-					//aiMvmtHorz(i);
-					if (!day)
-						fishAiMvmtHorz(i);
-				}
 			}
 		}
 		hitWall = false;
-		//}
 		if (inSun && player.WATER > 0) {
-			player.UV--;
+			if (player.UV > 0) {
+				player.UV--;
+			}
 			player.WATER -= 1 * numOfPlayers;
 		}
 	}
 
 	function moveRight() {
-		/*
-		 if (player.X < 5) {
-		 player.X += 1;
-		 for (var i = 0; i < allObjects.length; i += 2) {
-		 if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-		 player.X -= 1;
-		 hitWall = true;
-		 }
-		 if (!hitWall) {
-		 aiMvmtHorz(i);
-		 if (!day)
-		 fishAiMvmtHorz(i);
-		 }
-		 }
-		 hitWall = false;
-		 } else {*/
 		if (center[0] < tiles_dimension - 4) {
 			center[0] += moveSpeed;
 			moveOthersX(-1);
@@ -1320,22 +1141,86 @@ function main() {
 						inAll(j);
 					}
 				}
-				if (!hitWall) {
-					//aiMvmtHorz(i);
-					if (!day)
-						fishAiMvmtHorz(i);
-				}
 			}
 			hitWall = false;
 		}
-		//}
 		if (inSun && player.WATER > 0) {
-			player.UV--;
+			if (player.UV > 0) {
+				player.UV--;
+			}
 			player.WATER -= 1 * numOfPlayers;
 		}
 	}
 
+	//enemy ai
 	var othersSpeed = .25;
+	var skip = false;
+	setInterval(function() {
+		//for loop
+		if (!inBattle && !inVillage && !inHome) {
+			for (var i = 0; i < humanEnemies.length; i += 2) {
+				if (humanEnemies[i] > 3 && humanEnemies[i] < 10 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
+					humanEnemies[i] -= othersSpeed;
+					skip = true;
+				}
+				if (humanEnemies[i] < 3 && humanEnemies[i] > -4 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
+					humanEnemies[i] += othersSpeed;
+					skip = true;
+				}
+				if (humanEnemies[i + 1] > -3 && humanEnemies[i + 1] < 4 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
+					humanEnemies[i + 1] -= othersSpeed;
+					skip = true;
+				}
+				if (humanEnemies[i + 1] < -3 && humanEnemies[i + 1] > -10 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
+					humanEnemies[i + 1] += othersSpeed;
+					skip = true;
+				}
+				if (humanEnemies[i] == player.X && humanEnemies[i + 1] == player.Y) {
+					inBattle = true;
+					humBat = true;
+					enemyPosition = i;
+					randomDrawSpeed = Math.random() * 100;
+					break;
+				}
+				skip = false;
+			}
+		}
+	}, 40);
+
+	//fish enemy ai
+	var fishSkip = false;
+	setInterval(function() {
+		//for loop
+		if (!inBattle && !inVillage && !inHome && !day) {
+			for (var i = 0; i < fishEnemies.length; i += 2) {
+				if (fishEnemies[i] > 3 && fishEnemies[i] < 12 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
+					fishEnemies[i] -= othersSpeed;
+					fishSkip = true;
+				}
+				if (fishEnemies[i] < 3 && fishEnemies[i] > -6 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
+					fishEnemies[i] += othersSpeed;
+					fishSkip = true;
+				}
+				if (fishEnemies[i + 1] > -3 && fishEnemies[i + 1] < 6 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
+					fishEnemies[i + 1] -= othersSpeed;
+					fishSkip = true;
+				}
+				if (fishEnemies[i + 1] < -3 && fishEnemies[i + 1] > -12 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
+					fishEnemies[i + 1] += othersSpeed;
+					fishSkip = true;
+				}
+				if (fishEnemies[i] == player.X && fishEnemies[i + 1] == player.Y) {
+					inBattle = true;
+					fishBat = true;
+					enemyPosition = i;
+					fight();
+					break;
+				}
+				fishSkip = false;
+			}
+		}
+	}, 20);
+
 	setInterval(function() {
 		if (player2.X > 3)
 			player2.X -= othersSpeed;
@@ -1449,11 +1334,6 @@ function main() {
 						numOfPlayers = 4;
 					break;
 				case keys.ENTER:
-					if (!inBattle) {
-						enter = !enter;
-						if (player.SHOVEL == true)
-							dig = true;
-					}
 					break;
 				case keys.PAUSE:
 					pause = true;
@@ -1463,7 +1343,6 @@ function main() {
 						day = false;
 					else
 						day = true;
-
 				case keys.SPACE:
 					if (inBattle) {
 						playerCount = count;
@@ -1519,13 +1398,13 @@ function main() {
 
 	//decrease variables if situation
 	setInterval(function() {
-		if (!enter && !inBattle && !gameOver && !inHome && !pause) {
+		if (!inBattle && !gameOver && !inHome && !pause) {
 			if (inSun && player.WATER > 0 && day) {
-				player.WATER -= 3 * numOfPlayers;
+				player.WATER -= 5 * numOfPlayers;
 			}
 
 			if (!inSun && player.WATER > 0 && day) {
-				player.WATER -= 2 * numOfPlayers;
+				player.WATER -= 3 * numOfPlayers;
 			}
 
 			if (player.WATER > 0 && !day) {
@@ -1545,39 +1424,42 @@ function main() {
 		}
 	}, 400);
 
-	//enemy ai
-	var skip = false;
-	setInterval(function() {
-		//for loop
-		if (!inBattle && !inVillage && !inHome) {
-			for (var i = 0; i < humanEnemies.length; i += 2) {
-				if (humanEnemies[i] > 3 && humanEnemies[i] < 10 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
-					humanEnemies[i] -= othersSpeed;
-					skip = true;
-				}
-				if (humanEnemies[i] < 3 && humanEnemies[i] > -4 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
-					humanEnemies[i] += othersSpeed;
-					skip = true;
-				}
-				if (humanEnemies[i + 1] > -3 && humanEnemies[i + 1] < 4 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
-					humanEnemies[i + 1] -= othersSpeed;
-					skip = true;
-				}
-				if (humanEnemies[i + 1] < -3 && humanEnemies[i + 1] > -10 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
-					humanEnemies[i + 1] += othersSpeed;
-					skip = true;
-				}
-				if (humanEnemies[i] == player.X && humanEnemies[i + 1] == player.Y) {
-					inBattle = true;
-					humBat = true;
-					enemyPosition = i;
-					randomDrawSpeed = Math.random() * 100;
-					break;
-				}
-				skip = false;
-			}
+	function normalStats() {
+
+		if (player.HEALTH < 0) {
+			player.HEALTH = 0;
 		}
-	}, 45);
+		if (player.HEALTH > 100) {
+			player.HEALTH = 100;
+		}
+		if (player2.HEALTH < 0) {
+			player2.HEALTH = 0;
+		}
+		if (player2.HEALTH > 100) {
+			player2.HEALTH = 100;
+		}
+		if (player3.HEALTH < 0) {
+			player3.HEALTH = 0;
+		}
+		if (player3.HEALTH > 100) {
+			player3.HEALTH = 100;
+		}
+		if (player4.HEALTH < 0) {
+			player4.HEALTH = 0;
+		}
+		if (player4.HEALTH > 100) {
+			player4.HEALTH = 100;
+		}
+		if (player.WATER < 0) {
+			player.WATER = 0;
+		}
+		if (player.WATER > player.WATERORIG) {
+			player.WATER = player.WATERORIG;
+		}
+		if (player.UV < 0) {
+			player.UV = 0;
+		}
+	}
 
 	// ----------------------------------------
 	//     Animation
@@ -1613,7 +1495,6 @@ function main() {
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();
-		//console.log(displayCenterX, displayCenterY);
 		if (!pause) {
 			//---------------------conditions-----------------------
 			//if in shadow
@@ -1696,7 +1577,7 @@ function main() {
 			}
 
 			//flow of stats based on conditions here
-			if (!enter && !inBattle && !gameOver && !inHome) {
+			if (!inBattle && !gameOver && !inHome) {
 				inVillage = false;
 				document.getElementById("overworld").play();
 				document.getElementById('village').pause();
@@ -1712,10 +1593,6 @@ function main() {
 					day = true;
 				}
 
-				if (player.WATER > player.WATERORIG) {
-					player.WATER = player.WATERORIG;
-				}
-
 				//if found sacred water
 				if (player.X == promiseWater[0] && player.Y == promiseWater[1] && dig == true) {
 					//code you win print time and how many servivors
@@ -1727,7 +1604,6 @@ function main() {
 			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1 && enter && homeBase.WATER > 0) {
 				homeBase.WATER -= (player.WATERORIG - player.WATER);
 				player.WATER = player.WATERORIG;
-
 				enter = false;
 			}
 			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
@@ -1737,36 +1613,11 @@ function main() {
 			}
 
 			dig = false;
-
-			if (player.HEALTH < 0) {
-				player.HEALTH = 0;
-			}
-			if (player.HEALTH > 100) {
-				player.HEALTH = 100;
-			}
-			if (player2.HEALTH < 0) {
-				player2.HEALTH = 0;
-			}
-			if (player2.HEALTH > 100) {
-				player2.HEALTH = 100;
-			}
-			if (player3.HEALTH < 0) {
-				player3.HEALTH = 0;
-			}
-			if (player3.HEALTH > 100) {
-				player3.HEALTH = 100;
-			}
-			if (player4.HEALTH < 0) {
-				player4.HEALTH = 0;
-			}
-			if (player4.HEALTH > 100) {
-				player4.HEALTH = 100;
-			}
-			if (player.WATER < 0) {
-				player.WATER = 0;
-			}
+			normalStats();
 		}
 	}
 
 	animate();
+
 }
+

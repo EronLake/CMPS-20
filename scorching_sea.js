@@ -469,16 +469,19 @@ function main() {
 		var hpLevel3 = "P3 Health: " + player3.HEALTH;
 		var hpLevel4 = "P4 Health: " + player4.HEALTH;
 		var homeWaterLev = "Home ml: " + homeBase.WATER;
-		var homeDir = "Home is: ";
-		if (homeBase[1] < player.Y) {
+		var homeDir = "Compass: ";
+		if (homeBase[1]+1 < player.Y) {
 			homeDir += "North ";
 		} else {
 			homeDir += "South ";
 		}
 		if (homeBase[0] > player.X) {
-			homeDir += "West";
-		} else {
 			homeDir += "East";
+		} else {
+			homeDir += "West";
+		}
+		if(homeBase[0] == player.X && homeBase[1]+1 == player.Y){
+			homeDir = "Compass: X";
 		}
 		var time = Math.floor(counter / 60) + " : " + counter % 60;
 		var line = 20;
@@ -591,11 +594,25 @@ function main() {
 	function clues() {
 		var finalX = promiseWater[0];
 		var finalY = promiseWater[1];
+		if(promiseWater[1] > 0){
+			var clue1 = "I heard the promise land is down South.";
+		}
+		else{
+			var clue1 = "I heard the promise land is up North.";
+		}
+		if(promiseWater[0] < 0){
+			//west
+			var clue2 = "You should go towards the rising sun.";
+		}
+		else{
+			var clue2 = "I have never been to the East, you should go there.";
+		}
 	}
 
 	var buyHealth = false;
 	var buyWater = false;
 	var buyItem = false;
+	var getClue = false;
 	function drawVillageUI(i) {
 		var health;
 		var water;
@@ -618,18 +635,18 @@ function main() {
 			item = villageItems[i - 2];
 			place = i - 4;
 		}
-		var healthAmount = "Food: " + health;
-		var waterAmount = "ml found: " + water;
+		var healthAmount = "1. Food: " + health;
+		var waterAmount = "2. ml found: " + water;
 		if (item == 0)
-			var itemAmount = "Item: Nothing";
+			var itemAmount = "3. Item: Nothing";
 		if (item == 1)
-			var itemAmount = "Item: Shovel";
+			var itemAmount = "3. Item: Shovel";
 		if (item == 2)
-			var itemAmount = "Item: Detector";
+			var itemAmount = "3. Item: Detector";
 		if (item == 3)
-			var itemAmount = "Item: Compass";
+			var itemAmount = "3. Item: Compass";
 		if (item == 4)
-			var itemAmount = "Item: Map";
+			var itemAmount = "3. Item: Map";
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -644,6 +661,8 @@ function main() {
 		c.fillText(waterAmount, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.strokeText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
 		c.fillText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+		c.strokeText("4. Clue", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.fillText("4. Clue", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		//if player wants to buy health
 		if (buyHealth && health > 0 && player.WATER - 1000 > 0) {
 			villageItems[place] -= 1;
@@ -679,6 +698,11 @@ function main() {
 			villageItems[place + 2] = 0;
 			player.WATER -= 2500;
 			buyItem = false;
+		}
+		if(getClue){
+			c.strokeText("This will be a clue", (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+			c.fillText("This will be a clue", (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+			//getClue = true;
 		}
 	}
 
@@ -1424,6 +1448,8 @@ function main() {
 						numOfPlayers = 3;
 					break;
 				case keys.FOUR:
+					if(inVillage)
+						getClue = true;
 					if (inHome)
 						numOfPlayers = 4;
 					break;
@@ -1454,6 +1480,9 @@ function main() {
 					}
 					if (inVillage) {
 						inVillage = !inVillage;
+					}
+					if(getClue){
+						getClue = false;
 					}
 					break;
 				};
@@ -1588,9 +1617,8 @@ function main() {
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
-		//console.log(promiseWater[0], promiseWater[1]);
-		//console.log(inVillage);
-		console.log(homeBase[0], homeBase[1]);
+		console.log(promiseWater[0], promiseWater[1]);
+		//console.log(center[0], center[1]);
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();

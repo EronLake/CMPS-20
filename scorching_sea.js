@@ -19,6 +19,11 @@ img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //var img2 = new Image();
 //img2.src = '/Images/village_prototype.png';
 
+var cactusImg = new Image();
+cactusImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactus.png';
+var cactusShadowImg = new Image();
+cactusShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactusShadow.png';
+
 // ----------------------------------------
 //     Canvas Setup
 // ----------------------------------------
@@ -265,7 +270,9 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-35, -22, 25, 40);
+		c.drawImage(cactusImg, -45, -45, 64, 64);
+		c.transform(1, 0, .7, -1, -8, 28);
+		c.drawImage(cactusShadowImg,-45, -40, 64, 50);
 		c.restore();
 	}
 
@@ -449,6 +456,8 @@ function main() {
 	var steamX = 8;
 	var steamY = 10;
 	var mini = tiles_dimension;
+	var villagePosX = 0;
+	var villagePosY = 0;
 	function drawUI() {
 		//draw ui sun
 		if (day) {
@@ -470,7 +479,7 @@ function main() {
 		var hpLevel4 = "P4 Health: " + player4.HEALTH;
 		var homeWaterLev = "Home ml: " + homeBase.WATER;
 		var homeDir = "Compass: ";
-		if (homeBase[1]+1 < player.Y) {
+		if (homeBase[1] + 1 < player.Y) {
 			homeDir += "North ";
 		} else {
 			homeDir += "South ";
@@ -480,7 +489,7 @@ function main() {
 		} else {
 			homeDir += "West";
 		}
-		if(homeBase[0] == player.X && homeBase[1]+1 == player.Y){
+		if (homeBase[0] == player.X && homeBase[1] + 1 == player.Y) {
 			homeDir = "Compass: X";
 		}
 		var time = Math.floor(counter / 60) + " : " + counter % 60;
@@ -519,7 +528,7 @@ function main() {
 		c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + line);
 		c.fillText(time, canvasWidth / 8, canvasHeight / 8 + line);
 
-		if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true) {
+		if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true || player.PEN == true) {
 			line += 20;
 			c.strokeText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
 			c.fillText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
@@ -550,7 +559,18 @@ function main() {
 				c.fillRect(150, 400, tiles_dimension, tiles_dimension);
 				c.fillStyle = 'rgba(0, 0, 0, 1)';
 				c.fillRect(150 + center[0] - 1, 400 + center[1] - 1, 3, 3);
-				c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+				if (player.PEN == true) {
+					//y
+					c.fillRect(150, 400 + villagePosY, tiles_dimension, 1);
+					//x
+					c.fillRect(150 + villagePosX, 400, 1, tiles_dimension);
+					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+				}
+			}
+			if (player.PEN == true) {
+				line += 20;
+				c.strokeText("Pen", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+				c.fillText("Pen", canvasWidth / 8 + 20, canvasHeight / 8 + line);
 			}
 		}
 
@@ -591,28 +611,40 @@ function main() {
 
 	}
 
-	function clues() {
+	var clues = new Array();
+
+	function setClues() {
 		var finalX = promiseWater[0];
 		var finalY = promiseWater[1];
-		if(promiseWater[1] > 0){
-			var clue1 = "I heard the promise land is down South.";
+		if (promiseWater[1] > 0) {
+			clues[0] = "I heard the promise land is down South.";
+		} else {
+			clues[0] = "I heard the promise land is up North.";
 		}
-		else{
-			var clue1 = "I heard the promise land is up North.";
-		}
-		if(promiseWater[0] < 0){
+		if (promiseWater[0] < 0) {
 			//west
-			var clue2 = "You should go towards the rising sun.";
+			clues[1] = "You should go towards the rising sun.";
+		} else {
+			clues[1] = "I have never been to the East, you should go there.";
 		}
-		else{
-			var clue2 = "I have never been to the East, you should go there.";
-		}
+		clues[2] = "A shovel will be your best friend.";
+		clues[3] = "A compass always points home.";
+		clues[4];
+		clues[5];
+		clues[6];
+		clues[7];
+		clues[8];
+		clues[9];
+		clues[10];
+		clues[11];
 	}
 
 	var buyHealth = false;
 	var buyWater = false;
 	var buyItem = false;
 	var getClue = false;
+	var clueNumber = Math.ceil(Math.random() * 10);
+	var pickClue = Math.floor(Math.random() * 12);
 	function drawVillageUI(i) {
 		var health;
 		var water;
@@ -647,6 +679,8 @@ function main() {
 			var itemAmount = "3. Item: Compass";
 		if (item == 4)
 			var itemAmount = "3. Item: Map";
+		if (item == 5)
+			var itemAmount = "3. Item: Pen";
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -695,14 +729,25 @@ function main() {
 				player.COMPASS = true;
 			if (item == 4)
 				player.MAP = true;
+			if (item == 5)
+				player.PEN = true;
 			villageItems[place + 2] = 0;
 			player.WATER -= 2500;
 			buyItem = false;
 		}
-		if(getClue){
-			c.strokeText("This will be a clue", (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
-			c.fillText("This will be a clue", (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
-			//getClue = true;
+		if (getClue) {
+			setClues();
+			if (pickClue % 12 == 1 && player.PEN == true) {
+				villagePosX = center[0];
+			}
+			if (pickClue % 12 == 0 && player.PEN == true) {
+				villagePosY = center[1];
+			}
+			c.strokeText(clues[pickClue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+			c.fillText(clues[pickClue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+		}
+		if (!getClue) {
+			pickClue = Math.floor(Math.random() * 12);
 		}
 	}
 
@@ -919,7 +964,8 @@ function main() {
 		SHOVEL : true,
 		DETECTOR : true,
 		COMPASS : true,
-		MAP : true
+		MAP : true,
+		PEN : true
 	};
 
 	var player2 = {
@@ -976,7 +1022,7 @@ function main() {
 	for (var j = 0; j < villages.length; j = j + 12) {
 		villageItems[j] = Math.floor(Math.random() * (5));
 		villageItems[j + 1] = Math.floor((Math.random() * (1000 - 100)) + 100);
-		villageItems[j + 2] = Math.floor(Math.random() * (5));
+		villageItems[j + 2] = Math.floor(Math.random() * (6));
 
 		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
@@ -1448,8 +1494,11 @@ function main() {
 						numOfPlayers = 3;
 					break;
 				case keys.FOUR:
-					if(inVillage)
+					if (inVillage && player.WATER >= 100) {
+						pickClue = Math.floor(Math.random() * 12);
 						getClue = true;
+						player.WATER -= 100;
+					}
 					if (inHome)
 						numOfPlayers = 4;
 					break;
@@ -1481,7 +1530,7 @@ function main() {
 					if (inVillage) {
 						inVillage = !inVillage;
 					}
-					if(getClue){
+					if (getClue) {
 						getClue = false;
 					}
 					break;
@@ -1745,6 +1794,7 @@ function main() {
 			dig = false;
 			normalStats();
 		}
+
 	}
 
 	animate();

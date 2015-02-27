@@ -680,7 +680,7 @@ function main() {
 		}
 		var healthAmount = "1. Food: " + health;
 		var waterAmount = "2. ml found: " + water;
-		if (item == 0)
+		if (item == 0 || item > 5)
 			var itemAmount = "3. Item: Nothing";
 		if (item == 1)
 			var itemAmount = "3. Item: Shovel";
@@ -767,11 +767,11 @@ function main() {
 	var enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
-			var drawEnd = Math.random() * (84 - 64) + 64;
+			var drawEnd = Math.random() * (84 - 67) + 67;
 		if (numOfPlayers == 2)
-			var drawEnd = Math.random() * (86 - 66) + 66;
+			var drawEnd = Math.random() * (86 - 68) + 68;
 		if (numOfPlayers == 3)
-			var drawEnd = Math.random() * (88 - 68) + 68;
+			var drawEnd = Math.random() * (88 - 69) + 69;
 		if (numOfPlayers == 4)
 			var drawEnd = Math.random() * (90 - 70) + 70;
 		var yourHealth = "P1 Health: " + player.HEALTH;
@@ -824,7 +824,14 @@ function main() {
 		c.fillText(enemyHealth, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
 
 		if ((playerCount > (drawStart + randDrawSpeed)) && (playerCount < (drawEnd + randDrawSpeed)) && playerCount != 0 && hurt == true) {
-			enemyHp -= Math.floor(Math.random() * (75 - 50) + 50);
+			if (numOfPlayers == 4)
+				enemyHp -= Math.floor(Math.random() * (100 - 85) + 85);
+			if (numOfPlayers == 3)
+				enemyHp -= Math.floor(Math.random() * (90 - 65) + 65);
+			if (numOfPlayers == 2)
+				enemyHp -= Math.floor(Math.random() * (70 - 45) + 45);
+			if (numOfPlayers == 1)
+				enemyHp -= Math.floor(Math.random() * (50 - 25) + 25);
 			if (enemyHp <= 0) {
 				humanEnemies[i] = -tiles_dimension;
 				humanEnemies[i + 1] = -tiles_dimension;
@@ -958,8 +965,8 @@ function main() {
 	var shadows = new Array(objectSize);
 
 	//multiples of 2
-	var humanEnemies = new Array(80);
-	var fishEnemies = new Array(80);
+	var humanEnemies = new Array(60);
+	var fishEnemies = new Array(100);
 	var fishOrig = new Array(fishEnemies.length);
 
 	var villageItems = new Array(villages.length);
@@ -971,8 +978,8 @@ function main() {
 		Y : -3,
 		WATERORIG : 20000,
 		WATER : 20000,
-		UVORIG : 50,
-		UV : 50,
+		UVORIG : 100,
+		UV : 100,
 		HEALTH : 100,
 		SHOVEL : true,
 		DETECTOR : true,
@@ -1033,9 +1040,13 @@ function main() {
 
 	//create villages positions
 	for (var j = 0; j < villages.length; j = j + 12) {
+		//food 0-5
 		villageItems[j] = Math.floor(Math.random() * (5));
+		//water 100 - 1000
 		villageItems[j + 1] = Math.floor((Math.random() * (1000 - 100)) + 100);
-		villageItems[j + 2] = Math.floor(Math.random() * (6));
+		//items 0 - 10
+		villageItems[j + 2] = Math.floor(Math.random() * (10));
+		//clues 0 - 12
 		villageItems[j + 3] = Math.floor(Math.random() * 12);
 
 		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
@@ -1244,7 +1255,7 @@ function main() {
 				skip = false;
 			}
 		}
-	}, 40);
+	}, 20);
 
 	//fish enemy ai
 	var fishSkip = false;
@@ -1278,7 +1289,7 @@ function main() {
 				fishSkip = false;
 			}
 		}
-	}, 20);
+	}, 10);
 
 	setInterval(function() {
 		if (!inVillage && !inBattle) {
@@ -1291,7 +1302,7 @@ function main() {
 			if (player2.Y < -3)
 				player2.Y += othersSpeed;
 		}
-	}, 20);
+	}, 10);
 	setInterval(function() {
 		if (!inVillage && !inBattle) {
 			if (player3.X > 3)
@@ -1303,7 +1314,7 @@ function main() {
 			if (player3.Y < -3)
 				player3.Y += othersSpeed;
 		}
-	}, 25);
+	}, 12);
 	setInterval(function() {
 		if (!inVillage && !inBattle) {
 			if (player4.X > 3)
@@ -1315,8 +1326,10 @@ function main() {
 			if (player4.Y < -3)
 				player4.Y += othersSpeed;
 		}
-	}, 30);
+	}, 14);
 
+	//the lower the faster
+	var playerSpeed = 55;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 2) {
@@ -1344,7 +1357,7 @@ function main() {
 				player.WATER -= 1 * numOfPlayers;
 			}
 		}
-	}, 30);
+	}, playerSpeed);
 
 	setInterval(function() {
 		if (goUp) {
@@ -1374,7 +1387,7 @@ function main() {
 			}
 
 		}
-	}, 30);
+	}, playerSpeed);
 
 	setInterval(function() {
 		if (goLeft) {
@@ -1403,7 +1416,7 @@ function main() {
 				player.WATER -= 1 * numOfPlayers;
 			}
 		}
-	}, 30);
+	}, playerSpeed);
 
 	setInterval(function() {
 		if (goRight) {
@@ -1433,7 +1446,7 @@ function main() {
 			}
 
 		}
-	}, 30);
+	}, playerSpeed);
 
 	//-------------------------------------------------
 	//control player which moves all objects also
@@ -1724,8 +1737,7 @@ function main() {
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
-		console.log(promiseWater[0], promiseWater[1]);
-		//console.log(center[0], center[1]);
+		//console.log(promiseWater[0], promiseWater[1]);
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();
@@ -1805,7 +1817,6 @@ function main() {
 				gameOverUI();
 				gameOver = true;
 			}
-
 			if (inHome == true && nearHome == true && counter == 0) {
 				homeUI();
 			}

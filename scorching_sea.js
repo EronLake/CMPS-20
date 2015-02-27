@@ -16,13 +16,17 @@ var img = new Image();
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
 
-//var img2 = new Image();
-//img2.src = '/Images/village_prototype.png';
+var img2 = new Image();
+img2.src = '/Images/village_prototype.png';
 
 var cactusImg = new Image();
 cactusImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactus.png';
 var cactusShadowImg = new Image();
 cactusShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactusShadow.png';
+var rock2Img = new Image();
+rock2Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock2.png';
+var rock2ShadowImg = new Image();
+rock2ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock2Shadow.png';
 
 // ----------------------------------------
 //     Canvas Setup
@@ -102,6 +106,7 @@ function main() {
 	document.getElementById("overworld").volume = 0.01;
 	document.getElementById("overworld").play();
 	hookKeys();
+	hookKeys2();
 
 	// ----------------------------------------
 	//     Tiles Setup
@@ -257,8 +262,10 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		//c.drawImage(imgRock1, -32, -22, 45, 40);
-		c.fillRect(-35, -22, 45, 40);
+		c.drawImage(rock2Img, -60, -45, 64, 64);
+		c.transform(1, 0, .1, -1, -18, 28);
+		c.drawImage(rock2ShadowImg, -45, -40, 64, 50);
+		//c.fillRect(-35, -22, 45, 40);
 		c.restore();
 	}
 
@@ -272,7 +279,7 @@ function main() {
 		c.translate(pt[0], pt[1]);
 		c.drawImage(cactusImg, -45, -45, 64, 64);
 		c.transform(1, 0, .7, -1, -8, 28);
-		c.drawImage(cactusShadowImg,-45, -40, 64, 50);
+		c.drawImage(cactusShadowImg, -45, -40, 64, 50);
 		c.restore();
 	}
 
@@ -629,14 +636,14 @@ function main() {
 		}
 		clues[2] = "A shovel will be your best friend.";
 		clues[3] = "A compass always points home.";
-		clues[4];
-		clues[5];
-		clues[6];
-		clues[7];
-		clues[8];
-		clues[9];
-		clues[10];
-		clues[11];
+		clues[4] = "insert clue";
+		clues[5] = "insert clue";
+		clues[6] = "insert clue";
+		clues[7] = "insert clue";
+		clues[8] = "insert clue";
+		clues[9] = "insert clue";
+		clues[10] = "insert clue";
+		clues[11] = "insert clue";
 	}
 
 	var buyHealth = false;
@@ -649,22 +656,26 @@ function main() {
 		var health;
 		var water;
 		var item;
+		var clue;
 		var place = i;
 		if (i % 12 == 0) {
 			health = villageItems[i];
 			water = villageItems[i + 1];
 			item = villageItems[i + 2];
+			clue = villageItems[i + 3];
 		}
 		if (i % 12 == 2) {
 			health = villageItems[i - 2];
 			water = villageItems[i - 1];
 			item = villageItems[i];
+			clue = villageItems[i + 1];
 			place = i - 2;
 		}
 		if (i % 12 == 4) {
 			health = villageItems[i - 4];
 			water = villageItems[i - 3];
 			item = villageItems[i - 2];
+			clue = villageItems[i - 1];
 			place = i - 4;
 		}
 		var healthAmount = "1. Food: " + health;
@@ -737,14 +748,14 @@ function main() {
 		}
 		if (getClue) {
 			setClues();
-			if (pickClue % 12 == 1 && player.PEN == true) {
+			if (clue % 12 == 1 && player.PEN == true) {
 				villagePosX = center[0];
 			}
-			if (pickClue % 12 == 0 && player.PEN == true) {
+			if (clue % 12 == 0 && player.PEN == true) {
 				villagePosY = center[1];
 			}
-			c.strokeText(clues[pickClue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
-			c.fillText(clues[pickClue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+			c.strokeText(clues[clue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+			c.fillText(clues[clue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
 		}
 		if (!getClue) {
 			pickClue = Math.floor(Math.random() * 12);
@@ -813,7 +824,7 @@ function main() {
 		c.fillText(enemyHealth, (canvasWidth / 4) + indent, (canvasHeight / 3) + line);
 
 		if ((playerCount > (drawStart + randDrawSpeed)) && (playerCount < (drawEnd + randDrawSpeed)) && playerCount != 0 && hurt == true) {
-			enemyHp -= Math.floor(Math.random() * (75 - 25) + 25);
+			enemyHp -= Math.floor(Math.random() * (75 - 50) + 50);
 			if (enemyHp <= 0) {
 				humanEnemies[i] = -tiles_dimension;
 				humanEnemies[i + 1] = -tiles_dimension;
@@ -919,8 +930,10 @@ function main() {
 		c.fillText("FOUND ATLANTIS", (canvasWidth / 2), (canvasHeight / 2) - 60);
 	}
 
-	var centerX = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));
-	var centerY = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));
+	//var centerX = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));
+	//var centerY = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));
+	var centerX = Math.floor(tiles_dimension / 2);
+	var centerY = Math.floor(tiles_dimension / 2);
 	var center = [centerX, centerY];
 	drawTiles(center);
 
@@ -1023,6 +1036,7 @@ function main() {
 		villageItems[j] = Math.floor(Math.random() * (5));
 		villageItems[j + 1] = Math.floor((Math.random() * (1000 - 100)) + 100);
 		villageItems[j + 2] = Math.floor(Math.random() * (6));
+		villageItems[j + 3] = Math.floor(Math.random() * 12);
 
 		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
@@ -1197,119 +1211,6 @@ function main() {
 			player4.X += moveSpeed * i;
 	}
 
-	var vert = 0;
-	var horz = 0;
-	function moveUp() {
-		if (center[1] > 3) {
-			center[1] -= moveSpeed;
-			moveOthersY(1);
-			for (var i = 1; i < allObjects.length; i += 2) {
-				inAll(i);
-				vert++;
-				if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-					center[1] += moveSpeed;
-					moveOthersY(-1);
-					hitWall = true;
-					document.getElementById("footstep").volume = 0.05;
-					document.getElementById("footstep").play();
-					for (var j = 1; j < allObjects.length; j += 2) {
-						decAll(j);
-						horz--;
-					}
-				}
-			}
-			hitWall = false;
-		}
-		if (inSun && player.WATER > 0) {
-			if (player.UV > 0) {
-				player.UV--;
-			}
-			player.WATER -= 1 * numOfPlayers;
-		}
-
-	}
-
-	function moveDown() {
-		if (center[1] < tiles_dimension + 2) {
-			center[1] += moveSpeed;
-			moveOthersY(-1);
-			for (var i = 1; i < allObjects.length; i += 2) {
-				decAll(i);
-				if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
-					center[1] -= moveSpeed;
-					moveOthersY(1);
-					hitWall = true;
-					document.getElementById("footstep").volume = 0.05;
-					document.getElementById("footstep").play();
-					for (var j = 1; j < allObjects.length; j += 2) {
-						inAll(j);
-					}
-				}
-			}
-			hitWall = false;
-		}
-		if (inSun && player.WATER > 0) {
-			if (player.UV > 0) {
-				player.UV--;
-			}
-			player.WATER -= 1 * numOfPlayers;
-		}
-	}
-
-	function moveLeft() {
-		if (center[0] > -3) {
-			center[0] -= moveSpeed;
-			moveOthersX(1);
-			for (var i = 0; i < allObjects.length; i += 2) {
-				inAll(i);
-				if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-					center[0] += moveSpeed;
-					moveOthersX(-1);
-					hitWall = true;
-					document.getElementById("footstep").volume = 0.05;
-					document.getElementById("footstep").play();
-					for (var j = 0; j < allObjects.length; j += 2) {
-						decAll(j);
-					}
-				}
-			}
-		}
-		hitWall = false;
-		if (inSun && player.WATER > 0) {
-			if (player.UV > 0) {
-				player.UV--;
-			}
-			player.WATER -= 1 * numOfPlayers;
-		}
-	}
-
-	function moveRight() {
-		if (center[0] < tiles_dimension - 4) {
-			center[0] += moveSpeed;
-			moveOthersX(-1);
-			for (var i = 0; i < allObjects.length; i += 2) {
-				decAll(i);
-				if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
-					center[0] -= moveSpeed;
-					moveOthersX(1);
-					hitWall = true;
-					document.getElementById("footstep").volume = 0.05;
-					document.getElementById("footstep").play();
-					for (var j = 0; j < allObjects.length; j += 2) {
-						inAll(j);
-					}
-				}
-			}
-			hitWall = false;
-		}
-		if (inSun && player.WATER > 0) {
-			if (player.UV > 0) {
-				player.UV--;
-			}
-			player.WATER -= 1 * numOfPlayers;
-		}
-	}
-
 	//enemy ai
 	var othersSpeed = .25;
 	var skip = false;
@@ -1416,6 +1317,124 @@ function main() {
 		}
 	}, 30);
 
+	setInterval(function() {
+		if (goDown) {
+			if (center[1] < tiles_dimension + 2) {
+				center[1] += moveSpeed;
+				moveOthersY(-1);
+				for (var i = 1; i < allObjects.length; i += 2) {
+					decAll(i);
+					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+						center[1] -= moveSpeed;
+						moveOthersY(1);
+						hitWall = true;
+						document.getElementById("footstep").volume = 0.05;
+						document.getElementById("footstep").play();
+						for (var j = 1; j < allObjects.length; j += 2) {
+							inAll(j);
+						}
+					}
+				}
+				hitWall = false;
+			}
+			if (inSun && player.WATER > 0) {
+				if (player.UV > 0) {
+					player.UV--;
+				}
+				player.WATER -= 1 * numOfPlayers;
+			}
+		}
+	}, 30);
+
+	setInterval(function() {
+		if (goUp) {
+			if (center[1] > 3) {
+				center[1] -= moveSpeed;
+				moveOthersY(1);
+				for (var i = 1; i < allObjects.length; i += 2) {
+					inAll(i);
+					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
+						center[1] += moveSpeed;
+						moveOthersY(-1);
+						hitWall = true;
+						document.getElementById("footstep").volume = 0.05;
+						document.getElementById("footstep").play();
+						for (var j = 1; j < allObjects.length; j += 2) {
+							decAll(j);
+						}
+					}
+				}
+				hitWall = false;
+			}
+			if (inSun && player.WATER > 0) {
+				if (player.UV > 0) {
+					player.UV--;
+				}
+				player.WATER -= 1 * numOfPlayers;
+			}
+
+		}
+	}, 30);
+
+	setInterval(function() {
+		if (goLeft) {
+			if (center[0] > -3) {
+				center[0] -= moveSpeed;
+				moveOthersX(1);
+				for (var i = 0; i < allObjects.length; i += 2) {
+					inAll(i);
+					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+						center[0] += moveSpeed;
+						moveOthersX(-1);
+						hitWall = true;
+						document.getElementById("footstep").volume = 0.05;
+						document.getElementById("footstep").play();
+						for (var j = 0; j < allObjects.length; j += 2) {
+							decAll(j);
+						}
+					}
+				}
+			}
+			hitWall = false;
+			if (inSun && player.WATER > 0) {
+				if (player.UV > 0) {
+					player.UV--;
+				}
+				player.WATER -= 1 * numOfPlayers;
+			}
+		}
+	}, 30);
+
+	setInterval(function() {
+		if (goRight) {
+			if (center[0] < tiles_dimension - 4) {
+				center[0] += moveSpeed;
+				moveOthersX(-1);
+				for (var i = 0; i < allObjects.length; i += 2) {
+					decAll(i);
+					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
+						center[0] -= moveSpeed;
+						moveOthersX(1);
+						hitWall = true;
+						document.getElementById("footstep").volume = 0.05;
+						document.getElementById("footstep").play();
+						for (var j = 0; j < allObjects.length; j += 2) {
+							inAll(j);
+						}
+					}
+				}
+				hitWall = false;
+			}
+			if (inSun && player.WATER > 0) {
+				if (player.UV > 0) {
+					player.UV--;
+				}
+				player.WATER -= 1 * numOfPlayers;
+			}
+
+		}
+	}, 30);
+
 	//-------------------------------------------------
 	//control player which moves all objects also
 	//AI movement is in here UP and DOWN are flipped
@@ -1443,37 +1462,49 @@ function main() {
 	};
 
 	var hitWall = false;
+	var goUp = false;
+	var goDown = false;
+	var goLeft = false;
+	var goRight = false;
 	function hookKeys() {
 		window.addEventListener('keydown', function(evt) {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
-						moveDown();
+						goDown = true;
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "S";
 					execKeys(hitKeys, matchKey);
+					if (inBattle || gameOver || inVillage || youWin)
+						goDown = false;
 					break;
 				case keys.UP:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
-						moveUp();
+						goUp = true;
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "W";
 					execKeys(hitKeys, matchKey);
+					if (inBattle || gameOver || inVillage || youWin)
+						goUp = false;
 					break;
 				case keys.LEFT:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
-						moveLeft();
+						goLeft = true;
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "A";
 					execKeys(hitKeys, matchKey);
+					if (inBattle || gameOver || inVillage || youWin)
+						goLeft = false;
 					break;
 				case keys.RIGHT:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
-						moveRight();
+						goRight = true;
 					else if (!inVillage && fishBat && inBattle)
 						matchKey = "D";
 					execKeys(hitKeys, matchKey);
+					if (inBattle || gameOver || inVillage || youWin)
+						goRight = false;
 					break;
 				case keys.ONE:
 					if (inVillage)
@@ -1540,6 +1571,33 @@ function main() {
 				case keys.PAUSE:
 					pause = false;
 					break;
+				};
+			}
+		}, false);
+
+	}
+
+	function hookKeys2() {
+		window.addEventListener('keyup', function(evt) {
+			if (!pause) {
+				switch (evt.keyCode) {
+				case keys.DOWN:
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+						goDown = false;
+					break;
+				case keys.UP:
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+						goUp = false;
+					break;
+				case keys.LEFT:
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+						goLeft = false;
+					break;
+				case keys.RIGHT:
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+						goRight = false;
+					break;
+
 				};
 			}
 		}, false);

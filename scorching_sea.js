@@ -92,10 +92,11 @@ function draw() {
 		c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", canvas.width / 2 - 650, canvas.height / 2 + 80);
 		c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", canvas.width / 2 - 650, canvas.height / 2 +100);
 		c.fillText("Villages contain items that will be useful to you on your journey", canvas.width / 2 - 650, canvas.height / 2 +120);
-		c.fillText("The items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", canvas.width / 2 - 650, canvas.height / 2 + 140);
-		c.fillText("press the escape key to pause and press again to unpause", canvas.width / 2 - 650, canvas.height / 2 + 160);
-		c.fillText("Fight enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width / 2 - 650, canvas.height / 2 +180);
-		c.fillText("You can replenish your water at home base", canvas.width / 2 - 650, canvas.height / 2 + 200);
+		c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", canvas.width / 2 - 650, canvas.height / 2 + 140);
+		c.fillText("Press the escape key to pause and press again to unpause", canvas.width / 2 - 650, canvas.height / 2 + 160);
+		c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width / 2 - 650, canvas.height / 2 +180);
+		c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", canvas.width / 2 - 650, canvas.height / 2 +200);
+		c.fillText("You can replenish your water at home base", canvas.width / 2 - 650, canvas.height / 2 + 220);
 	} else if (titleScreen == false && instrScreen == false) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed

@@ -8,25 +8,31 @@
 //cordinate indicator, quadrent indicator,
 //shovel <-- need this to win,
 //town finder, etc...
-//
-//implement more files because this
-//one is too big
 
 var img = new Image();
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
 
-var img2 = new Image();
-img2.src = '/Images/village_prototype.png';
+//var img2 = new Image();
+//img2.src = '/Images/village_prototype.png';
 
 var cactusImg = new Image();
 cactusImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactus.png';
 var cactusShadowImg = new Image();
 cactusShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactusShadow.png';
+
+var rockImg = new Image();
+rockImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock.png';
+var rockShadowImg = new Image();
+rockShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rockShadow.png';
+
 var rock2Img = new Image();
 rock2Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock2.png';
 var rock2ShadowImg = new Image();
 rock2ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock2Shadow.png';
+
+var groundImg = new Image();
+groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
 
 // ----------------------------------------
 //     Canvas Setup
@@ -262,9 +268,16 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.drawImage(rock2Img, -60, -45, 64, 64);
-		c.transform(1, 0, .1, -1, -18, 28);
-		c.drawImage(rock2ShadowImg, -45, -40, 64, 50);
+		if (counter % 2 == 0) {
+			c.drawImage(rock2Img, -50, -45, 64, 64);
+			c.transform(1, 0, .7, -1, -18, 28);
+			c.drawImage(rock2ShadowImg, -37, -40, 64, 50);
+		} else {
+			c.drawImage(rockImg, -50, -45, 64, 64);
+			c.transform(1, 0, .7, -1, -18, 28);
+			c.drawImage(rockShadowImg, -37, -40, 64, 50);
+		}
+
 		//c.fillRect(-35, -22, 45, 40);
 		c.restore();
 	}
@@ -359,19 +372,17 @@ function main() {
 		c.restore();
 	}
 
-	var tileBitmapX = 0;
-	var tileBitmapY = 32;
 	// with sprites
 	function drawFilledTile(colOffset, rowOffset, tileValue) {
 		tileValue = tileValue % 11;
 		//1
 		var pt = [colOffset - 0.5, rowOffset - 0.5];
 		// where is the tile ?
-		//var tileBitmapX = (0 | (tileValue / 4)) * 32 * 2;
-		//var tileBitmapY = (tileValue % 4) * 32 * 2;//3
-		//need global variable for the texture
-		tileBitmapX = tileValue % 32;
-		tileBitmapY = tileValue / 224;
+		//var tileBitmapX = (0 | (tileValue / 1)) * 32 * 2;
+		//var tileBitmapY = (tileValue % 1) * 32 * 2;//3
+		var tileBitmapX = tileValue % 32;
+		var tileBitmapY = tileValue / 224;
+		//c.drawImage(groundImg, tileBitmapX, tileBitmapY, 64, 64, colOffset - 0.5, rowOffset - 0.5, 1, 1);
 		c.drawImage(img, tileBitmapX, tileBitmapY, 32, 32, colOffset - 0.5, rowOffset - 0.5, 1, 1);
 		// c.drawImage(img, 0, 0, 32,32,
 		// colOffset - 0.5, rowOffset - 0.5, 1, 1);
@@ -1734,6 +1745,7 @@ function main() {
 	var inHome = true;
 	var howMuchWaterLosing = 0;
 	var youWin = false;
+	var inShadow = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
@@ -1747,10 +1759,12 @@ function main() {
 			for (var i = 0; i < shadows.length; i += 2) {
 				if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
 					inSun = false;
+					inShadow = true;
 					player.UV = player.UVORIG;
 					break;
 				} else {
 					inSun = true;
+					inShadow = false;
 				}
 			}
 
@@ -1862,6 +1876,12 @@ function main() {
 
 			dig = false;
 			normalStats();
+			if(inBattle){
+				goUp = false;
+				goRight = false;
+				goLeft = false;
+				goDown = false;
+			}
 		}
 
 	}

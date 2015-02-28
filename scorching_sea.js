@@ -83,12 +83,26 @@ function draw() {
 		c.font = "40px Arial";
 		c.fillText("Instructions", canvas.width / 2 - 150, canvas.height / 2 - 200);
 		c.font = "20px Arial";
-		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", canvas.width / 2 - 150, canvas.height / 2 - 175);
-		c.fillText("keep an eye on your water and hp meters", canvas.width / 2 - 150, canvas.height / 2 - 150);
-		c.fillText("You will need both to survive", canvas.width / 2 - 150, canvas.height / 2 - 100);
-		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", canvas.width / 2 - 150, canvas.height / 2 - 50);
-		c.fillText("Refill water at main base that is marked by aqua square", canvas.width / 2 - 150, canvas.height / 2 - 25);
-		c.fillText("Fight enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width / 2 - 150, canvas.height / 2);
+		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", canvas.width / 2 - 650, canvas.height / 2 - 160);
+		c.fillText("Spacebar is the main action key and is used to fight, enter and exit villages, cut cacti, etc.", canvas.width / 2 - 650, canvas.height / 2 - 140);
+		c.fillText("At the beginning of the game press 1, 2, 3, or 4 to decide how many people to take in your party and then press spacebar to confirm your selection", canvas.width / 2 - 650, canvas.height / 2 - 120);
+		c.fillText("If your blue water meter hits zero then your health will begin to decrease", canvas.width / 2 - 650, canvas.height / 2 - 100);
+		c.fillText("If your health hits zero then the game ends", canvas.width / 2 - 650, canvas.height / 2 - 80);
+		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", canvas.width / 2 - 650, canvas.height / 2 - 60);
+		c.fillText("During the day, a yellow box representing the sun will be displayed in the upper right and the screen will be brighter", canvas.width / 2 - 650, canvas.height / 2 - 40);
+		c.fillText("Skin integrity determines how many steps that you can take in the sun and it will decrease as you move during the day", canvas.width / 2 - 650, canvas.height / 2 - 20);
+		c.fillText("You will lose more water during the day, but the stronger orange enemies won't appear", canvas.width / 2 - 650, canvas.height / 2);
+		c.fillText("The enemies are represented for now by the orange and green rectangles", canvas.width / 2 - 650, canvas.height / 2 +20);
+		c.fillText("The main base is represented by the aqua square that you start at in the beginning", canvas.width / 2 - 650, canvas.height / 2 + 40);
+		c.fillText("The ml: represents the milileters of water that you have left, while the Home ml: denotes how much water is left at the base", canvas.width / 2 - 650, canvas.height / 2 + 60);
+		c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", canvas.width / 2 - 650, canvas.height / 2 + 80);
+		c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", canvas.width / 2 - 650, canvas.height / 2 +100);
+		c.fillText("Villages contain items that will be useful to you on your journey", canvas.width / 2 - 650, canvas.height / 2 +120);
+		c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", canvas.width / 2 - 650, canvas.height / 2 + 140);
+		c.fillText("Press the escape key to pause and press again to unpause", canvas.width / 2 - 650, canvas.height / 2 + 160);
+		c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", canvas.width / 2 - 650, canvas.height / 2 +180);
+		c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", canvas.width / 2 - 650, canvas.height / 2 +200);
+		c.fillText("You can replenish your water at home base", canvas.width / 2 - 650, canvas.height / 2 + 220);
 	} else if (titleScreen == false && instrScreen == false) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
@@ -992,11 +1006,11 @@ function main() {
 		UVORIG : 100,
 		UV : 100,
 		HEALTH : 100,
-		SHOVEL : true,
-		DETECTOR : true,
-		COMPASS : true,
-		MAP : true,
-		PEN : true
+		SHOVEL : false,
+		DETECTOR : false,
+		COMPASS : false,
+		MAP : false,
+		PEN : false
 	};
 
 	var player2 = {

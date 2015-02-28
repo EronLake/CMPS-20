@@ -816,18 +816,13 @@ function main() {
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 20;
-		//c.fillStyle = 'rgba(255, 255, 255, 1)';
-		//c.strokeStyle = 'rgba(0, 0, 0, 1)';
-
 		// Display prompt fight on screen
-		c.lineWidth = 10;
-		c.font = "20px Arial";
+		c.lineWidth = 20;
+		c.font = "60px Arial";
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.strokeText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.strokeText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
-		c.fillText(yourHealth, (canvasWidth / 4), (canvasHeight / 3));
-		c.strokeText(yourWater, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
-		c.fillText(yourWater, (canvasWidth / 4) + 10, (canvasHeight / 3) + 30);
 		// If you successfuly beat the fish, delete fish from grid and gain reward
 		if (hurt == true && keysDone == true) {
 			fishEnemies[i] = -tiles_dimension;
@@ -1084,52 +1079,49 @@ function main() {
 		}
 
 	}
-
-	function changeKeyColor(hitKeys) {
-		for (var i = 0; i < currKey; ++i) {
-			//Outline finished keys red
-			c.lineWidth = 5;
-			c.fillStyle = 'rgba(255, 255, 255, 1)';
-			c.strokeStyle = 'rgba(255, 0, 0, 1)';
-			c.font = "20px Arial";
-			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 20, (canvasHeight / 10));
-			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 20, (canvasHeight / 10));
-		}
-		//Outline current key green
-		c.lineWidth = 5;
-		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeStyle = 'rgba(0, 255, 43, 1)';
-		c.font = "20px Arial";
-		c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 20, (canvasHeight / 10));
-		c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 20, (canvasHeight / 10));
-	}
-
+	
 	function drawKeys(hitKeys) {
-		for (var i = 0; i < hitKeys.length; ++i) {
-			c.lineWidth = 5;
+		for (var i = 0; i < hitKeys.length; i++) {
+			c.lineWidth = 3;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 0, 0, 1)';
-			c.font = "20px Arial";
-			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 20, (canvasHeight / 10));
-			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 20, (canvasHeight / 10));
+			c.font = "40px Arial";
+			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
+			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
+			//console.log("contents of hitkeys " + hitKeys[i]);
 		}
-		console.log("size of array: " + hitKeys.length);
+		//console.log("size of array: " + hitKeys.length);
+	}
+	
+	function changeKeyColor(hitKeys) {
+		for (var i = 0; i < currKey; i++) {
+			//Outline finished keys red
+			c.lineWidth = 3;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(255, 0, 0, 1)';
+			c.font = "40px Arial";
+			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
+			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
+			//console.log("size of changekeycolorarray: " + hitKeys.length);
+			//console.log("contents of change key color" + hitKeys[i]);
+		}
+		//Outline current key green
+		c.lineWidth = 3;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 255, 43, 1)';
+		c.font = "40px Arial";
+		c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+		c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
 	}
 
-	function execKeys(hitkeys, matchKey) {
+	function execKeys(hitKeys, matchKey) {
 		// Keeps track of the current index we are at
-		//var curr = 0;
 		if (hitKeys[currKey] == matchKey) {
-			//changeColor = true;
 			currKey++;
+			console.log(currKey);
+			//changeKeyColor(hitKeys);
 		}
-		//setCurr(curr);
 	}
-
-	/*function setCurr(curr) {
-	 return curr;
-	 }
-	 */
 
 	var moveSpeed = 1;
 
@@ -1404,30 +1396,34 @@ function main() {
 				case keys.DOWN:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						moveDown();
-					else if (!inVillage && fishBat && inBattle)
+					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "S";
-					execKeys(hitKeys, matchKey);
+					    execKeys(hitKeys, matchKey);
+					   }
 					break;
 				case keys.UP:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						moveUp();
-					else if (!inVillage && fishBat && inBattle)
+					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "W";
-					execKeys(hitKeys, matchKey);
+					    execKeys(hitKeys, matchKey);
+					}
 					break;
 				case keys.LEFT:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						moveLeft();
-					else if (!inVillage && fishBat && inBattle)
+					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "A";
-					execKeys(hitKeys, matchKey);
+					    execKeys(hitKeys, matchKey);
+					}
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin) 
 						moveRight();
-					else if (!inVillage && fishBat && inBattle)
+					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "D";
-					execKeys(hitKeys, matchKey);
+					    execKeys(hitKeys, matchKey);
+					}
 					break;
 				case keys.ONE:
 					if (inVillage)
@@ -1460,9 +1456,9 @@ function main() {
 					break;
 				case keys.DoN_E:
 					if (day)
-						day = false;
+						counter = 60;
 					else
-						day = true;
+						counter = 0;
 				case keys.SPACE:
 					if (inBattle) {
 						playerCount = count;
@@ -1662,8 +1658,9 @@ function main() {
 			if (fishBat && !enter && inBattle && !humBat && !inVillage && !inHome && !gameOver && !youWin) {
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
-				changeKeyColor(hitKeys);
 				drawKeys(hitKeys);
+			    changeKeyColor(hitKeys);
+				
 			}
 
 			//if press enter and in village go to a village ui

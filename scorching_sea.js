@@ -92,16 +92,16 @@ function draw() {
 		c.fillText("During the day, a yellow box representing the sun will be displayed in the upper right and the screen will be brighter", 0, canvas.height / 2 - 40);
 		c.fillText("Skin integrity determines how many steps that you can take in the sun and it will decrease as you move during the day", 0, canvas.height / 2 - 20);
 		c.fillText("You will lose more water during the day, but the stronger orange enemies won't appear", 0, canvas.height / 2);
-		c.fillText("The enemies are represented for now by the orange and green rectangles", 0, canvas.height / 2 +20);
+		c.fillText("The enemies are represented for now by the orange and green rectangles", 0, canvas.height / 2 + 20);
 		c.fillText("The main base is represented by the aqua square that you start at in the beginning", 0, canvas.height / 2 + 40);
 		c.fillText("The ml: represents the milileters of water that you have left, while the Home ml: denotes how much water is left at the base", 0, canvas.height / 2 + 60);
 		c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", 0, canvas.height / 2 + 80);
-		c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", 0, canvas.height / 2 +100);
-		c.fillText("Villages contain items that will be useful to you on your journey", 0, canvas.height / 2 +120);
+		c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", 0, canvas.height / 2 + 100);
+		c.fillText("Villages contain items that will be useful to you on your journey", 0, canvas.height / 2 + 120);
 		c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", 0, canvas.height / 2 + 140);
 		c.fillText("Press the escape key to pause and press again to unpause", 0, canvas.height / 2 + 160);
-		c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", 0, canvas.height / 2 +180);
-		c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", 0, canvas.height / 2 +200);
+		c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", 0, canvas.height / 2 + 180);
+		c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", 0, canvas.height / 2 + 200);
 		c.fillText("You can replenish your water at home base", 0, canvas.height / 2 + 220);
 	} else if (titleScreen == false && instrScreen == false) {
 		clearInterval(refreshIntervalId);
@@ -131,7 +131,7 @@ function main() {
 	// ----------------------------------------
 	//     Tiles Setup
 	// ----------------------------------------
-	var tiles_dimension = 150;
+	var tiles_dimension = 1000;
 
 	var tileCount = 0;
 	var tileMap = new Array();
@@ -170,7 +170,7 @@ function main() {
 	var angleY = 2.2;
 
 	// scale for the tiles
-	var scale = 90.0;
+	var scale = 125.0;
 	// relative scale for the x of the tile. use it to stretch tiles.
 	var relScaleX = 1;
 
@@ -588,9 +588,9 @@ function main() {
 				c.strokeText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
 				c.fillText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
 				c.fillStyle = 'rgba(255, 255, 255, 0.5)';
-				c.fillRect(150, 400, tiles_dimension, tiles_dimension);
+				c.fillRect(150, 400, tiles_dimension/5, tiles_dimension/5);
 				c.fillStyle = 'rgba(0, 0, 0, 1)';
-				c.fillRect(150 + center[0] - 1, 400 + center[1] - 1, 3, 3);
+				c.fillRect(150 + (center[0] - 1)/5, 400 + (center[1] - 1)/5, 3, 3);
 				if (player.PEN == true) {
 					//y
 					c.fillRect(150, 400 + villagePosY, tiles_dimension, 1);
@@ -788,17 +788,17 @@ function main() {
 	}
 
 	var hurt = false;
-	var drawStart = 10;
+	var drawStart = 20;
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
-			var drawEnd = Math.random() * (44 - 17) + 17;
+			var drawEnd = Math.random() * (44 - 24) + 24;
 		if (numOfPlayers == 2)
-			var drawEnd = Math.random() * (46 - 18) + 18;
+			var drawEnd = Math.random() * (46 - 26) + 26;
 		if (numOfPlayers == 3)
-			var drawEnd = Math.random() * (48 - 19) + 19;
+			var drawEnd = Math.random() * (48 - 28) + 28;
 		if (numOfPlayers == 4)
-			var drawEnd = Math.random() * (50 - 20) + 20;
+			var drawEnd = Math.random() * (50 - 30) + 30;
 		var yourHealth = "P1 Health: " + player.HEALTH;
 		var yourHealth2 = "P2 Health: " + player2.HEALTH;
 		var yourHealth3 = "P3 Health: " + player3.HEALTH;
@@ -871,13 +871,13 @@ function main() {
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			var who = Math.ceil((Math.random() * numOfPlayers));
 			if (who == 1 && numOfPlayers > 0)
-				player.HEALTH -= Math.floor((Math.random() * (15 - numOfPlayers)) + 1);
+				player.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			if (who == 2 && numOfPlayers > 1)
-				player2.HEALTH -= Math.floor((Math.random() * (15 - numOfPlayers)) + 1);
+				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			if (who == 3 && numOfPlayers > 2)
-				player3.HEALTH -= Math.floor((Math.random() * (15 - numOfPlayers)) + 1);
+				player3.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			if (who == 4 && numOfPlayers > 3)
-				player4.HEALTH -= Math.floor((Math.random() * (15 - numOfPlayers)) + 1);
+				player4.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			player.WATER -= Math.floor((Math.random() * (1000 - 500)) + 500);
 			playerCount = 0;
 		}
@@ -976,20 +976,20 @@ function main() {
 	//-----------------------------------------
 
 	//multiples of 2
-	var rockPos = new Array(200);
-	var cactusPos = new Array(100);
+	var rockPos = new Array(10000);
+	var cactusPos = new Array(1000);
 	var homeBase = new Array(2);
 	var promiseWater = new Array(2);
 	//multiples of 12
-	var villages = new Array(240);
+	var villages = new Array(4800);
 
 	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length;
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
 	//multiples of 2
-	var humanEnemies = new Array(60);
-	var fishEnemies = new Array(100);
+	var humanEnemies = new Array(600);
+	var fishEnemies = new Array(300);
 	var fishOrig = new Array(fishEnemies.length);
 
 	var villageItems = new Array(villages.length);
@@ -1150,6 +1150,7 @@ function main() {
 		allObjects[i] += moveSpeed;
 		promiseWater[i] += moveSpeed;
 	}
+
 	function fight() {
 		var keyNum = 0;
 		// var keySym;
@@ -1177,8 +1178,7 @@ function main() {
 		}
 
 	}
-	
-	
+
 	function drawKeys(hitKeys) {
 		for (var i = 0; i < hitKeys.length; i++) {
 			c.lineWidth = 3;
@@ -1191,7 +1191,7 @@ function main() {
 		}
 		//console.log("size of array: " + hitKeys.length);
 	}
-	
+
 	function changeKeyColor(hitKeys) {
 		for (var i = 0; i < currKey; i++) {
 			//Outline finished keys red
@@ -1213,16 +1213,14 @@ function main() {
 		c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
 	}
 
-
 	function execKeys(hitKeys, matchKey) {
 		// Keeps track of the current index we are at
 		if (hitKeys[currKey] == matchKey) {
 			currKey++;
 			console.log(currKey);
-		}
-		else
-		hurt = true;
-		
+		} else
+			hurt = true;
+
 	}
 
 	var moveSpeed = 1;
@@ -1352,7 +1350,7 @@ function main() {
 	}, 14);
 
 	//the lower the faster
-	var playerSpeed = 55;
+	var playerSpeed = 100;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 2) {
@@ -1511,8 +1509,8 @@ function main() {
 						goDown = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "S";
-					    execKeys(hitKeys, matchKey);
-					   }
+						execKeys(hitKeys, matchKey);
+					}
 					if (inBattle || gameOver || inVillage || youWin)
 						goDown = false;
 					break;
@@ -1521,7 +1519,7 @@ function main() {
 						goUp = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "W";
-					    execKeys(hitKeys, matchKey);
+						execKeys(hitKeys, matchKey);
 					}
 					if (inBattle || gameOver || inVillage || youWin)
 						goDown = false;
@@ -1531,17 +1529,17 @@ function main() {
 						goLeft = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "A";
-					    execKeys(hitKeys, matchKey);
+						execKeys(hitKeys, matchKey);
 					}
 					if (inBattle || gameOver || inVillage || youWin)
 						goDown = false;
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin) 
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
 						goRight = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "D";
-					    execKeys(hitKeys, matchKey);
+						execKeys(hitKeys, matchKey);
 					}
 					if (inBattle || gameOver || inVillage || youWin)
 						goRight = false;
@@ -1645,19 +1643,26 @@ function main() {
 	}
 
 	//draw all objects
+	var range = 20;
 	function drawAll() {
 		//draw floor
 		drawTiles(center);
 		for (var i = 0; i < allObjects.length; i += 2) {
-			drawTile(shadows[i], shadows[i + 1], 1.0);
-			drawRock(rockPos[i], rockPos[i + 1]);
-			drawCactus(cactusPos[i], cactusPos[i + 1]);
-			drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
-			drawVillage(villages[i], villages[i + 1]);
-			if (!day) {
+			if (shadows[i] < range && shadows[i] > -range && shadows[i + 1] < range && shadows[i + 1] > -range)
+				drawTile(shadows[i], shadows[i + 1], 1.0);
+			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range)
+				drawRock(rockPos[i], rockPos[i + 1]);
+			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range)
+				drawCactus(cactusPos[i], cactusPos[i + 1]);
+			if (humanEnemies[i] < range && humanEnemies[i] > -range && humanEnemies[i + 1] < range && humanEnemies[i + 1] > -range)
+				drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
+			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range)
+				drawVillage(villages[i], villages[i + 1]);
+			if (!day && fishEnemies[i] < range && fishEnemies[i] > -range && fishEnemies[i + 1] < range && fishEnemies[i + 1] > -range) {
 				drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
 			}
 		}
+		console.log(homeBase[0], homeBase[1]);
 		drawHomeBase(homeBase[0], homeBase[1]);
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
 			drawPlayer(player4.X - .3, player4.Y - .3);
@@ -1791,8 +1796,8 @@ function main() {
 					document.getElementById('drink').play();
 					player.WATER += 100;
 					cactusPos[i] = -tiles_dimension;
-					allObjects[200 + i] = -tiles_dimension;
-					shadows[200 + i] = -tiles_dimension;
+					allObjects[10000 + i] = -tiles_dimension;
+					shadows[10000 + i] = -tiles_dimension;
 					break;
 				}
 			}
@@ -1814,11 +1819,11 @@ function main() {
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				drawKeys(hitKeys);
-			    changeKeyColor(hitKeys);
-			    if(currKey == hitKeys.length) {
-		            keysDone = true;
-		            console.log(currKey);
-		        }
+				changeKeyColor(hitKeys);
+				if (currKey == hitKeys.length) {
+					keysDone = true;
+					console.log(currKey);
+				}
 			}
 
 			//if press enter and in village go to a village ui
@@ -1898,7 +1903,7 @@ function main() {
 
 			dig = false;
 			normalStats();
-			if(inBattle){
+			if (inBattle) {
 				goUp = false;
 				goRight = false;
 				goLeft = false;

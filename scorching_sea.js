@@ -788,17 +788,17 @@ function main() {
 	}
 
 	var hurt = false;
-	var drawStart = 60;
-	var enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
+	var drawStart = 10;
+	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
-			var drawEnd = Math.random() * (84 - 67) + 67;
+			var drawEnd = Math.random() * (44 - 17) + 17;
 		if (numOfPlayers == 2)
-			var drawEnd = Math.random() * (86 - 68) + 68;
+			var drawEnd = Math.random() * (46 - 18) + 18;
 		if (numOfPlayers == 3)
-			var drawEnd = Math.random() * (88 - 69) + 69;
+			var drawEnd = Math.random() * (48 - 19) + 19;
 		if (numOfPlayers == 4)
-			var drawEnd = Math.random() * (90 - 70) + 70;
+			var drawEnd = Math.random() * (50 - 20) + 20;
 		var yourHealth = "P1 Health: " + player.HEALTH;
 		var yourHealth2 = "P2 Health: " + player2.HEALTH;
 		var yourHealth3 = "P3 Health: " + player3.HEALTH;
@@ -1817,7 +1817,7 @@ function main() {
 			    changeKeyColor(hitKeys);
 			    if(currKey == hitKeys.length) {
 		            keysDone = true;
-		            console.log(currKey)
+		            console.log(currKey);
 		        }
 			}
 

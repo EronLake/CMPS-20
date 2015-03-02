@@ -1205,12 +1205,14 @@ function main() {
 			//console.log("contents of change key color" + hitKeys[i]);
 		}
 		//Outline current key green
-		c.lineWidth = 3;
-		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeStyle = 'rgba(0, 255, 43, 1)';
-		c.font = "40px Arial";
-		c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
-		c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+		if(currKey != hitKeys.length){
+			c.lineWidth = 3;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 255, 43, 1)';
+			c.font = "40px Arial";
+			c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+			c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+		}
 	}
 
 
@@ -1218,7 +1220,7 @@ function main() {
 		// Keeps track of the current index we are at
 		if (hitKeys[currKey] == matchKey) {
 			currKey++;
-			console.log(currKey);
+			//console.log(currKey);
 		}
 		else
 		hurt = true;
@@ -1808,16 +1810,16 @@ function main() {
 			}
 
 			// If in a Fish battle, display keys on screen
-
 			if (fishBat && !enter && inBattle && !humBat && !inVillage && !inHome && !gameOver && !youWin) {
-				console.log("2 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
+				//console.log("2 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				drawKeys(hitKeys);
 			    changeKeyColor(hitKeys);
-			    if(currKey == hitKeys.length) {
+			    //console.log("3 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
+			    if(currKey == hitKeys.length && hitKeys.length != 0) {
 		            keysDone = true;
-		            console.log(currKey);
+		            //console.log(currKey);
 		        }
 			}
 

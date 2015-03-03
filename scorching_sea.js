@@ -1819,20 +1819,12 @@ function main() {
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				drawKeys(hitKeys);
-<<<<<<< HEAD
 			    changeKeyColor(hitKeys);
 			    //console.log("3 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
 			    if(currKey == hitKeys.length && hitKeys.length != 0) {
 		            keysDone = true;
 		            //console.log(currKey);
 		        }
-=======
-				changeKeyColor(hitKeys);
-				if (currKey == hitKeys.length) {
-					keysDone = true;
-					console.log(currKey);
-				}
->>>>>>> 17e5d67889a19bf2a985c4234aa2a935ceb67165
 			}
 
 			//if press enter and in village go to a village ui

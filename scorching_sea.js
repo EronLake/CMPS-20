@@ -22,14 +22,14 @@ var cactusShadowImg = new Image();
 cactusShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactusShadow.png';
 
 var rockImg = new Image();
-rockImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock.png';
+rockImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_1.png';
 var rockShadowImg = new Image();
-rockShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rockShadow.png';
+rockShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_1_shadow.png';
 
 var rock2Img = new Image();
-rock2Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock2.png';
+rock2Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_2.png';
 var rock2ShadowImg = new Image();
-rock2ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock2Shadow.png';
+rock2ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_2_shadow.png';
 
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
@@ -153,7 +153,7 @@ function main() {
 	var dayLength = 60;
 	//seconds
 	setInterval(function() {
-		if (!pause && !inVillage && !inBattle && !gameOver && !inHome) {++counter;
+		if (!pause && !inVillage && !inBattle && !gameOver && !inHome && !talking) {++counter;
 		}
 	}, 1000);
 
@@ -275,21 +275,21 @@ function main() {
 		c.restore();
 	}
 
-	function drawRock(colOffset, rowOffset) {
+	function drawRock(colOffset, rowOffset, i) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(45, 20, 10)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (counter % 2 == 0) {
-			c.drawImage(rock2Img, -50, -45, 64, 64);
+		if (i % 3 == 0) {
+			c.drawImage(rock2Img, -55, -36, 64, 64);
 			c.transform(1, 0, .7, -1, -18, 28);
-			c.drawImage(rock2ShadowImg, -37, -40, 64, 50);
+			c.drawImage(rock2ShadowImg, -38, -64, 64, 64);
 		} else {
-			c.drawImage(rockImg, -50, -45, 64, 64);
+			c.drawImage(rockImg, -55, -36, 64, 64);
 			c.transform(1, 0, .7, -1, -18, 28);
-			c.drawImage(rockShadowImg, -37, -40, 64, 50);
+			c.drawImage(rockShadowImg, -38, -64, 64, 64);
 		}
 
 		//c.fillRect(-35, -22, 45, 40);
@@ -376,6 +376,20 @@ function main() {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(200, 125, 75)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-15, -30, 20, 35);
+		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
+		c.transform(1, 0, -.7, 1, 5, 0);
+		c.fillRect(-15, 5, 20, 25);
+		c.restore();
+	}
+
+	function drawTraveller(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(200, 225, 175)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
@@ -588,14 +602,14 @@ function main() {
 				c.strokeText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
 				c.fillText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
 				c.fillStyle = 'rgba(255, 255, 255, 0.5)';
-				c.fillRect(150, 400, tiles_dimension/5, tiles_dimension/5);
+				c.fillRect(150, 400, tiles_dimension / 5, tiles_dimension / 5);
 				c.fillStyle = 'rgba(0, 0, 0, 1)';
-				c.fillRect(150 + (center[0] - 1)/5, 400 + (center[1] - 1)/5, 3, 3);
+				c.fillRect(150 + (center[0] - 1) / 5, 400 + (center[1] - 1) / 5, 3, 3);
 				if (player.PEN == true) {
 					//y
-					c.fillRect(150, 400 + villagePosY, tiles_dimension, 1);
+					c.fillRect(150, 400 + villagePosY / 5, tiles_dimension / 5, 1);
 					//x
-					c.fillRect(150 + villagePosX, 400, 1, tiles_dimension);
+					c.fillRect(150 + villagePosX / 5, 400, 1, tiles_dimension / 5);
 					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 				}
 			}
@@ -785,6 +799,26 @@ function main() {
 		if (!getClue) {
 			pickClue = Math.floor(Math.random() * 12);
 		}
+	}
+
+	function drawTravellerUI(i) {
+		if (travellerStats[i] != 0)
+			var water = "Here take this water: " + travellerStats[i];
+		else
+			var water = "I wish I could give you water";
+		var item = travellerStats[i + 1];
+		c.fillStyle = "rgba(0,25,75, 0.25)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 10;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "20px Arial";
+		c.strokeText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText(water, (canvasWidth / 3), canvasHeight / 3);
+		c.fillText(water, (canvasWidth / 3), canvasHeight / 3);
+		c.strokeText(item, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.fillText(item, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 	}
 
 	var hurt = false;
@@ -977,7 +1011,7 @@ function main() {
 
 	//multiples of 2
 	var rockPos = new Array(10000);
-	var cactusPos = new Array(1000);
+	var cactusPos = new Array(2000);
 	var homeBase = new Array(2);
 	var promiseWater = new Array(2);
 	//multiples of 12
@@ -988,17 +1022,19 @@ function main() {
 	var shadows = new Array(objectSize);
 
 	//multiples of 2
-	var humanEnemies = new Array(600);
-	var fishEnemies = new Array(300);
+	var humanEnemies = new Array(4000);
+	var fishEnemies = new Array(6500);
 	var fishOrig = new Array(fishEnemies.length);
+	var travellers = new Array(500);
 
+	var travellerStats = new Array(travellers.length);
 	var villageItems = new Array(villages.length);
 	var humanEnemiesStats = new Array(humanEnemies.length);
 
 	var numOfPlayers = 4;
 	var player = {
-		X : 3,
-		Y : -3,
+		X : 2,
+		Y : -2,
 		WATERORIG : 20000,
 		WATER : 20000,
 		UVORIG : 100,
@@ -1012,20 +1048,20 @@ function main() {
 	};
 
 	var player2 = {
-		X : 3,
-		Y : -3,
+		X : 2,
+		Y : -2,
 		HEALTH : 100
 	};
 
 	var player3 = {
-		X : 3,
-		Y : -3,
+		X : 2,
+		Y : -2,
 		HEALTH : 100
 	};
 
 	var player4 = {
-		X : 3,
-		Y : -3,
+		X : 2,
+		Y : -2,
 		HEALTH : 100
 	};
 
@@ -1120,6 +1156,14 @@ function main() {
 		fishOrig[i] = fishEnemies[i];
 	}
 
+	for (var i = 0; i < travellers.length; i++) {
+		if (!(i % 2 == 0))
+			travellerStats[i] = Math.ceil((Math.random() * 5));
+		else
+			travellerStats[i] = Math.floor((Math.random() * (5000 - 500)) + 500);
+		travellers[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+	}
+
 	//-------------------------------------------
 	//helper functions for hookKeys()
 	//-------------------------------------------
@@ -1136,6 +1180,7 @@ function main() {
 		villages[i] -= moveSpeed;
 		allObjects[i] -= moveSpeed;
 		promiseWater[i] -= moveSpeed;
+		travellers[i] -= moveSpeed;
 	}
 
 	function inAll(i) {
@@ -1149,6 +1194,7 @@ function main() {
 		villages[i] += moveSpeed;
 		allObjects[i] += moveSpeed;
 		promiseWater[i] += moveSpeed;
+		travellers[i] += moveSpeed;
 	}
 
 	function fight() {
@@ -1205,23 +1251,22 @@ function main() {
 			//console.log("contents of change key color" + hitKeys[i]);
 		}
 		//Outline current key green
-		if(currKey != hitKeys.length){
-			c.lineWidth = 3;
-			c.fillStyle = 'rgba(255, 255, 255, 1)';
-			c.strokeStyle = 'rgba(0, 255, 43, 1)';
-			c.font = "40px Arial";
-			c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
-			c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
-		}
+		c.lineWidth = 3;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 255, 43, 1)';
+		c.font = "40px Arial";
+		c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+		c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
 	}
 
 	function execKeys(hitKeys, matchKey) {
 		// Keeps track of the current index we are at
 		if (hitKeys[currKey] == matchKey) {
 			currKey++;
-		}
-		else
-		hurt = true;
+			console.log(currKey);
+		} else
+			hurt = true;
+
 	}
 
 	var moveSpeed = 1;
@@ -1247,23 +1292,24 @@ function main() {
 	//enemy ai
 	var othersSpeed = .25;
 	var skip = false;
+	var humanSpeed = 40;
 	setInterval(function() {
 		//for loop
-		if (!inBattle && !inVillage && !inHome) {
+		if (!inBattle && !inVillage && !inHome && !talking) {
 			for (var i = 0; i < humanEnemies.length; i += 2) {
-				if (humanEnemies[i] > 3 && humanEnemies[i] < 10 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
+				if (humanEnemies[i] > player.X && humanEnemies[i] < 10 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
 					humanEnemies[i] -= othersSpeed;
 					skip = true;
 				}
-				if (humanEnemies[i] < 3 && humanEnemies[i] > -4 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
+				if (humanEnemies[i] < player.X && humanEnemies[i] > -4 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
 					humanEnemies[i] += othersSpeed;
 					skip = true;
 				}
-				if (humanEnemies[i + 1] > -3 && humanEnemies[i + 1] < 4 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
+				if (humanEnemies[i + 1] > player.Y && humanEnemies[i + 1] < 4 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
 					humanEnemies[i + 1] -= othersSpeed;
 					skip = true;
 				}
-				if (humanEnemies[i + 1] < -3 && humanEnemies[i + 1] > -10 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
+				if (humanEnemies[i + 1] < player.Y && humanEnemies[i + 1] > -10 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
 					humanEnemies[i + 1] += othersSpeed;
 					skip = true;
 				}
@@ -1277,27 +1323,28 @@ function main() {
 				skip = false;
 			}
 		}
-	}, 20);
+	}, humanSpeed);
 
 	//fish enemy ai
 	var fishSkip = false;
+	var fishSpeed = 25;
 	setInterval(function() {
 		//for loop
-		if (!inBattle && !inVillage && !inHome && !day) {
+		if (!inBattle && !inVillage && !inHome && !day && !talking) {
 			for (var i = 0; i < fishEnemies.length; i += 2) {
-				if (fishEnemies[i] > 3 && fishEnemies[i] < 12 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
+				if (fishEnemies[i] > player.X && fishEnemies[i] < 12 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
 					fishEnemies[i] -= othersSpeed;
 					fishSkip = true;
 				}
-				if (fishEnemies[i] < 3 && fishEnemies[i] > -6 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
+				if (fishEnemies[i] < player.X && fishEnemies[i] > -6 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
 					fishEnemies[i] += othersSpeed;
 					fishSkip = true;
 				}
-				if (fishEnemies[i + 1] > -3 && fishEnemies[i + 1] < 6 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
+				if (fishEnemies[i + 1] > player.Y && fishEnemies[i + 1] < 6 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
 					fishEnemies[i + 1] -= othersSpeed;
 					fishSkip = true;
 				}
-				if (fishEnemies[i + 1] < -3 && fishEnemies[i + 1] > -12 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
+				if (fishEnemies[i + 1] < player.Y && fishEnemies[i + 1] > -12 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
 					fishEnemies[i + 1] += othersSpeed;
 					fishSkip = true;
 				}
@@ -1311,47 +1358,47 @@ function main() {
 				fishSkip = false;
 			}
 		}
-	}, 10);
+	}, fishSpeed);
 
 	setInterval(function() {
-		if (!inVillage && !inBattle) {
-			if (player2.X > 3)
+		if (!inVillage && !inBattle && !talking) {
+			if (player2.X > player.X)
 				player2.X -= othersSpeed;
-			if (player2.X < 3)
+			if (player2.X < player.X)
 				player2.X += othersSpeed;
-			if (player2.Y > -3)
+			if (player2.Y > player.Y)
 				player2.Y -= othersSpeed;
-			if (player2.Y < -3)
+			if (player2.Y < player.Y)
 				player2.Y += othersSpeed;
 		}
-	}, 10);
+	}, 30);
 	setInterval(function() {
-		if (!inVillage && !inBattle) {
-			if (player3.X > 3)
+		if (!inVillage && !inBattle && !talking) {
+			if (player3.X > player.X)
 				player3.X -= othersSpeed;
-			if (player3.X < 3)
+			if (player3.X < player.X)
 				player3.X += othersSpeed;
-			if (player3.Y > -3)
+			if (player3.Y > player.Y)
 				player3.Y -= othersSpeed;
-			if (player3.Y < -3)
+			if (player3.Y < player.Y)
 				player3.Y += othersSpeed;
 		}
-	}, 12);
+	}, 35);
 	setInterval(function() {
-		if (!inVillage && !inBattle) {
-			if (player4.X > 3)
+		if (!inVillage && !inBattle && !talking) {
+			if (player4.X > player.X)
 				player4.X -= othersSpeed;
-			if (player4.X < 3)
+			if (player4.X < player.X)
 				player4.X += othersSpeed;
-			if (player4.Y > -3)
+			if (player4.Y > player.Y)
 				player4.Y -= othersSpeed;
-			if (player4.Y < -3)
+			if (player4.Y < player.Y)
 				player4.Y += othersSpeed;
 		}
-	}, 14);
+	}, 40);
 
 	//the lower the faster
-	var playerSpeed = 100;
+	var playerSpeed = 60;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 2) {
@@ -1506,44 +1553,36 @@ function main() {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goDown = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "S";
 						execKeys(hitKeys, matchKey);
 					}
-					if (inBattle || gameOver || inVillage || youWin)
-						goDown = false;
 					break;
 				case keys.UP:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goUp = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "W";
 						execKeys(hitKeys, matchKey);
 					}
-					if (inBattle || gameOver || inVillage || youWin)
-						goDown = false;
 					break;
 				case keys.LEFT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goLeft = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "A";
 						execKeys(hitKeys, matchKey);
 					}
-					if (inBattle || gameOver || inVillage || youWin)
-						goDown = false;
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goRight = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "D";
 						execKeys(hitKeys, matchKey);
 					}
-					if (inBattle || gameOver || inVillage || youWin)
-						goRight = false;
 					break;
 				case keys.ONE:
 					if (inVillage)
@@ -1591,11 +1630,15 @@ function main() {
 					if (!inBattle) {
 						drinkCac = true;
 						enter = !enter;
+						talk = !talk;
 						if (player.SHOVEL == true)
 							dig = true;
 					}
 					if (nearHome) {
 						inHome = false;
+					}
+					if (talking) {
+						talking = !talking;
 					}
 					if (inVillage) {
 						inVillage = !inVillage;
@@ -1621,19 +1664,19 @@ function main() {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goDown = false;
 					break;
 				case keys.UP:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goUp = false;
 					break;
 				case keys.LEFT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goLeft = false;
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
 						goRight = false;
 					break;
 
@@ -1644,15 +1687,16 @@ function main() {
 	}
 
 	//draw all objects
-	var range = 20;
+	var range = 17;
 	function drawAll() {
 		//draw floor
 		drawTiles(center);
 		for (var i = 0; i < allObjects.length; i += 2) {
-			if (shadows[i] < range && shadows[i] > -range && shadows[i + 1] < range && shadows[i + 1] > -range)
-				drawTile(shadows[i], shadows[i + 1], 1.0);
+			if (shadows[i] < range && shadows[i] > -range && shadows[i + 1] < range && shadows[i + 1] > -range) {
+			}
+			//drawTile(shadows[i], shadows[i + 1], 1.0);
 			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range)
-				drawRock(rockPos[i], rockPos[i + 1]);
+				drawRock(rockPos[i], rockPos[i + 1], i);
 			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range)
 				drawCactus(cactusPos[i], cactusPos[i + 1]);
 			if (humanEnemies[i] < range && humanEnemies[i] > -range && humanEnemies[i + 1] < range && humanEnemies[i + 1] > -range)
@@ -1662,6 +1706,8 @@ function main() {
 			if (!day && fishEnemies[i] < range && fishEnemies[i] > -range && fishEnemies[i + 1] < range && fishEnemies[i + 1] > -range) {
 				drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
 			}
+			if (travellers[i] < range && travellers[i] > -range && travellers[i + 1] < range && travellers[i + 1] > -range)
+				drawTraveller(travellers[i], travellers[i + 1]);
 		}
 		console.log(homeBase[0], homeBase[1]);
 		drawHomeBase(homeBase[0], homeBase[1]);
@@ -1677,7 +1723,7 @@ function main() {
 
 	//decrease variables if situation
 	setInterval(function() {
-		if (!inBattle && !gameOver && !inHome && !pause && !youWin && !inVillage) {
+		if (!inBattle && !gameOver && !inHome && !pause && !youWin && !inVillage && !talking) {
 			if (inSun && player.WATER > 0 && day) {
 				player.WATER -= 5 * numOfPlayers;
 			}
@@ -1699,6 +1745,9 @@ function main() {
 					player3.HEALTH -= Math.floor(Math.random() * (4 - 1) + 1);
 				if (numOfPlayers > 3)
 					player4.HEALTH -= Math.floor(Math.random() * (4 - 1) + 1);
+			}
+			if (!inSun) {
+				player.UV += 9;
 			}
 		}
 	}, 400);
@@ -1737,6 +1786,9 @@ function main() {
 		if (player.UV < 0) {
 			player.UV = 0;
 		}
+		if (player.UV > player.UVORIG) {
+			player.UV = player.UVORIG;
+		}
 	}
 
 	// ----------------------------------------
@@ -1768,6 +1820,8 @@ function main() {
 	var howMuchWaterLosing = 0;
 	var youWin = false;
 	var inShadow = false;
+	var talk = false;
+	var talking = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
@@ -1782,7 +1836,6 @@ function main() {
 				if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
 					inSun = false;
 					inShadow = true;
-					player.UV = player.UVORIG;
 					break;
 				} else {
 					inSun = true;
@@ -1792,17 +1845,31 @@ function main() {
 
 			//destroy cactus and replenish water
 			for (var i = 0; i < cactusPos.length; i += 2) {
-				if (cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y && drinkCac == true) {
+				if (((cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y) || (cactusPos[i] == player.X && cactusPos[i + 1] - 1 == player.Y) || (cactusPos[i] == player.X + 1 && cactusPos[i + 1] == player.Y) || (cactusPos[i] == player.X - 1 && cactusPos[i + 1] == player.Y)) && drinkCac == true) {
 					//document.getElementById('drink').volume =0.05;
 					document.getElementById('drink').play();
-					player.WATER += 100;
+					player.WATER += 250;
 					cactusPos[i] = -tiles_dimension;
 					allObjects[10000 + i] = -tiles_dimension;
 					shadows[10000 + i] = -tiles_dimension;
 					break;
 				}
 			}
+
+			//if near a traveller
+			if (talk && !inBattle) {
+				for (var i = 0; i < travellers.length; i += 2) {
+					if ((player.X == travellers[i] && player.Y == travellers[i + 1]) || (player.X == travellers[i] + 1 && player.Y == travellers[i + 1]) || (player.X == travellers[i] - 1 && player.Y == travellers[i + 1]) || (player.X == travellers[i] && player.Y == travellers[i + 1] + 1) || (player.X == travellers[i] && player.Y == travellers[i + 1] - 1)) {
+						talking = true;
+						drawTravellerUI(i);
+						break;
+					}
+				}
+			}
 			drinkCac = false;
+			if (talking == false) {
+				talk = false;
+			}
 
 			if (inSun) {
 				enter = false;
@@ -1819,12 +1886,11 @@ function main() {
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				drawKeys(hitKeys);
-			    changeKeyColor(hitKeys);
-			    //console.log("3 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
-			    if(currKey == hitKeys.length && hitKeys.length != 0) {
-		            keysDone = true;
-		            //console.log(currKey);
-		        }
+				changeKeyColor(hitKeys);
+				if (currKey == hitKeys.length && hitKeys.length != 0) {
+					keysDone = true;
+					console.log(currKey);
+				}
 			}
 
 			//if press enter and in village go to a village ui
@@ -1840,6 +1906,12 @@ function main() {
 						break;
 					}
 				}
+			}
+			if (inBattle || gameOver || inVillage || youWin || talking) {
+				goDown = false;
+				goUp = false;
+				goRight = false;
+				goLeft = false;
 			}
 
 			//if all death conditions

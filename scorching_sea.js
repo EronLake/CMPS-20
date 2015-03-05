@@ -184,13 +184,13 @@ function main() {
 	var experimental_useBitmapTiles = true;
 
 	// how many tiles do we show in the back ?
-	var viewBackDepth = 15;
+	var viewBackDepth = 13;
 	// how many tiles do we show in the front ?
-	var viewFrontDepth = 21;
+	var viewFrontDepth = 19;
 	// how many tiles do we show on the left ?
-	var viewLeftDepth = 10;
+	var viewLeftDepth = 8;
 	// how many tiles do we show on the right ?
-	var viewRightDepth = 11;
+	var viewRightDepth = 9;
 
 	// tile offset from 0,0 at which we start shadowing.
 	var shadowStart = 9;
@@ -275,17 +275,15 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (i%4 == 0) {
+		if (i % 4 == 0) {
 			c.drawImage(rock2Img, -55, -38, 92, 64);
 			c.transform(1, 0, .7, -1, -18, 28);
 			c.drawImage(rock2ShadowImg, -38, -62, 90, 64);
-		} 
-		else if (i%6 == 0){
+		} else if (i % 6 == 0) {
 			c.drawImage(rock3Img, -55, -38, 92, 64);
 			c.transform(1, 0, .7, -1, -18, 28);
 			c.drawImage(rock3ShadowImg, -38, -62, 90, 64);
-		}
-		else {
+		} else {
 			c.drawImage(rockImg, -55, -38, 92, 64);
 			c.transform(1, 0, .7, -1, -18, 28);
 			c.drawImage(rockShadowImg, -38, -62, 92, 64);
@@ -787,7 +785,7 @@ function main() {
 		//if player wants to buy health
 		if (buyHealth && health > 0 && player.WATER - 1000 > 0) {
 			villageItems[place] -= 1;
-			if (player.Health > 0 && numOfPlayers > 0) {
+			if (player.HEALTH > 0 && numOfPlayers > 0) {
 				player.HEALTH += 10;
 			}
 			if (player2.HEALTH > 0 && numOfPlayers > 1) {
@@ -843,11 +841,15 @@ function main() {
 	}
 
 	function drawTravellerUI(i) {
+		if (travellerStats[i + 1] != 0)
+			var food = " 1. Here have some of my food: " + travellerStats[i + 1];
+		else
+			var food = "I need to save my food";
 		if (travellerStats[i] != 0)
-			var water = "Here take this water: " + travellerStats[i];
+			var water = "2. Here take this water: " + travellerStats[i];
 		else
 			var water = "I wish I could give you more water";
-		var item = travellerStats[i + 1];
+
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -856,18 +858,68 @@ function main() {
 		c.font = "20px Arial";
 		c.strokeText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.strokeText(water, (canvasWidth / 3), canvasHeight / 3);
-		c.fillText(water, (canvasWidth / 3), canvasHeight / 3);
-		c.strokeText(item, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
-		c.fillText(item, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.strokeText(food, (canvasWidth / 3), canvasHeight / 3);
+		c.fillText(food, (canvasWidth / 3), canvasHeight / 3);
+		c.strokeText(water, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.fillText(water, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		if (getWater) {
 			player.WATER += travellerStats[i];
 			travellerStats[i] = 0;
 			getWater = false;
 		}
+		if (getFood) {
+			if (player.HEALTH > 0 && numOfPlayers > 0) {
+				player.HEALTH += 10;
+			}
+			if (player2.HEALTH > 0 && numOfPlayers > 1) {
+				player2.HEALTH += 10;
+			}
+			if (player3.HEALTH > 0 && numOfPlayers > 2) {
+				player3.HEALTH += 10;
+			}
+			if (player4.HEALTH > 0 && numOfPlayers > 3) {
+				player4.HEALTH += 10;
+			}
+			travellerStats[i + 1]--;
+			getFood = false;
+		}
 	}
 
 	function drawCaveUI(i) {
+		var water1;
+		var water2;
+		var water3;
+		var water4;
+		var place = i;
+		if (i % 8 == 0) {
+			water1 = caveStats[i];
+			water2 = caveStats[i + 1];
+			water3 = caveStats[i + 2];
+			water4 = caveStats[i + 3];
+		}
+		if (i % 8 == 2) {
+			water1 = caveStats[i - 2];
+			water2 = caveStats[i - 1];
+			water3 = caveStats[i];
+			water4 = caveStats[i + 1];
+			place = i - 2;
+		}
+		if (water1 != 0)
+			var water1mes = "1. ml found: " + water1;
+		else
+			var water1mes = "";
+		if (water2 != 0)
+			var water2mes = "2. ml found: " + water2;
+		else
+			var water2mes = "";
+		if (water3 != 0)
+			var water3mes = "3. ml found: " + water3;
+		else
+			var water3mes = "";
+		if (water4 != 0)
+			var water4mes = "4. ml found: " + water4;
+		else
+			var water4mes = "";
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -876,7 +928,35 @@ function main() {
 		c.font = "20px Arial";
 		c.strokeText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		
+		c.strokeText(water1mes, (canvasWidth / 3), canvasHeight / 3);
+		c.fillText(water1mes, (canvasWidth / 3), canvasHeight / 3);
+		c.strokeText(water2mes, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.fillText(water2mes, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.strokeText(water3mes, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+		c.fillText(water3mes, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+		c.strokeText(water4mes, (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.fillText(water4mes, (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		if (caveWater1) {
+			player.WATER += caveStats[place];
+			caveStats[place] = 0;
+			caveWater1 = false;
+		}
+		if (caveWater2) {
+			player.WATER += caveStats[place + 1];
+			caveStats[place + 1] = 0;
+			caveWater2 = false;
+		}
+		if (caveWater3) {
+			player.WATER += caveStats[place + 2];
+			caveStats[place + 2] = 0;
+			caveWater3 = false;
+		}
+		if (caveWater4) {
+			player.WATER += caveStats[place + 3];
+			caveStats[place + 3] = 0;
+			caveWater4 = false;
+		}
+
 	}
 
 	function drawBoatUI(i) {
@@ -1104,6 +1184,8 @@ function main() {
 	var travellerStats = new Array(travellers.length);
 	var villageItems = new Array(villages.length);
 	var humanEnemiesStats = new Array(humanEnemies.length);
+	var caveStats = new Array(caves.length);
+	var boatStats = new Array(boats.length);
 
 	var numOfPlayers = 4;
 	var player = {
@@ -1212,6 +1294,10 @@ function main() {
 
 	//create cave positions
 	for (var j = 0; j < caves.length; j = j + 8) {
+		caveStats[j] = Math.floor((Math.random() * (1000 - 100)) + 100);
+		caveStats[j + 1] = Math.floor((Math.random() * (1000 - 100)) + 100);
+		caveStats[j + 2] = Math.floor((Math.random() * (1000 - 100)) + 100);
+		caveStats[j + 3] = Math.floor((Math.random() * (1000 - 100)) + 100);
 		caves[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		caves[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		caves[j + 2] = caves[j] + 1;
@@ -1285,7 +1371,7 @@ function main() {
 		if (!(i % 2 == 0))
 			travellerStats[i] = Math.ceil((Math.random() * 5));
 		else
-			travellerStats[i] = Math.floor((Math.random() * (5000 - 500)) + 500);
+			travellerStats[i] = Math.floor((Math.random() * (1000 - 500)) + 500);
 		travellers[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	}
 
@@ -1456,7 +1542,7 @@ function main() {
 
 	//fish enemy ai
 	var fishSkip = false;
-	var fishSpeed = 25;
+	var fishSpeed = 20;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
@@ -1527,7 +1613,7 @@ function main() {
 	}, 30);
 
 	//the lower the faster
-	var playerSpeed = 60;
+	var playerSpeed = 100;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 2) {
@@ -1710,19 +1796,27 @@ function main() {
 					if (inHome)
 						numOfPlayers = 1;
 					if (talking)
-						getWater = true;
+						getFood = true;
+					if (inCave)
+						caveWater1 = true;
 					break;
 				case keys.TWO:
 					if (inVillage)
 						buyWater = true;
 					if (inHome)
 						numOfPlayers = 2;
+					if (talking)
+						getWater = true;
+					if (inCave)
+						caveWater2 = true;
 					break;
 				case keys.THREE:
 					if (inVillage && player.WATER > 1000)
 						buyItem = true;
 					if (inHome)
 						numOfPlayers = 3;
+					if (inCave)
+						caveWater3 = true;
 					break;
 				case keys.FOUR:
 					if (inVillage) {
@@ -1731,6 +1825,8 @@ function main() {
 					}
 					if (inHome)
 						numOfPlayers = 4;
+					if (inCave)
+						caveWater4 = true;
 					break;
 				case keys.ENTER:
 					break;
@@ -1766,7 +1862,7 @@ function main() {
 					if (inCave) {
 						inCave = !inCave;
 					}
-					if(inBoat){
+					if (inBoat) {
 						inBoat = !inBoat;
 					}
 					if (inVillage) {
@@ -1935,8 +2031,13 @@ function main() {
 	var talk = false;
 	var talking = false;
 	var getWater = false;
+	var getFood = false;
 	var enterCave = false;
 	var inCave = false;
+	var caveWater1 = false;
+	var caveWater2 = false;
+	var caveWater3 = false;
+	var caveWater4 = false;
 	var enterBoat = false;
 	var inBoat = false;
 	function animate() {

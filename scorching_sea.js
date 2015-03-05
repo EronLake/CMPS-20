@@ -292,7 +292,7 @@ function main() {
 			c.drawImage(rockShadowImg, -38, -64, 64, 64);
 		}
 
-		//c.fillRect(-35, -22, 45, 40);
+		//c.fillRect(-50, -38, 45, 40);
 		c.restore();
 	}
 
@@ -337,7 +337,7 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-35, -22, 64, 64);
+		c.fillRect(-50, -38, 64, 64);
 		c.lineWidth = 5;
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
@@ -354,7 +354,7 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-35, -22, 64, 64);
+		c.fillRect(-50, -38, 64, 64);
 		c.restore();
 	}
 
@@ -407,7 +407,7 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-35, -22, 64, 64);
+		c.fillRect(-50, -38, 64, 64);
 		c.restore();
 	}
 
@@ -418,7 +418,7 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-35, -22, 64, 64);
+		c.fillRect(-50, -38, 64, 64);
 		c.restore();
 	}
 
@@ -667,14 +667,14 @@ function main() {
 		}
 	}
 
-	var clues = new Array();
+	var clues = new Array(20);
 	function setClues() {
 		var finalX = promiseWater[0];
 		var finalY = promiseWater[1];
 		if (promiseWater[1] > 0) {
-			clues[0] = "I heard the promise land is down South.";
+			clues[0] = "I heard the 'Promise Land' is down South.";
 		} else {
-			clues[0] = "I heard the promise land is up North.";
+			clues[0] = "I heard the 'Promise Land' is up North.";
 		}
 		if (promiseWater[0] < 0) {
 			//west
@@ -682,16 +682,44 @@ function main() {
 		} else {
 			clues[1] = "I have never been to the East, you should go there.";
 		}
-		clues[2] = "A shovel will be your best friend.";
-		clues[3] = "A compass always points home.";
-		clues[4] = "insert clue";
-		clues[5] = "insert clue";
-		clues[6] = "insert clue";
-		clues[7] = "insert clue";
-		clues[8] = "insert clue";
-		clues[9] = "insert clue";
-		clues[10] = "insert clue";
-		clues[11] = "insert clue";
+		clues[2] = "A compass always points home.";
+		clues[3] = "If you have pen and paper you will know where we are";
+		if((promiseWater[0] > tiles_dimension/2 || promiseWater[0] < -tiles_dimension/2) && (promiseWater[1] > tiles_dimension/2 || promiseWater[1] < -tiles_dimension/2)){
+			clues[4] = "I have never heard any stories of the promise land around this part";
+		}
+		else{
+			clues[4] = "I felt a stange disturbance on my walk to the other village";
+		}
+		if((promiseWater[0] < 50 && promiseWater[0] > -50) && (promiseWater[1] < 50 && promiseWater[1] < -50)){
+			clues[5] = "I felt it tell ya, if only I had a shovel";
+		}
+		else{
+			clues[5] = "A shovel will be your best friend";
+		}
+		clues[6] = "My friend had a detector, but it only blinked once while on her way to another village";
+		clues[7] = "Have you heard of the mysterious 'Promise Land'?";
+		clues[8] = "Its so hot nowadays, I would rather dig and live with Lucifer!";
+		if(promiseWater[0] < 20 && promiseWater[0] > -20){
+			clues[9] = "My feet always feel cool breeze when I walk to the North...or was it South? ";
+		}
+		else{
+			clues[9] = "I wish I had more friends so I don't get beat up by bandits!";	
+		}
+		clues[10] = "I better stay in the shade to get some rest";
+		clues[11] = "My friends keep hogging the water!";
+		if(promiseWater[1] < 20 && promiseWater[1] > -20){
+			clues[12] = "I love walking on this East and West road. I always feel a slight breeze";	
+		}
+		else{
+			clues[12] = "I need to drink more water if the suns out";
+		}
+		clues[13] = "I always go back home to refill my water bottle";
+		clues[14] = "Don't tell me you are looking for the 'Promise Land' too!";
+		clues[15] = "It is cooler at night...but a lot more scarier.";
+		clues[16] = "My father got devoured by those quick things!";
+		clues[17] = "I never get tired at night!";
+		clues[18] = "My favorite drink is cactus water.";
+		clues[19] = "Water...";
 	}
 
 	var buyHealth = false;
@@ -726,20 +754,26 @@ function main() {
 			clue = villageItems[i - 1];
 			place = i - 4;
 		}
-		var healthAmount = "1. Food: " + health;
-		var waterAmount = "2. ml found: " + water;
+		if(health > 0)
+			var healthAmount = "1. Food: " + health + " for 1000 ml each";
+		else
+			var healthAmount = "1. No food here";
+		if(water > 0)
+			var waterAmount = "2. ml found: " + water;
+		else
+			var waterAmount = "2. No water here";
 		if (item == 0 || item > 5)
-			var itemAmount = "3. Item: Nothing";
+			var itemAmount = "3. No items here";
 		if (item == 1)
-			var itemAmount = "3. Item: Shovel";
+			var itemAmount = "3. Item: Shovel for 2500ml";
 		if (item == 2)
-			var itemAmount = "3. Item: Detector";
+			var itemAmount = "3. Item: Detector for 2500ml";
 		if (item == 3)
-			var itemAmount = "3. Item: Compass";
+			var itemAmount = "3. Item: Compass for 2500ml";
 		if (item == 4)
-			var itemAmount = "3. Item: Map";
+			var itemAmount = "3. Item: Map for 2500ml";
 		if (item == 5)
-			var itemAmount = "3. Item: Pen";
+			var itemAmount = "3. Item: Pen for 2500ml";
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -754,21 +788,21 @@ function main() {
 		c.fillText(waterAmount, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.strokeText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
 		c.fillText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
-		c.strokeText("4. Clue", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
-		c.fillText("4. Clue", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.strokeText("4. Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.fillText("4. Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		//if player wants to buy health
 		if (buyHealth && health > 0 && player.WATER - 1000 > 0) {
 			villageItems[place] -= 1;
-			if (player.Health != 0 && numOfPlayers > 0) {
+			if (player.Health > 0 && numOfPlayers > 0) {
 				player.HEALTH += 10;
 			}
-			if (player2.HEALTH != 0 && numOfPlayers > 1) {
+			if (player2.HEALTH > 0 && numOfPlayers > 1) {
 				player2.HEALTH += 10;
 			}
-			if (player3.HEALTH != 0 && numOfPlayers > 2) {
+			if (player3.HEALTH > 0 && numOfPlayers > 2) {
 				player3.HEALTH += 10;
 			}
-			if (player4.HEALTH != 0 && numOfPlayers > 3) {
+			if (player4.HEALTH > 0 && numOfPlayers > 3) {
 				player4.HEALTH += 10;
 			}
 			player.WATER -= 1000;
@@ -779,7 +813,7 @@ function main() {
 			villageItems[place + 1] -= villageItems[place + 1];
 			buyWater = false;
 		}
-		if (buyItem) {
+		if (buyItem && player.WATER > 2500 && !(item == 0 || item > 5)) {
 			if (item == 1)
 				player.SHOVEL = true;
 			if (item == 2)
@@ -810,7 +844,7 @@ function main() {
 			c.fillText(clues[clue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
 		}
 		if (!getClue) {
-			pickClue = Math.floor(Math.random() * 12);
+			pickClue = Math.floor(Math.random() * clues.length);
 		}
 	}
 
@@ -1033,11 +1067,11 @@ function main() {
 	var homeBase = new Array(2);
 	var promiseWater = new Array(2);
 	//multiples of 12
-	var villages = new Array(4800);
+	var villages = new Array(3600);
 	//multiples of 8
 	var caves = new Array(1200);
 	//multiples of 12
-	var boats = new Array(120);
+	var boats = new Array(600);
 
 	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length + caves.length + boats.length;
 	var allObjects = new Array(objectSize);
@@ -1129,7 +1163,7 @@ function main() {
 		//items 0 - 10
 		villageItems[j + 2] = Math.floor(Math.random() * (10));
 		//clues 0 - 12
-		villageItems[j + 3] = Math.floor(Math.random() * 12);
+		villageItems[j + 3] = Math.floor(Math.random() * clues.length);
 
 		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
@@ -1198,12 +1232,12 @@ function main() {
 		boats[j + 11] = boats[j + 1] - 2;
 		for (var x = 0; x < 12; x++) {
 			allObjects[i + x] = boats[j + x];
-			if (!(x % 2 == 0) && x < 6) {
+			if (!(x % 2 == 0) && x < 4) {
 				shadows[i + x] = boats[j + x] + 1;
 			} else {
 				shadows[i + x] = boats[j + x];
 			}
-			if (x > 6) {
+			if (x > 4) {
 				shadows[i + x] = -tiles_dimension;
 			}
 		}
@@ -1449,7 +1483,7 @@ function main() {
 			if (player2.Y < player.Y)
 				player2.Y += othersSpeed;
 		}
-	}, 30);
+	}, 20);
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause) {
 			if (player3.X > player.X)
@@ -1461,7 +1495,7 @@ function main() {
 			if (player3.Y < player.Y)
 				player3.Y += othersSpeed;
 		}
-	}, 35);
+	}, 25);
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause) {
 			if (player4.X > player.X)
@@ -1473,7 +1507,7 @@ function main() {
 			if (player4.Y < player.Y)
 				player4.Y += othersSpeed;
 		}
-	}, 40);
+	}, 30);
 
 	//the lower the faster
 	var playerSpeed = 60;
@@ -1487,7 +1521,6 @@ function main() {
 					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 						center[1] -= moveSpeed;
 						moveOthersY(1);
-						hitWall = true;
 						document.getElementById("footstep").volume = 0.05;
 						document.getElementById("footstep").play();
 						for (var j = 1; j < allObjects.length; j += 2) {
@@ -1495,7 +1528,6 @@ function main() {
 						}
 					}
 				}
-				hitWall = false;
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
@@ -1516,7 +1548,6 @@ function main() {
 					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 						center[1] += moveSpeed;
 						moveOthersY(-1);
-						hitWall = true;
 						document.getElementById("footstep").volume = 0.05;
 						document.getElementById("footstep").play();
 						for (var j = 1; j < allObjects.length; j += 2) {
@@ -1524,7 +1555,6 @@ function main() {
 						}
 					}
 				}
-				hitWall = false;
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
@@ -1546,7 +1576,6 @@ function main() {
 					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 						center[0] += moveSpeed;
 						moveOthersX(-1);
-						hitWall = true;
 						document.getElementById("footstep").volume = 0.05;
 						document.getElementById("footstep").play();
 						for (var j = 0; j < allObjects.length; j += 2) {
@@ -1555,7 +1584,6 @@ function main() {
 					}
 				}
 			}
-			hitWall = false;
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
 					player.UV--;
@@ -1575,7 +1603,6 @@ function main() {
 					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 						center[0] -= moveSpeed;
 						moveOthersX(1);
-						hitWall = true;
 						document.getElementById("footstep").volume = 0.05;
 						document.getElementById("footstep").play();
 						for (var j = 0; j < allObjects.length; j += 2) {
@@ -1583,7 +1610,6 @@ function main() {
 						}
 					}
 				}
-				hitWall = false;
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
@@ -1621,7 +1647,6 @@ function main() {
 		DoN_E : 69
 	};
 
-	var hitWall = false;
 	var goUp = false;
 	var goDown = false;
 	var goLeft = false;
@@ -1677,16 +1702,15 @@ function main() {
 						numOfPlayers = 2;
 					break;
 				case keys.THREE:
-					if (inVillage)
+					if (inVillage && player.WATER > 1000)
 						buyItem = true;
 					if (inHome)
 						numOfPlayers = 3;
 					break;
 				case keys.FOUR:
-					if (inVillage && player.WATER >= 100) {
-						pickClue = Math.floor(Math.random() * 12);
+					if (inVillage) {
+						pickClue = Math.floor(Math.random() * clues.length);
 						getClue = true;
-						player.WATER -= 100;
 					}
 					if (inHome)
 						numOfPlayers = 4;
@@ -1773,7 +1797,8 @@ function main() {
 		drawTiles(center);
 		for (var i = 0; i < allObjects.length; i += 2) {
 			if (shadows[i] < range && shadows[i] > -range && shadows[i + 1] < range && shadows[i + 1] > -range) {
-				//drawTile(shadows[i], shadows[i + 1], 1.0);
+				//comment this out when draw all shadow sprites
+				drawTile(shadows[i], shadows[i + 1], 1.0);
 			}
 			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range)
 				drawRock(rockPos[i], rockPos[i + 1], i);
@@ -1806,31 +1831,24 @@ function main() {
 	//decrease variables if situation
 	setInterval(function() {
 		if (!inBattle && !gameOver && !inHome && !pause && !youWin && !inVillage && !talking) {
-			if (inSun && player.WATER > 0 && day) {
+			if (inSun && player.WATER > 0 && day) 
 				player.WATER -= 5 * numOfPlayers;
-			}
-
-			if (!inSun && player.WATER > 0 && day) {
+			if (!inSun && player.WATER > 0 && day)
 				player.WATER -= 3 * numOfPlayers;
-			}
-
-			if (player.WATER > 0 && !day) {
+			if (player.WATER > 0 && !day)
 				player.WATER -= 1 * numOfPlayers;
-			}
-
 			if (player.WATER <= 0 || player.UV <= 0) {
 				if (numOfPlayers > 0)
-					player.HEALTH -= Math.floor(Math.random() * (4 - 1) + 1);
+					player.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
 				if (numOfPlayers > 1)
-					player2.HEALTH -= Math.floor(Math.random() * (4 - 1) + 1);
+					player2.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
 				if (numOfPlayers > 2)
-					player3.HEALTH -= Math.floor(Math.random() * (4 - 1) + 1);
+					player3.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
 				if (numOfPlayers > 3)
-					player4.HEALTH -= Math.floor(Math.random() * (4 - 1) + 1);
+					player4.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
 			}
-			if (!inSun) {
-				player.UV += 9;
-			}
+			if (!inSun && player.UV != player.UVORIG)
+				player.UV += 11;
 		}
 	}, 400);
 
@@ -1857,7 +1875,7 @@ function main() {
 			player.WATER = player.WATERORIG;
 		if (player.UV < 0)
 			player.UV = 0;
-		if (player.UV > player.UVORIG)
+		if (player.UV >= player.UVORIG)
 			player.UV = player.UVORIG;
 	}
 
@@ -1887,7 +1905,6 @@ function main() {
 	var gameOver = false;
 	var nearHome = false;
 	var inHome = true;
-	var howMuchWaterLosing = 0;
 	var youWin = false;
 	var inShadow = false;
 	var talk = false;

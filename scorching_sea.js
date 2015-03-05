@@ -337,7 +337,7 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-35, -22, 45, 40);
+		c.fillRect(-35, -22, 64, 64);
 		c.lineWidth = 5;
 		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
@@ -354,7 +354,7 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-35, -22, 45, 40);
+		c.fillRect(-35, -22, 64, 64);
 		c.restore();
 	}
 
@@ -397,6 +397,28 @@ function main() {
 		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
 		c.transform(1, 0, -.7, 1, 5, 0);
 		c.fillRect(-15, 5, 20, 25);
+		c.restore();
+	}
+
+	function drawCave(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(50, 25, 25)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-35, -22, 64, 64);
+		c.restore();
+	}
+
+	function drawBoat(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		c.fillStyle = 'rgb(150, 150, 200)';
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		c.fillRect(-35, -22, 64, 64);
 		c.restore();
 	}
 
@@ -499,11 +521,9 @@ function main() {
 
 	}
 
-	var steamX = 8;
-	var steamY = 10;
-	var mini = tiles_dimension;
 	var villagePosX = 0;
 	var villagePosY = 0;
+	var villagePenPos = new Array();
 	function drawUI() {
 		//draw ui sun
 		if (day) {
@@ -606,10 +626,12 @@ function main() {
 				c.fillStyle = 'rgba(0, 0, 0, 1)';
 				c.fillRect(150 + (center[0] - 1) / 5, 400 + (center[1] - 1) / 5, 3, 3);
 				if (player.PEN == true) {
-					//y
-					c.fillRect(150, 400 + villagePosY / 5, tiles_dimension / 5, 1);
-					//x
-					c.fillRect(150 + villagePosX / 5, 400, 1, tiles_dimension / 5);
+					villagePenPos.push(villagePosX / 5);
+					villagePenPos.push(villagePosY / 5);
+					c.fillStyle = 'rgba(100, 75, 50, 1)';
+					for (var j = 0; j < villagePenPos.length; j += 2) {
+						c.fillRect(150 + villagePenPos[j], 400 + villagePenPos[j+1], 2, 2);
+					}
 					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 				}
 			}
@@ -621,10 +643,6 @@ function main() {
 		}
 
 		//draw water meter
-		steamY -= .01;
-		if (steamY < -5) {
-			steamY = 10;
-		}
 		var divWater = player.WATERORIG / (player.WATERORIG / 500);
 		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
 		c.fillRect(canvasWidth / 12, canvasHeight / 8 + ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
@@ -633,12 +651,6 @@ function main() {
 		if (!inSun) {
 			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
 		} else {
-			c.fillStyle = "rgba(255, 220, 255, 0.9)";
-			c.fillRect(canvasWidth / 12 + steamX, canvasHeight / 8 + steamY, 5, 5);
-			c.fillRect(canvasWidth / 12 + steamX + 2, canvasHeight / 8 + steamY - 4, 5, 5);
-			c.fillRect(canvasWidth / 12 + steamX + 4, canvasHeight / 8 + steamY + 6, 5, 5);
-			c.fillRect(canvasWidth / 12 + steamX + 6, canvasHeight / 8 + steamY - 3, 5, 5);
-			c.fillRect(canvasWidth / 12 + steamX + 8, canvasHeight / 8 + steamY + 7, 5, 5);
 			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
 		c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
@@ -652,13 +664,10 @@ function main() {
 			c.font = "20px Arial";
 			c.strokeText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
 			c.fillText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
-
 		}
-
 	}
 
 	var clues = new Array();
-
 	function setClues() {
 		var finalX = promiseWater[0];
 		var finalY = promiseWater[1];
@@ -785,6 +794,10 @@ function main() {
 			player.WATER -= 2500;
 			buyItem = false;
 		}
+		if (player.PEN == true && player.MAP == true) {
+			villagePosX = center[0];
+			villagePosY = center[1];
+		}
 		if (getClue) {
 			setClues();
 			if (clue % 12 == 1 && player.PEN == true) {
@@ -805,7 +818,7 @@ function main() {
 		if (travellerStats[i] != 0)
 			var water = "Here take this water: " + travellerStats[i];
 		else
-			var water = "I wish I could give you water";
+			var water = "I wish I could give you more water";
 		var item = travellerStats[i + 1];
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -819,6 +832,11 @@ function main() {
 		c.fillText(water, (canvasWidth / 3), canvasHeight / 3);
 		c.strokeText(item, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.fillText(item, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		if (getWater) {
+			player.WATER += travellerStats[i];
+			travellerStats[i] = 0;
+			getWater = false;
+		}
 	}
 
 	var hurt = false;
@@ -1016,8 +1034,12 @@ function main() {
 	var promiseWater = new Array(2);
 	//multiples of 12
 	var villages = new Array(4800);
+	//multiples of 8
+	var caves = new Array(1200);
+	//multiples of 12
+	var boats = new Array(120);
 
-	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length;
+	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length + caves.length + boats.length;
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
@@ -1027,6 +1049,7 @@ function main() {
 	var fishOrig = new Array(fishEnemies.length);
 	var travellers = new Array(500);
 
+	//items/stats
 	var travellerStats = new Array(travellers.length);
 	var villageItems = new Array(villages.length);
 	var humanEnemiesStats = new Array(humanEnemies.length);
@@ -1043,8 +1066,8 @@ function main() {
 		SHOVEL : false,
 		DETECTOR : false,
 		COMPASS : false,
-		MAP : false,
-		PEN : false
+		MAP : true,
+		PEN : true
 	};
 
 	var player2 = {
@@ -1136,6 +1159,57 @@ function main() {
 		i += 12;
 	}
 
+	//create cave positions
+	for (var j = 0; j < caves.length; j = j + 8) {
+		caves[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		caves[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		caves[j + 2] = caves[j] + 1;
+		caves[j + 3] = caves[j + 1];
+		caves[j + 4] = caves[j];
+		caves[j + 5] = caves[j + 1] - 1;
+		caves[j + 6] = caves[j] + 1;
+		caves[j + 7] = caves[j + 1] - 1;
+		for (var x = 0; x < 8; x++) {
+			allObjects[i + x] = caves[j + x];
+			if (!(x % 2 == 0) && x < 4) {
+				shadows[i + x] = caves[j + x] + 1;
+			} else {
+				shadows[i + x] = caves[j + x];
+			}
+			if (x > 4) {
+				shadows[i + x] = -tiles_dimension;
+			}
+		}
+		i += 8;
+	}
+
+	for (var j = 0; j < boats.length; j = j + 12) {
+		boats[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		boats[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		boats[j + 2] = boats[j] + 1;
+		boats[j + 3] = boats[j + 1];
+		boats[j + 4] = boats[j];
+		boats[j + 5] = boats[j + 1] - 1;
+		boats[j + 6] = boats[j] + 1;
+		boats[j + 7] = boats[j + 1] - 1;
+		boats[j + 8] = boats[j];
+		boats[j + 9] = boats[j + 1] - 2;
+		boats[j + 10] = boats[j] + 1;
+		boats[j + 11] = boats[j + 1] - 2;
+		for (var x = 0; x < 12; x++) {
+			allObjects[i + x] = boats[j + x];
+			if (!(x % 2 == 0) && x < 6) {
+				shadows[i + x] = boats[j + x] + 1;
+			} else {
+				shadows[i + x] = boats[j + x];
+			}
+			if (x > 6) {
+				shadows[i + x] = -tiles_dimension;
+			}
+		}
+		i += 12;
+	}
+
 	//create home base
 	homeBase[0] = player.X;
 	homeBase[1] = player.Y - 1;
@@ -1181,6 +1255,8 @@ function main() {
 		allObjects[i] -= moveSpeed;
 		promiseWater[i] -= moveSpeed;
 		travellers[i] -= moveSpeed;
+		caves[i] -= moveSpeed;
+		boats[i] -= moveSpeed;
 	}
 
 	function inAll(i) {
@@ -1195,6 +1271,8 @@ function main() {
 		allObjects[i] += moveSpeed;
 		promiseWater[i] += moveSpeed;
 		travellers[i] += moveSpeed;
+		caves[i] += moveSpeed;
+		boats[i] += moveSpeed;
 	}
 
 	function fight() {
@@ -1295,7 +1373,7 @@ function main() {
 	var humanSpeed = 40;
 	setInterval(function() {
 		//for loop
-		if (!inBattle && !inVillage && !inHome && !talking) {
+		if (!inBattle && !inVillage && !inHome && !talking && !pause) {
 			for (var i = 0; i < humanEnemies.length; i += 2) {
 				if (humanEnemies[i] > player.X && humanEnemies[i] < 10 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
 					humanEnemies[i] -= othersSpeed;
@@ -1330,7 +1408,7 @@ function main() {
 	var fishSpeed = 25;
 	setInterval(function() {
 		//for loop
-		if (!inBattle && !inVillage && !inHome && !day && !talking) {
+		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause) {
 			for (var i = 0; i < fishEnemies.length; i += 2) {
 				if (fishEnemies[i] > player.X && fishEnemies[i] < 12 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
 					fishEnemies[i] -= othersSpeed;
@@ -1361,7 +1439,7 @@ function main() {
 	}, fishSpeed);
 
 	setInterval(function() {
-		if (!inVillage && !inBattle && !talking) {
+		if (!inVillage && !inBattle && !talking && !pause) {
 			if (player2.X > player.X)
 				player2.X -= othersSpeed;
 			if (player2.X < player.X)
@@ -1373,7 +1451,7 @@ function main() {
 		}
 	}, 30);
 	setInterval(function() {
-		if (!inVillage && !inBattle && !talking) {
+		if (!inVillage && !inBattle && !talking && !pause) {
 			if (player3.X > player.X)
 				player3.X -= othersSpeed;
 			if (player3.X < player.X)
@@ -1385,7 +1463,7 @@ function main() {
 		}
 	}, 35);
 	setInterval(function() {
-		if (!inVillage && !inBattle && !talking) {
+		if (!inVillage && !inBattle && !talking && !pause) {
 			if (player4.X > player.X)
 				player4.X -= othersSpeed;
 			if (player4.X < player.X)
@@ -1589,6 +1667,8 @@ function main() {
 						buyHealth = true;
 					if (inHome)
 						numOfPlayers = 1;
+					if (talking)
+						getWater = true;
 					break;
 				case keys.TWO:
 					if (inVillage)
@@ -1693,8 +1773,8 @@ function main() {
 		drawTiles(center);
 		for (var i = 0; i < allObjects.length; i += 2) {
 			if (shadows[i] < range && shadows[i] > -range && shadows[i + 1] < range && shadows[i + 1] > -range) {
+				//drawTile(shadows[i], shadows[i + 1], 1.0);
 			}
-			//drawTile(shadows[i], shadows[i + 1], 1.0);
 			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range)
 				drawRock(rockPos[i], rockPos[i + 1], i);
 			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range)
@@ -1703,13 +1783,15 @@ function main() {
 				drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
 			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range)
 				drawVillage(villages[i], villages[i + 1]);
-			if (!day && fishEnemies[i] < range && fishEnemies[i] > -range && fishEnemies[i + 1] < range && fishEnemies[i + 1] > -range) {
+			if (!day && fishEnemies[i] < range && fishEnemies[i] > -range && fishEnemies[i + 1] < range && fishEnemies[i + 1] > -range)
 				drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
-			}
 			if (travellers[i] < range && travellers[i] > -range && travellers[i + 1] < range && travellers[i + 1] > -range)
 				drawTraveller(travellers[i], travellers[i + 1]);
+			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range)
+				drawCave(caves[i], caves[i + 1]);
+			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range)
+				drawBoat(boats[i], boats[i + 1]);
 		}
-		console.log(homeBase[0], homeBase[1]);
 		drawHomeBase(homeBase[0], homeBase[1]);
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
 			drawPlayer(player4.X - .3, player4.Y - .3);
@@ -1753,42 +1835,30 @@ function main() {
 	}, 400);
 
 	function normalStats() {
-		if (player.HEALTH < 0) {
+		if (player.HEALTH < 0)
 			player.HEALTH = 0;
-		}
-		if (player.HEALTH > 100) {
+		if (player.HEALTH > 100)
 			player.HEALTH = 100;
-		}
-		if (player2.HEALTH < 0) {
+		if (player2.HEALTH < 0)
 			player2.HEALTH = 0;
-		}
-		if (player2.HEALTH > 100) {
+		if (player2.HEALTH > 100)
 			player2.HEALTH = 100;
-		}
-		if (player3.HEALTH < 0) {
+		if (player3.HEALTH < 0)
 			player3.HEALTH = 0;
-		}
-		if (player3.HEALTH > 100) {
+		if (player3.HEALTH > 100)
 			player3.HEALTH = 100;
-		}
-		if (player4.HEALTH < 0) {
+		if (player4.HEALTH < 0)
 			player4.HEALTH = 0;
-		}
-		if (player4.HEALTH > 100) {
+		if (player4.HEALTH > 100)
 			player4.HEALTH = 100;
-		}
-		if (player.WATER < 0) {
+		if (player.WATER < 0)
 			player.WATER = 0;
-		}
-		if (player.WATER > player.WATERORIG) {
+		if (player.WATER > player.WATERORIG)
 			player.WATER = player.WATERORIG;
-		}
-		if (player.UV < 0) {
+		if (player.UV < 0)
 			player.UV = 0;
-		}
-		if (player.UV > player.UVORIG) {
+		if (player.UV > player.UVORIG)
 			player.UV = player.UVORIG;
-		}
 	}
 
 	// ----------------------------------------
@@ -1822,6 +1892,7 @@ function main() {
 	var inShadow = false;
 	var talk = false;
 	var talking = false;
+	var getWater = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
@@ -1956,7 +2027,7 @@ function main() {
 				}
 
 				//if found sacred water
-				if (0 == promiseWater[0] && 0 == promiseWater[1] && dig == true) {
+				if (5 <= promiseWater[0] && -5 >= promiseWater[0] && 5 <= promiseWater[1] && -5 >= promiseWater[1] && dig == true) {
 					youWin = true;
 				}
 

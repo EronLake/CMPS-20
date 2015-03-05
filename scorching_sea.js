@@ -17,24 +17,24 @@ img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //img2.src = '/Images/village_prototype.png';
 
 var cactusImg = new Image();
-cactusImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactus.png';
+cactusImg.src = 'Images/cool_cactus_1.png';
 var cactusShadowImg = new Image();
-cactusShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactusShadow.png';
+cactusShadowImg.src = 'Images/cool_cactus_1_shadow.png';
 
 var rockImg = new Image();
-rockImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_1.png';
+rockImg.src = 'Images/cool_rock_1.png';
 var rockShadowImg = new Image();
-rockShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_1_shadow.png';
+rockShadowImg.src = 'Images/cool_rock_1_shadow.png';
 
 var rock2Img = new Image();
-rock2Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_2.png';
+rock2Img.src = 'Images/cool_rock_2.png';
 var rock2ShadowImg = new Image();
-rock2ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_2_shadow.png';
+rock2ShadowImg.src = 'Images/cool_rock_2_shadow.png';
 
 var rock3Img = new Image();
-rock3Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_3.png';
+rock3Img.src = 'Images/cool_rock_3.png';
 var rock3ShadowImg = new Image();
-rock3ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_3_shadow.png';
+rock3ShadowImg.src = 'Images/cool_rock_3_shadow.png';
 
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
@@ -269,23 +269,9 @@ function main() {
 		c.setTransform(transfMatrix[0], transfMatrix[1], transfMatrix[2], transfMatrix[3], displayCenterX, displayCenterY);
 	}
 
-	// draw at tree at point coord.
-	function drawTree(pt, alpha) {
-		c.save();
-		c.translate(pt[0], pt[1]);
-		if (alpha < 1.0)
-			c.globalAlpha = alpha;
-		c.fillStyle = 'hsl(19,56%,40%);';
-		c.fillRect(-4, -6, 8, 6);
-		c.fillStyle = 'hsl(90,100%,47%);';
-		c.fillRect(-8, -22, 16, 18);
-		c.restore();
-	}
-
 	function drawRock(colOffset, rowOffset, i) {
 		var pt = [0, 0];
 		c.beginPath();
-		c.fillStyle = 'rgb(45, 20, 10)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
@@ -304,8 +290,6 @@ function main() {
 			c.transform(1, 0, .7, -1, -18, 28);
 			c.drawImage(rockShadowImg, -38, -62, 92, 64);
 		}
-
-		//c.fillRect(-50, -38, 45, 40);
 		c.restore();
 	}
 
@@ -317,9 +301,9 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.drawImage(cactusImg, -45, -45, 64, 64);
+		c.drawImage(cactusImg, -50, -38, 64, 64);
 		c.transform(1, 0, .7, -1, -8, 28);
-		c.drawImage(cactusShadowImg, -45, -40, 64, 50);
+		c.drawImage(cactusShadowImg, -45, -48, 64, 50);
 		c.restore();
 	}
 
@@ -1133,8 +1117,8 @@ function main() {
 		SHOVEL : false,
 		DETECTOR : false,
 		COMPASS : false,
-		MAP : true,
-		PEN : true
+		MAP : false,
+		PEN : false
 	};
 
 	var player2 = {

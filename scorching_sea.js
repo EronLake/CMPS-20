@@ -919,6 +919,8 @@ function main() {
 		if (count > (drawStart + randDrawSpeed)) {
 			c.strokeText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
 			c.fillText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
+			document.getElementById("weaponDraw").volume = .5;
+			document.getElementById("weaponDraw").play();
 		}
 		c.lineWidth = 10;
 		c.font = "20px Arial";
@@ -967,6 +969,8 @@ function main() {
 				player.WATER += Math.floor((Math.random() * (500 - 100)) + 100);
 				inBattle = false;
 				humBat = false;
+				document.getElementById("wind").pause();
+				document.getElementById("wind").currentTime = 0;
 				enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
 			}
 		}
@@ -1045,7 +1049,7 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "30px Arial";
-		c.strokeText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
+		c.strokeText("THE SCORCHING SEA HAS CLAIMED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
 		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
 		c.strokeText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
 		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
@@ -1744,6 +1748,8 @@ function main() {
 						counter = 0;
 				case keys.SPACE:
 					if (inBattle) {
+						document.getElementById("gunShot").volume = .5;
+			            document.getElementById("gunShot").play();
 						playerCount = count;
 						count = 0;
 						hurt = true;
@@ -2017,6 +2023,9 @@ function main() {
 			}
 			// If Party encounters a Human battle
 			if (inBattle && !enter && !fishBat && humBat && !inVillage && !inHome && !gameOver && !youWin) {
+				document.getElementById('overworld').pause();
+				document.getElementById("wind").volume = 0.05;
+				document.getElementById('wind').play();
 				count++;
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
 			}

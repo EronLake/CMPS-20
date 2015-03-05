@@ -22,18 +22,25 @@ var cactusShadowImg = new Image();
 cactusShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cactusShadow.png';
 
 var rockImg = new Image();
-rockImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_1.png';
+rockImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_1.png';
 var rockShadowImg = new Image();
-rockShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_1_shadow.png';
+rockShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_1_shadow.png';
 
 var rock2Img = new Image();
-rock2Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_2.png';
+rock2Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_2.png';
 var rock2ShadowImg = new Image();
-rock2ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/rock_2_shadow.png';
+rock2ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_2_shadow.png';
+
+var rock3Img = new Image();
+rock3Img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_3.png';
+var rock3ShadowImg = new Image();
+rock3ShadowImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/cool_rock_3_shadow.png';
 
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
 
+var seaHorseImg = new Image();
+seaHorseImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/seahorse_enemy.png';
 // ----------------------------------------
 //     Canvas Setup
 // ----------------------------------------
@@ -153,7 +160,7 @@ function main() {
 	var dayLength = 60;
 	//seconds
 	setInterval(function() {
-		if (!pause && !inVillage && !inBattle && !gameOver && !inHome && !talking) {++counter;
+		if (!pause && !inVillage && !inBattle && !gameOver && !inHome && !talking && !inCave && !inBoat) {++counter;
 		}
 	}, 1000);
 
@@ -177,13 +184,13 @@ function main() {
 	var experimental_useBitmapTiles = true;
 
 	// how many tiles do we show in the back ?
-	var viewBackDepth = 17;
+	var viewBackDepth = 15;
 	// how many tiles do we show in the front ?
-	var viewFrontDepth = 23;
+	var viewFrontDepth = 21;
 	// how many tiles do we show on the left ?
-	var viewLeftDepth = 12;
+	var viewLeftDepth = 10;
 	// how many tiles do we show on the right ?
-	var viewRightDepth = 13;
+	var viewRightDepth = 11;
 
 	// tile offset from 0,0 at which we start shadowing.
 	var shadowStart = 9;
@@ -282,14 +289,20 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (i % 3 == 0) {
-			c.drawImage(rock2Img, -55, -36, 64, 64);
+		if (i%4 == 0) {
+			c.drawImage(rock2Img, -55, -38, 92, 64);
 			c.transform(1, 0, .7, -1, -18, 28);
-			c.drawImage(rock2ShadowImg, -38, -64, 64, 64);
-		} else {
-			c.drawImage(rockImg, -55, -36, 64, 64);
+			c.drawImage(rock2ShadowImg, -38, -62, 90, 64);
+		} 
+		else if (i%6 == 0){
+			c.drawImage(rock3Img, -55, -38, 92, 64);
 			c.transform(1, 0, .7, -1, -18, 28);
-			c.drawImage(rockShadowImg, -38, -64, 64, 64);
+			c.drawImage(rock3ShadowImg, -38, -62, 90, 64);
+		}
+		else {
+			c.drawImage(rockImg, -55, -38, 92, 64);
+			c.transform(1, 0, .7, -1, -18, 28);
+			c.drawImage(rockShadowImg, -38, -62, 92, 64);
 		}
 
 		//c.fillRect(-50, -38, 45, 40);
@@ -379,7 +392,8 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-15, -30, 20, 35);
+		c.drawImage(seaHorseImg, -45, -45, 64, 64);
+		//c.fillRect(-15, -30, 20, 35);
 		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
 		c.transform(1, 0, -.7, 1, 5, 0);
 		c.fillRect(-15, 5, 20, 25);
@@ -630,7 +644,7 @@ function main() {
 					villagePenPos.push(villagePosY / 5);
 					c.fillStyle = 'rgba(100, 75, 50, 1)';
 					for (var j = 0; j < villagePenPos.length; j += 2) {
-						c.fillRect(150 + villagePenPos[j], 400 + villagePenPos[j+1], 2, 2);
+						c.fillRect(150 + villagePenPos[j], 400 + villagePenPos[j + 1], 2, 2);
 					}
 					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 				}
@@ -684,33 +698,29 @@ function main() {
 		}
 		clues[2] = "A compass always points home.";
 		clues[3] = "If you have pen and paper you will know where we are";
-		if((promiseWater[0] > tiles_dimension/2 || promiseWater[0] < -tiles_dimension/2) && (promiseWater[1] > tiles_dimension/2 || promiseWater[1] < -tiles_dimension/2)){
+		if ((promiseWater[0] > tiles_dimension / 2 || promiseWater[0] < -tiles_dimension / 2) && (promiseWater[1] > tiles_dimension / 2 || promiseWater[1] < -tiles_dimension / 2)) {
 			clues[4] = "I have never heard any stories of the promise land around this part";
-		}
-		else{
+		} else {
 			clues[4] = "I felt a stange disturbance on my walk to the other village";
 		}
-		if((promiseWater[0] < 50 && promiseWater[0] > -50) && (promiseWater[1] < 50 && promiseWater[1] < -50)){
+		if ((promiseWater[0] < 50 && promiseWater[0] > -50) && (promiseWater[1] < 50 && promiseWater[1] < -50)) {
 			clues[5] = "I felt it tell ya, if only I had a shovel";
-		}
-		else{
+		} else {
 			clues[5] = "A shovel will be your best friend";
 		}
 		clues[6] = "My friend had a detector, but it only blinked once while on her way to another village";
 		clues[7] = "Have you heard of the mysterious 'Promise Land'?";
 		clues[8] = "Its so hot nowadays, I would rather dig and live with Lucifer!";
-		if(promiseWater[0] < 20 && promiseWater[0] > -20){
+		if (promiseWater[0] < 20 && promiseWater[0] > -20) {
 			clues[9] = "My feet always feel cool breeze when I walk to the North...or was it South? ";
-		}
-		else{
-			clues[9] = "I wish I had more friends so I don't get beat up by bandits!";	
+		} else {
+			clues[9] = "I wish I had more friends so I don't get beat up by bandits!";
 		}
 		clues[10] = "I better stay in the shade to get some rest";
 		clues[11] = "My friends keep hogging the water!";
-		if(promiseWater[1] < 20 && promiseWater[1] > -20){
-			clues[12] = "I love walking on this East and West road. I always feel a slight breeze";	
-		}
-		else{
+		if (promiseWater[1] < 20 && promiseWater[1] > -20) {
+			clues[12] = "I love walking on this East and West road. I always feel a slight breeze";
+		} else {
 			clues[12] = "I need to drink more water if the suns out";
 		}
 		clues[13] = "I always go back home to refill my water bottle";
@@ -754,11 +764,11 @@ function main() {
 			clue = villageItems[i - 1];
 			place = i - 4;
 		}
-		if(health > 0)
+		if (health > 0)
 			var healthAmount = "1. Food: " + health + " for 1000 ml each";
 		else
 			var healthAmount = "1. No food here";
-		if(water > 0)
+		if (water > 0)
 			var waterAmount = "2. ml found: " + water;
 		else
 			var waterAmount = "2. No water here";
@@ -780,8 +790,8 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		c.strokeText("IN VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.fillText("IN VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.strokeText(healthAmount, (canvasWidth / 3), canvasHeight / 3);
 		c.fillText(healthAmount, (canvasWidth / 3), canvasHeight / 3);
 		c.strokeText(waterAmount, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
@@ -871,6 +881,29 @@ function main() {
 			travellerStats[i] = 0;
 			getWater = false;
 		}
+	}
+
+	function drawCaveUI(i) {
+		c.fillStyle = "rgba(0,25,75, 0.25)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 10;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "20px Arial";
+		c.strokeText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		
+	}
+
+	function drawBoatUI(i) {
+		c.fillStyle = "rgba(0,25,75, 0.25)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 10;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "20px Arial";
+		c.strokeText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 	}
 
 	var hurt = false;
@@ -1407,7 +1440,7 @@ function main() {
 	var humanSpeed = 40;
 	setInterval(function() {
 		//for loop
-		if (!inBattle && !inVillage && !inHome && !talking && !pause) {
+		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
 			for (var i = 0; i < humanEnemies.length; i += 2) {
 				if (humanEnemies[i] > player.X && humanEnemies[i] < 10 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
 					humanEnemies[i] -= othersSpeed;
@@ -1442,7 +1475,7 @@ function main() {
 	var fishSpeed = 25;
 	setInterval(function() {
 		//for loop
-		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause) {
+		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
 			for (var i = 0; i < fishEnemies.length; i += 2) {
 				if (fishEnemies[i] > player.X && fishEnemies[i] < 12 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
 					fishEnemies[i] -= othersSpeed;
@@ -1473,7 +1506,7 @@ function main() {
 	}, fishSpeed);
 
 	setInterval(function() {
-		if (!inVillage && !inBattle && !talking && !pause) {
+		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player2.X > player.X)
 				player2.X -= othersSpeed;
 			if (player2.X < player.X)
@@ -1485,7 +1518,7 @@ function main() {
 		}
 	}, 20);
 	setInterval(function() {
-		if (!inVillage && !inBattle && !talking && !pause) {
+		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player3.X > player.X)
 				player3.X -= othersSpeed;
 			if (player3.X < player.X)
@@ -1497,7 +1530,7 @@ function main() {
 		}
 	}, 25);
 	setInterval(function() {
-		if (!inVillage && !inBattle && !talking && !pause) {
+		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player4.X > player.X)
 				player4.X -= othersSpeed;
 			if (player4.X < player.X)
@@ -1656,7 +1689,7 @@ function main() {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goDown = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "S";
@@ -1664,7 +1697,7 @@ function main() {
 					}
 					break;
 				case keys.UP:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goUp = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "W";
@@ -1672,7 +1705,7 @@ function main() {
 					}
 					break;
 				case keys.LEFT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goLeft = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "A";
@@ -1680,7 +1713,7 @@ function main() {
 					}
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goRight = true;
 					else if (!inVillage && fishBat && inBattle) {
 						matchKey = "D";
@@ -1735,6 +1768,8 @@ function main() {
 						drinkCac = true;
 						enter = !enter;
 						talk = !talk;
+						enterCave = !enterCave;
+						enterBoat = !enterBoat;
 						if (player.SHOVEL == true)
 							dig = true;
 					}
@@ -1743,6 +1778,12 @@ function main() {
 					}
 					if (talking) {
 						talking = !talking;
+					}
+					if (inCave) {
+						inCave = !inCave;
+					}
+					if(inBoat){
+						inBoat = !inBoat;
 					}
 					if (inVillage) {
 						inVillage = !inVillage;
@@ -1768,19 +1809,19 @@ function main() {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goDown = false;
 					break;
 				case keys.UP:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goUp = false;
 					break;
 				case keys.LEFT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goLeft = false;
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goRight = false;
 					break;
 
@@ -1830,8 +1871,8 @@ function main() {
 
 	//decrease variables if situation
 	setInterval(function() {
-		if (!inBattle && !gameOver && !inHome && !pause && !youWin && !inVillage && !talking) {
-			if (inSun && player.WATER > 0 && day) 
+		if (!inBattle && !gameOver && !inHome && !pause && !youWin && !inVillage && !talking && !inCave && !inBoat) {
+			if (inSun && player.WATER > 0 && day)
 				player.WATER -= 5 * numOfPlayers;
 			if (!inSun && player.WATER > 0 && day)
 				player.WATER -= 3 * numOfPlayers;
@@ -1910,6 +1951,10 @@ function main() {
 	var talk = false;
 	var talking = false;
 	var getWater = false;
+	var enterCave = false;
+	var inCave = false;
+	var enterBoat = false;
+	var inBoat = false;
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
@@ -1954,11 +1999,35 @@ function main() {
 					}
 				}
 			}
-			drinkCac = false;
 			if (talking == false) {
 				talk = false;
 			}
+			if (enterCave && !inBattle) {
+				for (var i = 0; i < caves.length; i += 2) {
+					if (player.X == caves[i] && player.Y == caves[i + 1] + 1) {
+						inCave = true;
+						drawCaveUI(i);
+						break;
+					}
+				}
+			}
+			if (inCave == false) {
+				enterCave = false;
+			}
+			if (enterBoat && !inBattle) {
+				for (var i = 0; i < boats.length; i += 2) {
+					if (player.X == boats[i] && player.Y == boats[i + 1] + 1) {
+						inBoat = true;
+						drawBoatUI(i);
+						break;
+					}
+				}
+			}
+			if (inBoat == false) {
+				enterBoat = false;
+			}
 
+			drinkCac = false;
 			if (inSun) {
 				enter = false;
 			}
@@ -1995,7 +2064,7 @@ function main() {
 					}
 				}
 			}
-			if (inBattle || gameOver || inVillage || youWin || talking) {
+			if (inBattle || gameOver || inVillage || youWin || talking || inCave || inBoat) {
 				goDown = false;
 				goUp = false;
 				goRight = false;

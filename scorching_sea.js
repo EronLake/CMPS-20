@@ -1973,13 +1973,8 @@ function main() {
 						counter = 0;
 				case keys.SPACE:
 					if (inBattle) {
-<<<<<<< HEAD
 						document.getElementById("gunShot").volume = .25;
 			            document.getElementById("gunShot").play();
-=======
-						document.getElementById("gunShot").volume = .5;
-						document.getElementById("gunShot").play();
->>>>>>> d3710d315042869bae0ab99dbe6cad8b21612017
 						playerCount = count;
 						count = 0;
 						hurt = true;

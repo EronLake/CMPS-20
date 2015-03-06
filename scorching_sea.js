@@ -790,6 +790,7 @@ function main() {
 	var hurt = false;
 	var drawStart = 20;
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
+
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (44 - 24) + 24;
@@ -884,18 +885,6 @@ function main() {
 		hurt = false;
 	}
 
-	function homeUI() {
-		c.fillStyle = "rgba(0,25,75, 0.25)";
-		c.fillRect(0, 0, canvasWidth, canvasHeight);
-		c.lineWidth = 10;
-		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		c.font = "20px Arial";
-		c.strokeText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.fillText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.strokeText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
-		c.fillText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
-	}
 
 	function drawBattleScreen_fish(i, count, playerCount) {
 		//var drawEnd = Math.random() * (90 - 70) + 70;
@@ -920,7 +909,6 @@ function main() {
 			inBattle = false;
 			fishBat = false;
 			keysDone = false;
-			console.log("currKey: " + currKey + " hitKeys length: " + hitKeys.length);
 			hitKeys.length = 0;
 			currKey = 0;
 		}
@@ -931,6 +919,19 @@ function main() {
 			playerCount = 0;
 		}
 		hurt = false;
+	}
+	
+	function homeUI() {
+		c.fillStyle = "rgba(0,25,75, 0.25)";
+		c.fillRect(0, 0, canvasWidth, canvasHeight);
+		c.lineWidth = 10;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, 1)';
+		c.font = "20px Arial";
+		c.strokeText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
+		c.fillText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
 	}
 
 	function gameOverUI() {

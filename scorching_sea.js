@@ -36,6 +36,11 @@ rock3Img.src = 'Images/cool_rock_3.png';
 var rock3ShadowImg = new Image();
 rock3ShadowImg.src = 'Images/cool_rock_3_shadow.png';
 
+var shackImg = new Image();
+shackImg.src = 'Images/cool_shack_1.png';
+var shackShadowImg = new Image();
+shackShadowImg.src = 'Images/cool_shack_1_shadow.png';
+
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
 
@@ -184,11 +189,11 @@ function main() {
 	var experimental_useBitmapTiles = true;
 
 	// how many tiles do we show in the back ?
-	var viewBackDepth = 13;
+	var viewBackDepth = 12;
 	// how many tiles do we show in the front ?
-	var viewFrontDepth = 19;
+	var viewFrontDepth = 17;
 	// how many tiles do we show on the left ?
-	var viewLeftDepth = 8;
+	var viewLeftDepth = 6;
 	// how many tiles do we show on the right ?
 	var viewRightDepth = 9;
 
@@ -332,13 +337,18 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-50, -38, 64, 64);
+		c.drawImage(shackImg, -60, -70, 96, 96);
+		c.transform(1, 0, .7, -1, -8, 28);
+		c.drawImage(shackShadowImg, -55, -78, 92, 80);
+		c.restore();
+		c.save();
+		c.translate(pt[0], pt[1]);
 		c.lineWidth = 5;
-		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 		c.font = "10px Arial";
-		c.strokeText(homeWaterLev, -35, -32);
-		c.fillText(homeWaterLev, -35, -32);
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, .75)';
+		c.strokeText(homeWaterLev, -50, -20);
+		c.fillText(homeWaterLev, -50, -20);
 		c.restore();
 	}
 
@@ -520,6 +530,15 @@ function main() {
 	var villagePosX = 0;
 	var villagePosY = 0;
 	var villagePenPos = new Array();
+	var caveX = 0;
+	var caveY = 0;
+	var cavePos = new Array();
+	var boatX = 0;
+	var boatY = 0;
+	var boatPos = new Array();
+	var travelX = 0;
+	var travelY = 0;
+	var travelPos = new Array();
 	function drawUI() {
 		//draw ui sun
 		if (day) {
@@ -558,38 +577,9 @@ function main() {
 			var line = 20;
 			var space = 0;
 			c.lineWidth = 7;
-			c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-			c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 0, 0, .75)';
 			c.font = "15px Arial";
-			//c.strokeText(uvLevel, canvasWidth / 8, canvasHeight / 2 + line);
-			//c.fillText(uvLevel, canvasWidth / 8, canvasHeight / 2 + line);
-			//line += 20;
-			//c.strokeText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
-			//c.fillText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
-			//if (numOfPlayers > 1) {
-			//line += 20;
-			//c.strokeText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
-			//c.fillText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
-			//}
-			//if (numOfPlayers > 2) {
-			//line += 20;
-			//c.strokeText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
-			//c.fillText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
-			//}
-			//if (numOfPlayers > 3) {
-			//line += 20;
-			//c.strokeText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
-			//c.fillText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
-			//}
-			//line += 20;
-			//c.strokeText(waterLevel, canvasWidth / 8, canvasHeight / 2 + line);
-			//c.fillText(waterLevel, canvasWidth / 8, canvasHeight / 2 + line);
-			//line += 20;
-			//c.strokeText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
-			//c.fillText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
-			//line += 20;
-			//c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + line);
-			//c.fillText(time, canvasWidth / 8, canvasHeight / 8 + line);
 			if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true || player.PEN == true) {
 				line += 20;
 				c.strokeText("Items:", canvasWidth / 12, canvasHeight / 4 + line);
@@ -602,11 +592,11 @@ function main() {
 				if (player.DETECTOR == true) {
 					line += 20;
 					if (promiseWater[0] > -10 && promiseWater[0] < 10 && promiseWater[1] > -10 && promiseWater[1] < 10 && (counter + player.WATER) % 2 == 0) {
-						c.fillStyle = 'rgba(255, 100, 100, 0.75)';
+						c.fillStyle = 'rgba(255, 100, 100, 1)';
 					}
 					c.strokeText("Detector", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 					c.fillText("Detector", canvasWidth / 12 + 20, canvasHeight / 4 + line);
-					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+					c.fillStyle = 'rgba(255, 255, 255, 1)';
 				}
 				if (player.COMPASS == true) {
 					line += 20;
@@ -618,25 +608,35 @@ function main() {
 					c.strokeText("Map", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 					c.fillText("Map", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 					c.fillStyle = 'rgba(255, 255, 255, 0.5)';
-					c.fillRect(150, 400, tiles_dimension / 5, tiles_dimension / 5);
-					c.strokeText("-", 140, 425);
-					c.fillText("-", 140, 425);
-					c.strokeText("-", 170, 400);
-					c.fillText("-", 170, 400);
-					c.strokeText("+", 153 + tiles_dimension / 5, 380 + tiles_dimension / 5);
-					c.fillText("+", 153 + tiles_dimension / 5, 380 + tiles_dimension / 5);
-					c.strokeText("+", 125 + tiles_dimension / 5, 413 + tiles_dimension / 5);
-					c.fillText("+", 125 + tiles_dimension / 5, 413 + tiles_dimension / 5);
-					c.fillStyle = 'rgba(0, 0, 0, 1)';
+					c.fillRect(100, 400, tiles_dimension / 5, tiles_dimension / 5);
+					c.fillStyle = 'rgba(155, 155, 155, 0.5)';
+					c.fillRect(100 + tiles_dimension / 20, 400, 1, tiles_dimension / 5);
+					c.fillRect(100 + tiles_dimension / 10, 400, 1, tiles_dimension / 5);
+					c.fillRect(100 + tiles_dimension / (20 / 3), 400, 1, tiles_dimension / 5);
+					c.fillRect(100, 400 + tiles_dimension / 20, tiles_dimension / 5, 1);
+					c.fillRect(100, 400 + tiles_dimension / 10, tiles_dimension / 5, 1);
+					c.fillRect(100, 400 + tiles_dimension / (20 / 3), tiles_dimension / 5, 1);
 					if (player.PEN == true) {
-						c.fillRect(150 + (center[0] - 1) / 5, 400 + (center[1] - 1) / 5, 3, 3);
-						villagePenPos.push(villagePosX / 5);
-						villagePenPos.push(villagePosY / 5);
-						c.fillStyle = 'rgba(100, 75, 50, 1)';
+
+						c.fillStyle = 'rgba(145, 120, 110, 1)';
 						for (var j = 0; j < villagePenPos.length; j += 2) {
-							c.fillRect(150 + villagePenPos[j], 400 + villagePenPos[j + 1], 2, 2);
+							c.fillRect(100 + villagePenPos[j], 400 + villagePenPos[j + 1], 2, 2);
 						}
-						c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+						c.fillStyle = 'rgba(50, 25, 25, 1)';
+						for (var j = 0; j < cavePos.length; j += 2) {
+							c.fillRect(100 + cavePos[j], 400 + cavePos[j + 1], 2, 2);
+						}
+						c.fillStyle = 'rgba(200, 275, 175, 1)';
+						for (var j = 0; j < travelPos.length; j += 2) {
+							c.fillRect(100 + travelPos[j], 400 + travelPos[j + 1], 2, 2);
+						}
+						c.fillStyle = 'rgba(150, 150, 200, 1)';
+						for (var j = 0; j < boatPos.length; j += 2) {
+							c.fillRect(100 + boatPos[j], 400 + boatPos[j + 1], 2, 2);
+						}
+						c.fillStyle = 'rgba(0, 0, 0, 1)';
+						c.fillRect(100 + (center[0] + 2) / 5, 400 + (center[1] + 2) / 5, 2, 2);
+						c.fillStyle = 'rgba(255, 255, 255, 1)';
 					}
 				}
 				if (player.PEN == true) {
@@ -658,13 +658,11 @@ function main() {
 				c.fillStyle = 'rgba(255, 150, 200, 1)';
 			}
 			c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 50);
-			c.strokeText(waterLevel, canvasWidth / 12, canvasHeight / 8 + 40);
-			c.fillText(waterLevel, canvasWidth / 12, canvasHeight / 8 + 40);
-			c.strokeText("L", canvasWidth / 12 + 9, canvasHeight / 8 + 60);
-			c.fillText("L", canvasWidth / 12 + 9, canvasHeight / 8 + 60);
+			c.strokeText(waterLevel, canvasWidth / 12 - 20, canvasHeight / 8 + 50);
+			c.fillText(waterLevel, canvasWidth / 12 - 20, canvasHeight / 8 + 50);
 			//draw health bars
 			if (numOfPlayers > 0) {
-				space += 25;
+				space += 30;
 				c.fillStyle = 'rgba(0, 0, 0, 0.75)';
 				c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-100 + 100) + 5, 25, 100 + 10);
 				c.fillStyle = 'rgba(150, 150, 150, 0.75)';
@@ -711,7 +709,7 @@ function main() {
 				c.strokeText("P4", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
 				c.fillText("P4", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
 			}
-			space += 25;
+			space += 30;
 			c.fillStyle = 'rgba(0, 0, 0, 0.75)';
 			c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-player.UVORIG + player.UVORIG) + 5, 25, player.UVORIG + 10);
 			c.fillStyle = 'rgba(150, 150, 150, 0.75)';
@@ -725,6 +723,38 @@ function main() {
 		if (pause) {
 			c.fillStyle = "rgba(0,50,50, 0.5)";
 			c.fillRect(0, 0, canvasWidth, canvasHeight);
+			if (player.MAP == true) {
+				c.fillStyle = 'rgba(255, 255, 255, 0.5)';
+				c.fillRect(100, 100, tiles_dimension / 2, tiles_dimension / 2);
+				c.fillStyle = 'rgba(155, 155, 155, 0.5)';
+				c.fillRect(100 + tiles_dimension / 8, 100, 1, tiles_dimension / 2);
+				c.fillRect(100 + tiles_dimension / 4, 100, 1, tiles_dimension / 2);
+				c.fillRect(100 + tiles_dimension / (8 / 3), 100, 1, tiles_dimension / 2);
+				c.fillRect(100, 100 + tiles_dimension / 8, tiles_dimension / 2, 1);
+				c.fillRect(100, 100 + tiles_dimension / 4, tiles_dimension / 2, 1);
+				c.fillRect(100, 100 + tiles_dimension / (8 / 3), tiles_dimension / 2, 1);
+				if (player.PEN == true) {
+					c.fillStyle = 'rgba(145, 120, 110, 1)';
+					for (var j = 0; j < villagePenPos.length; j += 2) {
+						c.fillRect(100 + villagePenPos[j] * (5 / 2), 100 + villagePenPos[j + 1] * (5 / 2), 2, 2);
+					}
+					c.fillStyle = 'rgba(50, 25, 25, 1)';
+					for (var j = 0; j < cavePos.length; j += 2) {
+						c.fillRect(100 + cavePos[j] * (5 / 2), 100 + cavePos[j + 1] * (5 / 2), 2, 2);
+					}
+					c.fillStyle = 'rgba(200, 275, 175, 1)';
+					for (var j = 0; j < travelPos.length; j += 2) {
+						c.fillRect(100 + travelPos[j] * (5 / 2), 100 + travelPos[j + 1] * (5 / 2), 2, 2);
+					}
+					c.fillStyle = 'rgba(150, 150, 200, 1)';
+					for (var j = 0; j < boatPos.length; j += 2) {
+						c.fillRect(100 + boatPos[j] * (5 / 2), 100 + boatPos[j + 1] * (5 / 2), 2, 2);
+					}
+					c.fillStyle = 'rgba(0, 0, 0, 1)';
+					c.fillRect(100 + (center[0] + 2) / 2, 100 + (center[1] + 2) / 2, 2, 2);
+					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+				}
+			}
 			c.lineWidth = 10;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 0, 0, 1)';
@@ -914,6 +944,10 @@ function main() {
 		if (player.PEN == true && player.MAP == true) {
 			villagePosX = center[0];
 			villagePosY = center[1];
+			if (villagePenPos[villagePenPos.length - 2] != villagePosX/5 && villagePenPos[villagePenPos.length - 1] != villagePosY/5) {
+				villagePenPos.push(villagePosX / 5);
+				villagePenPos.push(villagePosY / 5);
+			}
 		}
 		if (getClue) {
 			setClues();
@@ -973,6 +1007,14 @@ function main() {
 			}
 			travellerStats[i + 1]--;
 			getFood = false;
+		}
+		if (player.PEN == true && player.MAP == true) {
+			travelX = center[0];
+			travelY = center[1];
+			if (travelPos[travelPos.length - 2] != travelX/5 && travelPos[travelPos.length - 1] != travelY/5) {
+				travelPos.push(travelX / 5);
+				travelPos.push(travelY / 5);
+			}
 		}
 	}
 
@@ -1047,6 +1089,14 @@ function main() {
 			caveStats[place + 3] = 0;
 			caveWater4 = false;
 		}
+		if (player.PEN == true && player.MAP == true) {
+			caveX = center[0];
+			caveY = center[1];
+			if (cavePos[cavePos.length - 2] != caveX/5 && cavePos[cavePos.length - 1] != caveY/5) {
+				cavePos.push(caveX / 5);
+				cavePos.push(caveY / 5);
+			}
+		}
 
 	}
 
@@ -1107,6 +1157,14 @@ function main() {
 			setBestClues();
 			c.strokeText(bestClues[boatClue], (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
 			c.fillText(bestClues[boatClue], (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+		}
+		if (player.PEN == true && player.MAP == true) {
+			boatX = center[0];
+			boatY = center[1];
+			if (boatPos[boatPos.length - 2] != boatX / 5 && boatPos[boatPos.length - 1] != boatY / 5) {
+				boatPos.push(boatX / 5);
+				boatPos.push(boatY / 5);
+			}
 		}
 
 	}
@@ -1191,6 +1249,7 @@ function main() {
 				player.WATER += Math.floor((Math.random() * (500 - 100)) + 100);
 				inBattle = false;
 				humBat = false;
+				humanEnemiesKilled++;
 				document.getElementById("wind").pause();
 				document.getElementById("wind").currentTime = 0;
 				enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
@@ -1199,11 +1258,11 @@ function main() {
 
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			var who = Math.ceil((Math.random() * numOfPlayers));
-			if (who == 1 && numOfPlayers > 0){
+			if (who == 1 && numOfPlayers > 0) {
 				document.getElementById("maleGruntSnd1").play();
 				player.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
-			if (who == 2 && numOfPlayers > 1){
+			if (who == 2 && numOfPlayers > 1) {
 				document.getElementById("maleGruntSnd2").play();
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
@@ -1243,6 +1302,7 @@ function main() {
 			keysDone = false;
 			hitKeys.length = 0;
 			currKey = 0;
+			fishEnemiesKilled++;
 		}
 		//If you do not beat the fish, lose some health and continue fight
 		if (hurt == true) {
@@ -1268,6 +1328,8 @@ function main() {
 
 	function gameOverUI() {
 		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
+		var humKilled = "Killed " + humanEnemiesKilled + " bandits";
+		var fishKilled = "Killed " + fishEnemiesKilled + " gamma fishes";
 		c.textAlign = "center";
 		c.fillStyle = "rgba(25, 25, 55, 0.90)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1277,11 +1339,18 @@ function main() {
 		c.font = "30px Arial";
 		c.strokeText("THE SCORCHING SEA HAS CLAIMED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
 		c.fillText("THE SCORCHING SEA HAS CLAMIED ANOTHER VICTIM", (canvasWidth / 2), (canvasHeight / 2) - 60);
-		c.strokeText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
-		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) + 60);
+		c.strokeText(time, (canvasWidth / 2), (canvasHeight / 2) - 20);
+		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) - 20);
+		c.strokeText(humKilled, (canvasWidth / 2), (canvasHeight / 2) + 20);
+		c.fillText(humKilled, (canvasWidth / 2), (canvasHeight / 2) + 20);
+		c.strokeText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
+		c.fillText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
 	}
 
 	function winScreen() {
+		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
+		var humKilled = "Killed " + humanEnemiesKilled + " bandits";
+		var fishKilled = "Killed " + fishEnemiesKilled + " gamma fishes";
 		c.textAlign = "center";
 		c.fillStyle = "rgba(225, 255, 255, 0.90)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1291,6 +1360,12 @@ function main() {
 		c.font = "30px Arial";
 		c.strokeText("FOUND ATLANTIS", (canvasWidth / 2), (canvasHeight / 2) - 60);
 		c.fillText("FOUND ATLANTIS", (canvasWidth / 2), (canvasHeight / 2) - 60);
+		c.strokeText(time, (canvasWidth / 2), (canvasHeight / 2) - 20);
+		c.fillText(time, (canvasWidth / 2), (canvasHeight / 2) - 20);
+		c.strokeText(humKilled, (canvasWidth / 2), (canvasHeight / 2) + 20);
+		c.fillText(humKilled, (canvasWidth / 2), (canvasHeight / 2) + 20);
+		c.strokeText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
+		c.fillText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
 	}
 
 	//var centerX = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));
@@ -1318,17 +1393,17 @@ function main() {
 	//multiples of 8
 	var caves = new Array(1200);
 	//multiples of 12
-	var boats = new Array(6000);
+	var boats = new Array(120);
 
 	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length + caves.length + boats.length;
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
 	//multiples of 2
-	var humanEnemies = new Array(4000);
-	var fishEnemies = new Array(6500);
+	var humanEnemies = new Array(2000);
+	var fishEnemies = new Array(3000);
 	var fishOrig = new Array(fishEnemies.length);
-	var travellers = new Array(500);
+	var travellers = new Array(100);
 
 	//items/stats
 	var travellerStats = new Array(travellers.length);
@@ -1372,7 +1447,7 @@ function main() {
 	};
 
 	var homeBase = {
-		WATER : 25000
+		WATER : 20000
 	};
 
 	//------------------------------------------
@@ -1510,9 +1585,8 @@ function main() {
 	shadows[i] = player.Y;
 	promiseWater[0] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	promiseWater[1] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
-	var finalX = promiseWater[0];
-	var finalY = promiseWater[1];
-	console.log(finalX, finalY);
+	var finalX = promiseWater[0] + tiles_dimension / 2;
+	var finalY = promiseWater[1] + tiles_dimension / 2;
 	//create human enemy positions
 	for (var i = 0; i < humanEnemies.length; i++) {
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
@@ -2099,7 +2173,8 @@ function main() {
 			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range)
 				drawBoat(boats[i], boats[i + 1]);
 		}
-		drawHomeBase(homeBase[0], homeBase[1]);
+		if (homeBase[0] < range && homeBase[0] > -range && homeBase[1] < range && homeBase[1] > -range)
+			drawHomeBase(homeBase[0], homeBase[1]);
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
 			drawPlayer(player4.X - .3, player4.Y - .3);
 		if (player3.HEALTH > 0 && numOfPlayers > 2)
@@ -2129,10 +2204,14 @@ function main() {
 				if (numOfPlayers > 3)
 					player4.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
 			}
-			if (!inSun && player.UV != player.UVORIG)
-				player.UV += 11;
+
 		}
 	}, 400);
+
+	setInterval(function() {
+		if (!inSun && player.UV < player.UVORIG && !inVillage && !inBoat && !inBattle && !inCave && !talking)
+			player.UV++;
+	}, 30);
 
 	function normalStats() {
 		if (player.HEALTH < 0)
@@ -2203,6 +2282,8 @@ function main() {
 	var caveWater4 = false;
 	var enterBoat = false;
 	var inBoat = false;
+	var humanEnemiesKilled = 0;
+	var fishEnemiesKilled = 0;
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
@@ -2364,8 +2445,8 @@ function main() {
 				}
 
 				//if found sacred water
-				if(promiseWater[0] < 10 && promiseWater[0] > -10 && promiseWater[1] < 10  && promiseWater[1] > -10 && dig == true)
-					youWin = true;	
+				if (promiseWater[0] < 10 && promiseWater[0] > -10 && promiseWater[1] < 10 && promiseWater[1] > -10 && dig == true)
+					youWin = true;
 			}
 
 			//if at base, refill water and use base's water supply and press enter

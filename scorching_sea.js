@@ -619,9 +619,17 @@ function main() {
 					c.fillText("Map", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 					c.fillStyle = 'rgba(255, 255, 255, 0.5)';
 					c.fillRect(150, 400, tiles_dimension / 5, tiles_dimension / 5);
+					c.strokeText("-", 140, 425);
+					c.fillText("-", 140, 425);
+					c.strokeText("-", 170, 400);
+					c.fillText("-", 170, 400);
+					c.strokeText("+", 153 + tiles_dimension / 5, 380 + tiles_dimension / 5);
+					c.fillText("+", 153 + tiles_dimension / 5, 380 + tiles_dimension / 5);
+					c.strokeText("+", 125 + tiles_dimension / 5, 413 + tiles_dimension / 5);
+					c.fillText("+", 125 + tiles_dimension / 5, 413 + tiles_dimension / 5);
 					c.fillStyle = 'rgba(0, 0, 0, 1)';
-					c.fillRect(150 + (center[0] - 1) / 5, 400 + (center[1] - 1) / 5, 3, 3);
 					if (player.PEN == true) {
+						c.fillRect(150 + (center[0] - 1) / 5, 400 + (center[1] - 1) / 5, 3, 3);
 						villagePenPos.push(villagePosX / 5);
 						villagePenPos.push(villagePosY / 5);
 						c.fillStyle = 'rgba(100, 75, 50, 1)';
@@ -728,8 +736,6 @@ function main() {
 
 	var clues = new Array(20);
 	function setClues() {
-		var finalX = promiseWater[0];
-		var finalY = promiseWater[1];
 		if (promiseWater[1] > 0) {
 			clues[0] = "I heard the 'Promise Land' is down South.";
 		} else {
@@ -743,7 +749,7 @@ function main() {
 		}
 		clues[2] = "A compass always points home.";
 		clues[3] = "If you have pen and paper you will know where we are";
-		if ((promiseWater[0] > tiles_dimension / 2 || promiseWater[0] < -tiles_dimension / 2) && (promiseWater[1] > tiles_dimension / 2 || promiseWater[1] < -tiles_dimension / 2)) {
+		if ((finalX > tiles_dimension / 2 || finalX < -tiles_dimension / 2) && (finalY > tiles_dimension / 2 || finalY < -tiles_dimension / 2)) {
 			clues[4] = "I have never heard any stories of the promise land around this part";
 		} else {
 			clues[4] = "I felt a stange disturbance on my walk to the other village";
@@ -771,25 +777,32 @@ function main() {
 		clues[13] = "I always go back home to refill my water bottle";
 		clues[14] = "Don't tell me you are looking for the 'Promise Land' too!";
 		clues[15] = "It is cooler at night...but a lot more scarier.";
-		clues[16] = "My father got devoured by those quick things!";
+		clues[16] = "Your house is the center of everything, did ya know?";
 		clues[17] = "I never get tired at night!";
 		clues[18] = "My favorite drink is cactus water.";
-		clues[19] = "Water...";
+		clues[19] = "I heard this area is " + tiles_dimension + "x" + tiles_dimension + " big!";
 	}
 
 	//clues to be put in boats
 	var bestClues = new Array(10);
 	function setBestClues() {
-		bestClues[0] = "We were just about " + (promiseWater[0] + Math.floor(Math.random() * (20) - 10)) + " away...";
-		bestClues[1] = "We were just about " + (promiseWater[1] + Math.floor(Math.random() * (20) - 10)) + " away...";
-		bestClues[2] = "";
-		bestClues[3] = "";
-		bestClues[4] = "";
-		bestClues[5] = "";
-		bestClues[6] = "";
-		bestClues[7] = "";
-		bestClues[8] = "";
-		bestClues[9] = "";
+		bestClues[0] = "We were just about " + Math.sqrt(promiseWater[0] * promiseWater[0]) + " away...";
+		bestClues[1] = "We were just about " + Math.sqrt(promiseWater[1] * promiseWater[1]) + " away...";
+		bestClues[2] = "Go..." + Math.sqrt(promiseWater[0] * promiseWater[0]) + "...then..." + Math.sqrt(promiseWater[1] * promiseWater[1]);
+		bestClues[3] = "Go..." + Math.sqrt(promiseWater[1] * promiseWater[1]) + "...then..." + Math.sqrt(promiseWater[0] * promiseWater[0]);
+		if (finalX > tiles_dimension / 2 && finalY > tiles_dimension / 2)
+			bestClues[4] = "It lays in the South East Quadrant";
+		if (finalX > tiles_dimension / 2 && finalY < tiles_dimension / 2)
+			bestClues[4] = "It lays in the North East Quadrant";
+		if (finalX < tiles_dimension / 2 && finalY > tiles_dimension / 2)
+			bestClues[4] = "It lays in the South West Quadrant";
+		if (finalX < tiles_dimension / 2 && finalY < tiles_dimension / 2)
+			bestClues[4] = "It lays in the North West Quadrant";
+		bestClues[5] = "Its at..." + finalX + "...I tell ya!";
+		bestClues[6] = "Its at..." + finalY + "...I tell ya!";
+		bestClues[7] = "If only we knew where " + finalX + "," + finalY + "was at!";
+		bestClues[8] = "Was is " + finalX + "," + finalY + " or " + finalY + "," + finalX + "?";
+		bestClues[9] = "Was is " + finalY + "," + finalX + " or " + finalX + "," + finalY + "?";
 	}
 
 	var buyHealth = false;
@@ -910,8 +923,8 @@ function main() {
 			if (clue % 12 == 0 && player.PEN == true) {
 				villagePosY = center[1];
 			}
-			c.strokeText(clues[clue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
-			c.fillText(clues[clue % 12], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+			c.strokeText(clues[clue], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
+			c.fillText(clues[clue], (canvasWidth / 3) + 40, (canvasHeight / 3) + 120);
 		}
 		if (!getClue) {
 			pickClue = Math.floor(Math.random() * clues.length);
@@ -1042,6 +1055,7 @@ function main() {
 		var boatItemString;
 		var boatClue;
 		var place = i;
+		var foundClue = "2. What does this paper say?";
 		if (i % 12 == 0) {
 			boatItem = boatStats[i];
 			boatClue = boatStats[i + 1];
@@ -1073,8 +1087,8 @@ function main() {
 		c.fillText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.strokeText(boatItemString, (canvasWidth / 3), canvasHeight / 3);
 		c.fillText(boatItemString, (canvasWidth / 3), canvasHeight / 3);
-		c.strokeText(boatClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
-		c.fillText(boatClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.strokeText(foundClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.fillText(foundClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		if (getBoatItem) {
 			if (boatItem == 1)
 				player.SHOVEL = true;
@@ -1089,6 +1103,12 @@ function main() {
 			boatStats[place] = 0;
 			getBoatItem = false;
 		}
+		if (getBoatClue) {
+			setBestClues();
+			c.strokeText(bestClues[boatClue], (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+			c.fillText(bestClues[boatClue], (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
+		}
+
 	}
 
 	var hurt = false;
@@ -1178,12 +1198,14 @@ function main() {
 
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			var who = Math.ceil((Math.random() * numOfPlayers));
-			if (who == 1 && numOfPlayers > 0)
+			if (who == 1 && numOfPlayers > 0){
 				document.getElementById("maleGruntSnd1").play();
 				player.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
-			if (who == 2 && numOfPlayers > 1)
-			    document.getElementById("maleGruntSnd2").play();
+			}
+			if (who == 2 && numOfPlayers > 1){
+				document.getElementById("maleGruntSnd2").play();
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
+			}
 			if (who == 3 && numOfPlayers > 2)
 				player3.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			if (who == 4 && numOfPlayers > 3)
@@ -1295,7 +1317,7 @@ function main() {
 	//multiples of 8
 	var caves = new Array(1200);
 	//multiples of 12
-	var boats = new Array(600);
+	var boats = new Array(6000);
 
 	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length + caves.length + boats.length;
 	var allObjects = new Array(objectSize);
@@ -1323,11 +1345,11 @@ function main() {
 		UVORIG : 100,
 		UV : 100,
 		HEALTH : 100,
-		SHOVEL : false,
-		DETECTOR : false,
-		COMPASS : false,
-		MAP : false,
-		PEN : false
+		SHOVEL : true,
+		DETECTOR : true,
+		COMPASS : true,
+		MAP : true,
+		PEN : true
 	};
 
 	var player2 = {
@@ -1487,7 +1509,9 @@ function main() {
 	shadows[i] = player.Y;
 	promiseWater[0] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	promiseWater[1] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
-
+	var finalX = promiseWater[0];
+	var finalY = promiseWater[1];
+	console.log(finalX, finalY);
 	//create human enemy positions
 	for (var i = 0; i < humanEnemies.length; i++) {
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
@@ -1942,6 +1966,8 @@ function main() {
 						getWater = true;
 					if (inCave)
 						caveWater2 = true;
+					if (inBoat)
+						getBoatClue = true;
 					break;
 				case keys.THREE:
 					if (inVillage && player.WATER > 1000)
@@ -1974,7 +2000,7 @@ function main() {
 				case keys.SPACE:
 					if (inBattle) {
 						document.getElementById("gunShot").volume = .25;
-			            document.getElementById("gunShot").play();
+						document.getElementById("gunShot").play();
 						playerCount = count;
 						count = 0;
 						hurt = true;
@@ -1988,26 +2014,23 @@ function main() {
 						if (player.SHOVEL == true)
 							dig = true;
 					}
-					if (nearHome) {
+					if (nearHome)
 						inHome = false;
-					}
-					if (talking) {
+					if (talking)
 						talking = !talking;
-					}
-					if (inCave) {
+					if (inCave)
 						inCave = !inCave;
-					}
-					if (inBoat) {
+					if (inBoat)
 						inBoat = !inBoat;
-					}
 					if (inVillage) {
 						inVillage = !inVillage;
 						document.getElementById('village').pause();
-				        document.getElementById('village').currentTime = 0;
+						document.getElementById('village').currentTime = 0;
 					}
-					if (getClue) {
+					if (getClue)
 						getClue = false;
-					}
+					if (getBoatClue)
+						getBoatClue = false;
 					break;
 				};
 			} else {
@@ -2170,6 +2193,7 @@ function main() {
 	var getWater = false;
 	var getFood = false;
 	var getBoatItem = false;
+	var getBoatClue = false;
 	var enterCave = false;
 	var inCave = false;
 	var caveWater1 = false;
@@ -2181,7 +2205,7 @@ function main() {
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
-		//console.log(promiseWater[0], promiseWater[1]);
+		console.log(promiseWater[0], promiseWater[1]);
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();
@@ -2339,10 +2363,8 @@ function main() {
 				}
 
 				//if found sacred water
-				if (5 <= promiseWater[0] && -5 >= promiseWater[0] && 5 <= promiseWater[1] && -5 >= promiseWater[1] && dig == true) {
-					youWin = true;
-				}
-
+				if(promiseWater[0] < 10 && promiseWater[0] > -10 && promiseWater[1] < 10  && promiseWater[1] > -10 && dig == true)
+					youWin = true;	
 			}
 
 			//if at base, refill water and use base's water supply and press enter

@@ -532,125 +532,188 @@ function main() {
 			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
 
-		//text
-		var waterLevel = "ml: " + player.WATER;
-		var uvLevel = "Integrity: " + player.UV;
-		var hpLevel = "P1 Health: " + player.HEALTH;
-		var hpLevel2 = "P2 Health: " + player2.HEALTH;
-		var hpLevel3 = "P3 Health: " + player3.HEALTH;
-		var hpLevel4 = "P4 Health: " + player4.HEALTH;
-		var homeWaterLev = "Home ml: " + homeBase.WATER;
-		var homeDir = "Compass: ";
-		if (homeBase[1] + 1 < player.Y) {
-			homeDir += "North ";
-		} else {
-			homeDir += "South ";
-		}
-		if (homeBase[0] > player.X) {
-			homeDir += "East";
-		} else {
-			homeDir += "West";
-		}
-		if (homeBase[0] == player.X && homeBase[1] + 1 == player.Y) {
-			homeDir = "Compass: X";
-		}
-		var time = Math.floor(counter / 60) + " : " + counter % 60;
-		var line = 20;
-		c.lineWidth = 7;
-		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-		c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
-		c.font = "15px Arial";
-		c.strokeText(uvLevel, canvasWidth / 8, canvasHeight / 8 + line);
-		c.fillText(uvLevel, canvasWidth / 8, canvasHeight / 8 + line);
-		line += 20;
-		c.strokeText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
-		c.fillText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
-		if (numOfPlayers > 1) {
-			line += 20;
-			c.strokeText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
-			c.fillText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
-		}
-		if (numOfPlayers > 2) {
-			line += 20;
-			c.strokeText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
-			c.fillText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
-		}
-		if (numOfPlayers > 3) {
-			line += 20;
-			c.strokeText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
-			c.fillText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
-		}
-		line += 20;
-		c.strokeText(waterLevel, canvasWidth / 8, canvasHeight / 8 + line);
-		c.fillText(waterLevel, canvasWidth / 8, canvasHeight / 8 + line);
-		line += 20;
-		c.strokeText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
-		c.fillText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
-		line += 20;
-		c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + line);
-		c.fillText(time, canvasWidth / 8, canvasHeight / 8 + line);
-
-		if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true || player.PEN == true) {
-			line += 20;
-			c.strokeText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
-			c.fillText("Items:", canvasWidth / 8, canvasHeight / 8 + line);
-			if (player.SHOVEL == true) {
-				line += 20;
-				c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
-				c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+		if (!pause) {
+			var waterLevel = player.WATER;
+			var uvLevel = "Integrity: " + player.UV;
+			var hpLevel = "P1 Health: " + player.HEALTH;
+			var hpLevel2 = "P2 Health: " + player2.HEALTH;
+			var hpLevel3 = "P3 Health: " + player3.HEALTH;
+			var hpLevel4 = "P4 Health: " + player4.HEALTH;
+			var homeWaterLev = "Home ml: " + homeBase.WATER;
+			var homeDir = "Compass: ";
+			if (homeBase[1] + 1 < player.Y) {
+				homeDir += "North ";
+			} else {
+				homeDir += "South ";
 			}
-			if (player.DETECTOR == true) {
+			if (homeBase[0] > player.X) {
+				homeDir += "East";
+			} else {
+				homeDir += "West";
+			}
+			if (homeBase[0] == player.X && homeBase[1] + 1 == player.Y) {
+				homeDir = "Compass: X";
+			}
+			var time = Math.floor(counter / 60) + " : " + counter % 60;
+			var line = 20;
+			var space = 0;
+			c.lineWidth = 7;
+			c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+			c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
+			c.font = "15px Arial";
+			//c.strokeText(uvLevel, canvasWidth / 8, canvasHeight / 2 + line);
+			//c.fillText(uvLevel, canvasWidth / 8, canvasHeight / 2 + line);
+			//line += 20;
+			//c.strokeText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
+			//c.fillText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
+			//if (numOfPlayers > 1) {
+				//line += 20;
+				//c.strokeText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
+				//c.fillText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
+			//}
+			//if (numOfPlayers > 2) {
+				//line += 20;
+				//c.strokeText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
+				//c.fillText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
+			//}
+			//if (numOfPlayers > 3) {
+				//line += 20;
+				//c.strokeText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
+				//c.fillText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
+			//}
+			//line += 20;
+			//c.strokeText(waterLevel, canvasWidth / 8, canvasHeight / 2 + line);
+			//c.fillText(waterLevel, canvasWidth / 8, canvasHeight / 2 + line);
+			//line += 20;
+			//c.strokeText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
+			//c.fillText(homeWaterLev, canvasWidth / 8, canvasHeight / 8 + line);
+			//line += 20;
+			//c.strokeText(time, canvasWidth / 8, canvasHeight / 8 + line);
+			//c.fillText(time, canvasWidth / 8, canvasHeight / 8 + line);
+			if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true || player.PEN == true) {
 				line += 20;
-				if (promiseWater[0] > -10 && promiseWater[0] < 10 && promiseWater[1] > -10 && promiseWater[1] < 10 && (counter + player.WATER) % 2 == 0) {
-					c.fillStyle = 'rgba(255, 100, 100, 0.75)';
+				c.strokeText("Items:", canvasWidth / 8, canvasHeight / 2 + line);
+				c.fillText("Items:", canvasWidth / 8, canvasHeight / 2 + line);
+				if (player.SHOVEL == true) {
+					line += 20;
+					c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 2 + line);
 				}
-				c.strokeText("Detector", canvasWidth / 8 + 20, canvasHeight / 8 + line);
-				c.fillText("Detector", canvasWidth / 8 + 20, canvasHeight / 8 + line);
-				c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-			}
-			if (player.COMPASS == true) {
-				line += 20;
-				c.strokeText(homeDir, canvasWidth / 8 + 20, canvasHeight / 8 + line);
-				c.fillText(homeDir, canvasWidth / 8 + 20, canvasHeight / 8 + line);
-			}
-			if (player.MAP == true) {
-				line += 20;
-				c.strokeText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
-				c.fillText("Map", canvasWidth / 8 + 20, canvasHeight / 8 + line);
-				c.fillStyle = 'rgba(255, 255, 255, 0.5)';
-				c.fillRect(150, 400, tiles_dimension / 5, tiles_dimension / 5);
-				c.fillStyle = 'rgba(0, 0, 0, 1)';
-				c.fillRect(150 + (center[0] - 1) / 5, 400 + (center[1] - 1) / 5, 3, 3);
-				if (player.PEN == true) {
-					villagePenPos.push(villagePosX / 5);
-					villagePenPos.push(villagePosY / 5);
-					c.fillStyle = 'rgba(100, 75, 50, 1)';
-					for (var j = 0; j < villagePenPos.length; j += 2) {
-						c.fillRect(150 + villagePenPos[j], 400 + villagePenPos[j + 1], 2, 2);
+				if (player.DETECTOR == true) {
+					line += 20;
+					if (promiseWater[0] > -10 && promiseWater[0] < 10 && promiseWater[1] > -10 && promiseWater[1] < 10 && (counter + player.WATER) % 2 == 0) {
+						c.fillStyle = 'rgba(255, 100, 100, 0.75)';
 					}
+					c.strokeText("Detector", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.fillText("Detector", canvasWidth / 8 + 20, canvasHeight / 2 + line);
 					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 				}
+				if (player.COMPASS == true) {
+					line += 20;
+					c.strokeText(homeDir, canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.fillText(homeDir, canvasWidth / 8 + 20, canvasHeight / 2 + line);
+				}
+				if (player.MAP == true) {
+					line += 20;
+					c.strokeText("Map", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.fillText("Map", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.fillStyle = 'rgba(255, 255, 255, 0.5)';
+					c.fillRect(150, 400, tiles_dimension / 5, tiles_dimension / 5);
+					c.fillStyle = 'rgba(0, 0, 0, 1)';
+					c.fillRect(150 + (center[0] - 1) / 5, 400 + (center[1] - 1) / 5, 3, 3);
+					if (player.PEN == true) {
+						villagePenPos.push(villagePosX / 5);
+						villagePenPos.push(villagePosY / 5);
+						c.fillStyle = 'rgba(100, 75, 50, 1)';
+						for (var j = 0; j < villagePenPos.length; j += 2) {
+							c.fillRect(150 + villagePenPos[j], 400 + villagePenPos[j + 1], 2, 2);
+						}
+						c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+					}
+				}
+				if (player.PEN == true) {
+					line += 20;
+					c.strokeText("Pen", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.fillText("Pen", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+				}
 			}
-			if (player.PEN == true) {
-				line += 20;
-				c.strokeText("Pen", canvasWidth / 8 + 20, canvasHeight / 8 + line);
-				c.fillText("Pen", canvasWidth / 8 + 20, canvasHeight / 8 + line);
+
+			//draw water meter
+			var divWater = (player.WATERORIG) / (player.WATERORIG / 400);
+			c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+			c.fillRect(canvasWidth / 12, canvasHeight / 8 + ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
+			c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+			c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 10, 15, (player.WATERORIG / divWater + player.WATERORIG / divWater));
+			if (!inSun) {
+				c.fillStyle = 'rgba(100, 100, 255, 1)';
+			} else {
+				c.fillStyle = 'rgba(255, 150, 200, 1)';
 			}
-		}
+			c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 50);
+			c.strokeText(waterLevel, canvasWidth / 12, canvasHeight / 8 + 40);
+			c.fillText(waterLevel, canvasWidth / 12, canvasHeight / 8 + 40);
+			c.strokeText("L", canvasWidth / 12 + 9, canvasHeight / 8 + 60);
+			c.fillText("L", canvasWidth / 12 + 9, canvasHeight / 8 + 60);
+			//draw health bars
+			if (numOfPlayers > 0) {
+				space += 25;
+				c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+				c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-100 + 100) + 5, 25, 100 + 10);
+				c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+				c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + (-100 + 100) + 10, 15, 100);
+				c.fillStyle = 'rgba(200, ' + player.HEALTH * 2 + ', ' + (player.HEALTH * 2 + 55) + ', 1)';
+				if (player.HEALTH > 0)
+					c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + -player.HEALTH + 100 + 10, 15, player.HEALTH);
+				c.strokeText("P1", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+				c.fillText("P1", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+			}
+			if (numOfPlayers > 1) {
+				space += 25;
+				c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+				c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-100 + 100) + 5, 25, 100 + 10);
+				c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+				c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + (-100 + 100) + 10, 15, 100);
+				if (player2.HEALTH > 0)
+					c.fillStyle = 'rgba(200, ' + player2.HEALTH * 2 + ', ' + (player2.HEALTH * 2 + 55) + ', 1)';
+				c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + -player2.HEALTH + 100 + 10, 15, player2.HEALTH);
+				c.strokeText("P2", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+				c.fillText("P2", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+			}
+			if (numOfPlayers > 2) {
+				space += 25;
+				c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+				c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-100 + 100) + 5, 25, 100 + 10);
+				c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+				c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + (-100 + 100) + 10, 15, 100);
+				if (player3.HEALTH > 0)
+					c.fillStyle = 'rgba(200, ' + player3.HEALTH * 2 + ', ' + (player3.HEALTH * 2 + 55) + ', 1)';
+				c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + -player3.HEALTH + 100 + 10, 15, player3.HEALTH);
+				c.strokeText("P3", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+				c.fillText("P3", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+			}
+			if (numOfPlayers > 3) {
+				space += 25;
+				c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+				c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-100 + 100) + 5, 25, 100 + 10);
+				c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+				c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + (-100 + 100) + 10, 15, 100);
+				if (player4.HEALTH > 0)
+					c.fillStyle = 'rgba(200, ' + player4.HEALTH * 2 + ', ' + (player4.HEALTH * 2 + 55) + ', 1)';
+				c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + -player4.HEALTH + 100 + 10, 15, player4.HEALTH);
+				c.strokeText("P4", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+				c.fillText("P4", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+			}
+			space += 25;
+			c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+			c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-player.UVORIG + player.UVORIG) + 5, 25, player.UVORIG + 10);
+			c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+			c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + (-player.UVORIG + player.UVORIG) + 10, 15, player.UVORIG);
+			c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
+			c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + -player.UV + 100 + 10, 15, player.UV);
+			c.strokeText("UV", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
+			c.fillText("UV", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
 
-		//draw water meter
-		var divWater = player.WATERORIG / (player.WATERORIG / 500);
-		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
-		c.fillRect(canvasWidth / 12, canvasHeight / 8 + ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 5, 25, (player.WATERORIG / divWater + player.WATERORIG / divWater) + 10);
-		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
-		c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + ((-player.WATERORIG / divWater) + player.WATERORIG / divWater) + 10, 15, (player.WATERORIG / divWater + player.WATERORIG / divWater));
-		if (!inSun) {
-			c.fillStyle = 'rgba(100, 100, 255, 0.9)';
-		} else {
-			c.fillStyle = 'rgba(255, 150, 200, 0.9)';
 		}
-		c.fillRect(canvasWidth / 12 + 5, canvasHeight / 8 + player.WATERORIG / divWater * 2 - player.WATER / (divWater / 2) + 10, 15, ((player.WATER / divWater * 2) + player.WATERORIG / (divWater)) - 40);
-
 		if (pause) {
 			c.fillStyle = "rgba(0,50,50, 0.5)";
 			c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -960,6 +1023,31 @@ function main() {
 	}
 
 	function drawBoatUI(i) {
+		var boatItem;
+		var boatItemString;
+		var boatClue;
+		var place = i;
+		if (i % 12 == 0) {
+			boatItem = boatStats[i];
+			boatClue = boatStats[i + 1];
+		}
+		if (i % 12 == 2) {
+			boatItem = boatStats[i - 2];
+			boatClue = boatStats[i - 1];
+			place = i - 2;
+		}
+		if (boatItem == 0)
+			var boatItemString = "Nothing in here";
+		if (boatItem == 1)
+			var boatItemString = "1. Item found: Shovel";
+		if (boatItem == 2)
+			var boatItemString = "1. Item found: Detector";
+		if (boatItem == 3)
+			var boatItemString = "1. Item found: Compass";
+		if (boatItem == 4)
+			var boatItemString = "1. Item found: Map";
+		if (boatItem == 5)
+			var boatItemString = "1. Item found: Pen";
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
@@ -968,6 +1056,24 @@ function main() {
 		c.font = "20px Arial";
 		c.strokeText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText(boatItemString, (canvasWidth / 3), canvasHeight / 3);
+		c.fillText(boatItemString, (canvasWidth / 3), canvasHeight / 3);
+		c.strokeText(boatClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		c.fillText(boatClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
+		if (getBoatItem) {
+			if (boatItem == 1)
+				player.SHOVEL = true;
+			if (boatItem == 2)
+				player.DETECTOR = true;
+			if (boatItem == 3)
+				player.COMPASS = true;
+			if (boatItem == 4)
+				player.MAP = true;
+			if (boatItem == 5)
+				player.PEN = true;
+			boatStats[place] = 0;
+			getBoatItem = false;
+		}
 	}
 
 	var hurt = false;
@@ -1325,6 +1431,10 @@ function main() {
 	}
 
 	for (var j = 0; j < boats.length; j = j + 12) {
+		//item
+		boatStats[j] = Math.floor((Math.random() * (6 - 1)) + 1);
+		//helpful clues
+		boatStats[j + 1] = Math.floor((Math.random() * (11 - 1)) + 1);
 		boats[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		boats[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
 		boats[j + 2] = boats[j] + 1;
@@ -1803,6 +1913,8 @@ function main() {
 						getFood = true;
 					if (inCave)
 						caveWater1 = true;
+					if (inBoat)
+						getBoatItem = true;
 					break;
 				case keys.TWO:
 					if (inVillage)
@@ -1845,7 +1957,7 @@ function main() {
 				case keys.SPACE:
 					if (inBattle) {
 						document.getElementById("gunShot").volume = .5;
-			            document.getElementById("gunShot").play();
+						document.getElementById("gunShot").play();
 						playerCount = count;
 						count = 0;
 						hurt = true;
@@ -2038,6 +2150,7 @@ function main() {
 	var talking = false;
 	var getWater = false;
 	var getFood = false;
+	var getBoatItem = false;
 	var enterCave = false;
 	var inCave = false;
 	var caveWater1 = false;

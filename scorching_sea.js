@@ -998,9 +998,9 @@ function main() {
 		c.font = "60px Arial";
 		if (count > (drawStart + randDrawSpeed)) {
 			c.strokeText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
-			c.fillText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
 			document.getElementById("weaponDraw").volume = .5;
 			document.getElementById("weaponDraw").play();
+			c.fillText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
 		}
 		c.lineWidth = 10;
 		c.font = "20px Arial";
@@ -1058,8 +1058,10 @@ function main() {
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			var who = Math.ceil((Math.random() * numOfPlayers));
 			if (who == 1 && numOfPlayers > 0)
+				document.getElementById("maleGruntSnd1").play();
 				player.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			if (who == 2 && numOfPlayers > 1)
+			    document.getElementById("maleGruntSnd2").play();
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			if (who == 3 && numOfPlayers > 2)
 				player3.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
@@ -1844,7 +1846,7 @@ function main() {
 						counter = 0;
 				case keys.SPACE:
 					if (inBattle) {
-						document.getElementById("gunShot").volume = .5;
+						document.getElementById("gunShot").volume = .25;
 			            document.getElementById("gunShot").play();
 						playerCount = count;
 						count = 0;
@@ -1873,6 +1875,8 @@ function main() {
 					}
 					if (inVillage) {
 						inVillage = !inVillage;
+						document.getElementById('village').pause();
+				        document.getElementById('village').currentTime = 0;
 					}
 					if (getClue) {
 						getClue = false;
@@ -2193,8 +2197,8 @@ function main() {
 			if (!inBattle && !gameOver && !inHome && !youWin) {
 				//inVillage = false;
 				document.getElementById("overworld").play();
-				document.getElementById('village').pause();
-				document.getElementById('village').currentTime = 0;
+				//document.getElementById('village').pause();
+				//document.getElementById('village').currentTime = 0;
 				//sun out?
 				if ((Math.floor(counter / dayLength)) % 2 == 1) {
 					day = false;

@@ -567,19 +567,19 @@ function main() {
 			//c.strokeText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
 			//c.fillText(hpLevel, canvasWidth / 8, canvasHeight / 8 + line);
 			//if (numOfPlayers > 1) {
-				//line += 20;
-				//c.strokeText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
-				//c.fillText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
+			//line += 20;
+			//c.strokeText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
+			//c.fillText(hpLevel2, canvasWidth / 8, canvasHeight / 8 + line);
 			//}
 			//if (numOfPlayers > 2) {
-				//line += 20;
-				//c.strokeText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
-				//c.fillText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
+			//line += 20;
+			//c.strokeText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
+			//c.fillText(hpLevel3, canvasWidth / 8, canvasHeight / 8 + line);
 			//}
 			//if (numOfPlayers > 3) {
-				//line += 20;
-				//c.strokeText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
-				//c.fillText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
+			//line += 20;
+			//c.strokeText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
+			//c.fillText(hpLevel4, canvasWidth / 8, canvasHeight / 8 + line);
 			//}
 			//line += 20;
 			//c.strokeText(waterLevel, canvasWidth / 8, canvasHeight / 2 + line);
@@ -592,31 +592,31 @@ function main() {
 			//c.fillText(time, canvasWidth / 8, canvasHeight / 8 + line);
 			if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true || player.PEN == true) {
 				line += 20;
-				c.strokeText("Items:", canvasWidth / 8, canvasHeight / 2 + line);
-				c.fillText("Items:", canvasWidth / 8, canvasHeight / 2 + line);
+				c.strokeText("Items:", canvasWidth / 12, canvasHeight / 4 + line);
+				c.fillText("Items:", canvasWidth / 12, canvasHeight / 4 + line);
 				if (player.SHOVEL == true) {
 					line += 20;
-					c.strokeText("Shovel", canvasWidth / 8 + 20, canvasHeight / 2 + line);
-					c.fillText("Shovel", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.strokeText("Shovel", canvasWidth / 12 + 20, canvasHeight / 4 + line);
+					c.fillText("Shovel", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 				}
 				if (player.DETECTOR == true) {
 					line += 20;
 					if (promiseWater[0] > -10 && promiseWater[0] < 10 && promiseWater[1] > -10 && promiseWater[1] < 10 && (counter + player.WATER) % 2 == 0) {
 						c.fillStyle = 'rgba(255, 100, 100, 0.75)';
 					}
-					c.strokeText("Detector", canvasWidth / 8 + 20, canvasHeight / 2 + line);
-					c.fillText("Detector", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.strokeText("Detector", canvasWidth / 12 + 20, canvasHeight / 4 + line);
+					c.fillText("Detector", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
 				}
 				if (player.COMPASS == true) {
 					line += 20;
-					c.strokeText(homeDir, canvasWidth / 8 + 20, canvasHeight / 2 + line);
-					c.fillText(homeDir, canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.strokeText(homeDir, canvasWidth / 12 + 20, canvasHeight / 4 + line);
+					c.fillText(homeDir, canvasWidth / 12 + 20, canvasHeight / 4 + line);
 				}
 				if (player.MAP == true) {
 					line += 20;
-					c.strokeText("Map", canvasWidth / 8 + 20, canvasHeight / 2 + line);
-					c.fillText("Map", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.strokeText("Map", canvasWidth / 12 + 20, canvasHeight / 4 + line);
+					c.fillText("Map", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 					c.fillStyle = 'rgba(255, 255, 255, 0.5)';
 					c.fillRect(150, 400, tiles_dimension / 5, tiles_dimension / 5);
 					c.fillStyle = 'rgba(0, 0, 0, 1)';
@@ -633,8 +633,8 @@ function main() {
 				}
 				if (player.PEN == true) {
 					line += 20;
-					c.strokeText("Pen", canvasWidth / 8 + 20, canvasHeight / 2 + line);
-					c.fillText("Pen", canvasWidth / 8 + 20, canvasHeight / 2 + line);
+					c.strokeText("Pen", canvasWidth / 12 + 20, canvasHeight / 4 + line);
+					c.fillText("Pen", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 				}
 			}
 
@@ -775,6 +775,21 @@ function main() {
 		clues[17] = "I never get tired at night!";
 		clues[18] = "My favorite drink is cactus water.";
 		clues[19] = "Water...";
+	}
+
+	//clues to be put in boats
+	var bestClues = new Array(10);
+	function setBestClues() {
+		bestClues[0] = "We were just about " + (promiseWater[0] + Math.floor(Math.random() * (20) - 10)) + " away...";
+		bestClues[1] = "We were just about " + (promiseWater[1] + Math.floor(Math.random() * (20) - 10)) + " away...";
+		bestClues[2] = "";
+		bestClues[3] = "";
+		bestClues[4] = "";
+		bestClues[5] = "";
+		bestClues[6] = "";
+		bestClues[7] = "";
+		bestClues[8] = "";
+		bestClues[9] = "";
 	}
 
 	var buyHealth = false;

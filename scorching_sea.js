@@ -36,6 +36,11 @@ rock3Img.src = 'Images/cool_rock_3.png';
 var rock3ShadowImg = new Image();
 rock3ShadowImg.src = 'Images/cool_rock_3_shadow.png';
 
+var shackImg = new Image();
+shackImg.src = 'Images/cool_shack_1.png';
+var shackShadowImg = new Image();
+shackShadowImg.src = 'Images/cool_shack_1_shadow.png';
+
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
 
@@ -184,11 +189,11 @@ function main() {
 	var experimental_useBitmapTiles = true;
 
 	// how many tiles do we show in the back ?
-	var viewBackDepth = 13;
+	var viewBackDepth = 12;
 	// how many tiles do we show in the front ?
-	var viewFrontDepth = 19;
+	var viewFrontDepth = 17;
 	// how many tiles do we show on the left ?
-	var viewLeftDepth = 8;
+	var viewLeftDepth = 6;
 	// how many tiles do we show on the right ?
 	var viewRightDepth = 9;
 
@@ -332,13 +337,18 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-50, -38, 64, 64);
+		c.drawImage(shackImg, -60, -70, 96, 96);
+		c.transform(1, 0, .7, -1, -8, 28);
+		c.drawImage(shackShadowImg, -55, -78, 92, 80);
+		c.restore();
+		c.save();
+		c.translate(pt[0], pt[1]);
 		c.lineWidth = 5;
-		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 		c.font = "10px Arial";
-		c.strokeText(homeWaterLev, -35, -32);
-		c.fillText(homeWaterLev, -35, -32);
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, .75)';
+		c.strokeText(homeWaterLev, -50, -20);
+		c.fillText(homeWaterLev, -50, -20);
 		c.restore();
 	}
 
@@ -567,8 +577,8 @@ function main() {
 			var line = 20;
 			var space = 0;
 			c.lineWidth = 7;
-			c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-			c.strokeStyle = 'rgba(0, 0, 0, 0.75)';
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 0, 0, .75)';
 			c.font = "15px Arial";
 			if (player.SHOVEL == true || player.DETECTOR == true || player.COMPASS == true || player.MAP == true || player.PEN == true) {
 				line += 20;
@@ -582,11 +592,11 @@ function main() {
 				if (player.DETECTOR == true) {
 					line += 20;
 					if (promiseWater[0] > -10 && promiseWater[0] < 10 && promiseWater[1] > -10 && promiseWater[1] < 10 && (counter + player.WATER) % 2 == 0) {
-						c.fillStyle = 'rgba(255, 100, 100, 0.75)';
+						c.fillStyle = 'rgba(255, 100, 100, 1)';
 					}
 					c.strokeText("Detector", canvasWidth / 12 + 20, canvasHeight / 4 + line);
 					c.fillText("Detector", canvasWidth / 12 + 20, canvasHeight / 4 + line);
-					c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+					c.fillStyle = 'rgba(255, 255, 255, 1)';
 				}
 				if (player.COMPASS == true) {
 					line += 20;
@@ -607,14 +617,7 @@ function main() {
 					c.fillRect(100, 400 + tiles_dimension / 10, tiles_dimension / 5, 1);
 					c.fillRect(100, 400 + tiles_dimension / (20 / 3), tiles_dimension / 5, 1);
 					if (player.PEN == true) {
-						villagePenPos.push(villagePosX / 5);
-						villagePenPos.push(villagePosY / 5);
-						cavePos.push(caveX / 5);
-						cavePos.push(caveY / 5);
-						travelPos.push(travelX / 5);
-						travelPos.push(travelY / 5);
-						boatPos.push(boatX / 5);
-						boatPos.push(boatY / 5);
+
 						c.fillStyle = 'rgba(145, 120, 110, 1)';
 						for (var j = 0; j < villagePenPos.length; j += 2) {
 							c.fillRect(100 + villagePenPos[j], 400 + villagePenPos[j + 1], 2, 2);
@@ -633,7 +636,7 @@ function main() {
 						}
 						c.fillStyle = 'rgba(0, 0, 0, 1)';
 						c.fillRect(100 + (center[0] + 2) / 5, 400 + (center[1] + 2) / 5, 2, 2);
-						c.fillStyle = 'rgba(255, 255, 255, 0.75)';
+						c.fillStyle = 'rgba(255, 255, 255, 1)';
 					}
 				}
 				if (player.PEN == true) {
@@ -941,6 +944,10 @@ function main() {
 		if (player.PEN == true && player.MAP == true) {
 			villagePosX = center[0];
 			villagePosY = center[1];
+			if (villagePenPos[villagePenPos.length - 2] != villagePosX/5 && villagePenPos[villagePenPos.length - 1] != villagePosY/5) {
+				villagePenPos.push(villagePosX / 5);
+				villagePenPos.push(villagePosY / 5);
+			}
 		}
 		if (getClue) {
 			setClues();
@@ -1004,6 +1011,10 @@ function main() {
 		if (player.PEN == true && player.MAP == true) {
 			travelX = center[0];
 			travelY = center[1];
+			if (travelPos[travelPos.length - 2] != travelX/5 && travelPos[travelPos.length - 1] != travelY/5) {
+				travelPos.push(travelX / 5);
+				travelPos.push(travelY / 5);
+			}
 		}
 	}
 
@@ -1081,6 +1092,10 @@ function main() {
 		if (player.PEN == true && player.MAP == true) {
 			caveX = center[0];
 			caveY = center[1];
+			if (cavePos[cavePos.length - 2] != caveX/5 && cavePos[cavePos.length - 1] != caveY/5) {
+				cavePos.push(caveX / 5);
+				cavePos.push(caveY / 5);
+			}
 		}
 
 	}
@@ -1146,6 +1161,10 @@ function main() {
 		if (player.PEN == true && player.MAP == true) {
 			boatX = center[0];
 			boatY = center[1];
+			if (boatPos[boatPos.length - 2] != boatX / 5 && boatPos[boatPos.length - 1] != boatY / 5) {
+				boatPos.push(boatX / 5);
+				boatPos.push(boatY / 5);
+			}
 		}
 
 	}
@@ -1380,8 +1399,8 @@ function main() {
 	var shadows = new Array(objectSize);
 
 	//multiples of 2
-	var humanEnemies = new Array(4000);
-	var fishEnemies = new Array(6500);
+	var humanEnemies = new Array(2000);
+	var fishEnemies = new Array(3000);
 	var fishOrig = new Array(fishEnemies.length);
 	var travellers = new Array(100);
 
@@ -1427,7 +1446,7 @@ function main() {
 	};
 
 	var homeBase = {
-		WATER : 25000
+		WATER : 20000
 	};
 
 	//------------------------------------------
@@ -1567,7 +1586,6 @@ function main() {
 	promiseWater[1] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
 	var finalX = promiseWater[0] + tiles_dimension / 2;
 	var finalY = promiseWater[1] + tiles_dimension / 2;
-	console.log(finalX, finalY);
 	//create human enemy positions
 	for (var i = 0; i < humanEnemies.length; i++) {
 		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
@@ -2154,7 +2172,8 @@ function main() {
 			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range)
 				drawBoat(boats[i], boats[i + 1]);
 		}
-		drawHomeBase(homeBase[0], homeBase[1]);
+		if (homeBase[0] < range && homeBase[0] > -range && homeBase[1] < range && homeBase[1] > -range)
+			drawHomeBase(homeBase[0], homeBase[1]);
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
 			drawPlayer(player4.X - .3, player4.Y - .3);
 		if (player3.HEALTH > 0 && numOfPlayers > 2)
@@ -2191,7 +2210,7 @@ function main() {
 	setInterval(function() {
 		if (!inSun && player.UV < player.UVORIG && !inVillage && !inBoat && !inBattle && !inCave && !talking)
 			player.UV++;
-	}, 50);
+	}, 30);
 
 	function normalStats() {
 		if (player.HEALTH < 0)

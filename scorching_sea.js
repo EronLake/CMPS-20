@@ -8,7 +8,9 @@
 //cordinate indicator, quadrent indicator,
 //shovel <-- need this to win,
 //town finder, etc...
-
+// ----------------------------------------
+//     Image Import
+// ----------------------------------------
 var img = new Image();
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
 //img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
@@ -539,6 +541,9 @@ function main() {
 	var travelX = 0;
 	var travelY = 0;
 	var travelPos = new Array();
+// ----------------------------------------
+//     Draw User Interface
+// ----------------------------------------	
 	function drawUI() {
 		//draw ui sun
 		if (day) {
@@ -764,6 +769,9 @@ function main() {
 		}
 	}
 
+// ----------------------------------------
+//     Clues Setup
+// ----------------------------------------
 	var clues = new Array(20);
 	function setClues() {
 		if (promiseWater[1] > 0) {
@@ -834,7 +842,9 @@ function main() {
 		bestClues[8] = "Was is " + finalX + "," + finalY + " or " + finalY + "," + finalX + "?";
 		bestClues[9] = "Was is " + finalY + "," + finalX + " or " + finalX + "," + finalY + "?";
 	}
-
+// ----------------------------------------
+//     Village Setup
+// ----------------------------------------
 	var buyHealth = false;
 	var buyWater = false;
 	var buyItem = false;
@@ -965,6 +975,9 @@ function main() {
 		}
 	}
 
+// ----------------------------------------
+//     Player moves on screen
+// ----------------------------------------
 	function drawTravellerUI(i) {
 		if (travellerStats[i + 1] != 0)
 			var food = " 1. Here have some of my food: " + travellerStats[i + 1];
@@ -1018,6 +1031,9 @@ function main() {
 		}
 	}
 
+// ----------------------------------------
+//     Draw Cave
+// ----------------------------------------
 	function drawCaveUI(i) {
 		var water1;
 		var water2;
@@ -1100,6 +1116,9 @@ function main() {
 
 	}
 
+// ----------------------------------------
+//     Draw Boat
+// ----------------------------------------
 	function drawBoatUI(i) {
 		var boatItem;
 		var boatItemString;
@@ -1169,6 +1188,9 @@ function main() {
 
 	}
 
+// ----------------------------------------
+//     Draw Battle Screen
+// ----------------------------------------
 	var hurt = false;
 	var drawStart = 20;
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
@@ -1276,7 +1298,9 @@ function main() {
 		hurt = false;
 	}
 
-
+// ----------------------------------------
+//     Draw Fish Battle Screen
+// ----------------------------------------
 	function drawBattleScreen_fish(i, count, playerCount) {
 		//var drawEnd = Math.random() * (90 - 70) + 70;
 		var yourHealth = "Health: " + player.HEALTH;
@@ -1302,6 +1326,8 @@ function main() {
 			keysDone = false;
 			hitKeys.length = 0;
 			currKey = 0;
+			AIKeys.length = 0;
+			AIcurrKey = 0;
 			fishEnemiesKilled++;
 		}
 		//If you do not beat the fish, lose some health and continue fight
@@ -1312,7 +1338,10 @@ function main() {
 		}
 		hurt = false;
 	}
-	
+
+// ----------------------------------------
+//     Initialize Start position
+// ----------------------------------------
 	function homeUI() {
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1326,6 +1355,9 @@ function main() {
 		c.fillText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
 	}
 
+// ----------------------------------------
+//     When the game is over
+// ----------------------------------------
 	function gameOverUI() {
 		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
 		var humKilled = "Killed " + humanEnemiesKilled + " bandits";
@@ -1347,6 +1379,9 @@ function main() {
 		c.fillText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
 	}
 
+// ----------------------------------------
+//     When the game is won
+// ----------------------------------------
 	function winScreen() {
 		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
 		var humKilled = "Killed " + humanEnemiesKilled + " bandits";
@@ -1642,6 +1677,9 @@ function main() {
 		boats[i] += moveSpeed;
 	}
 
+// ----------------------------------------
+//     Fish Fight Mechanics
+// ----------------------------------------
 	function fight() {
 		var keyNum = 0;
 		// var keySym;
@@ -1653,22 +1691,59 @@ function main() {
 				//keySym = "w";
 				//drawKey(keySym, keyPosX);
 				hitKeys.push("W");
+				AIKeys.push("D");
 			} else if (keyNum >= .25 && keyNum < .50) {
 				//keySym = "a";
 				//drawKey(keySym, keyPosX);
 				hitKeys.push("A");
+				AIKeys.push("S");
 			} else if (keyNum >= .50 && keyNum < .75) {
 				//keySym = "s";
 				//drawKey(keySym, keyPosX);
 				hitKeys.push("S");
+				AIKeys.push("A");
 			} else {
 				//keySym = "d";
 				//drawKey(keySym, keyPosX);
 				hitKeys.push("D");
+				AIKeys.push("W");
 			}
 		}
 
 	}
+	
+	function drawAIKeys(AIKeys) {
+		for (var i = 0; i < AIKeys.length; i++) {
+			c.lineWidth = 3;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 0, 0, 1)';
+			c.font = "40px Arial";
+			c.strokeText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
+			c.fillText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
+			//console.log("contents of hitkeys " + hitKeys[i]);
+		}
+		for (var i = 0; i < AIcurrKey; i++) {
+			//Outline finished keys red
+			c.lineWidth = 3;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(255, 0, 0, 1)';
+			c.font = "40px Arial";
+			c.strokeText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
+			c.fillText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
+			//console.log("size of changekeycolorarray: " + hitKeys.length);
+			//console.log("contents of change key color" + hitKeys[i]);
+		}
+		if(AIcurrKey <= AIKeys.length - 1 ) {	
+			//Outline current key green
+			c.lineWidth = 3;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 255, 43, 1)';
+			c.font = "40px Arial";
+			c.strokeText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20)* 40, (canvasHeight / 10));
+			c.fillText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20) * 40, (canvasHeight / 10));
+		}
+	}
+	
 
 	function drawKeys(hitKeys) {
 		for (var i = 0; i < hitKeys.length; i++) {
@@ -1682,7 +1757,16 @@ function main() {
 		}
 		//console.log("size of array: " + hitKeys.length);
 	}
-
+	setInterval(AIexecKeys, 3000);
+    
+    function AIexecKeys () {
+    	console.log("is it even doing anything");
+    	if(fishBat && inBattle) {
+    		AIcurrKey++;
+    		console.log("it should be working");
+    	}
+    }
+    
 	function changeKeyColor(hitKeys) {
 		for (var i = 0; i < currKey; i++) {
 			//Outline finished keys red
@@ -1695,13 +1779,15 @@ function main() {
 			//console.log("size of changekeycolorarray: " + hitKeys.length);
 			//console.log("contents of change key color" + hitKeys[i]);
 		}
-		//Outline current key green
-		c.lineWidth = 3;
-		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeStyle = 'rgba(0, 255, 43, 1)';
-		c.font = "40px Arial";
-		c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
-		c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+		if(currKey <= hitKeys.length - 1) {
+			//Outline current key green
+			c.lineWidth = 3;
+			c.fillStyle = 'rgba(255, 255, 255, 1)';
+			c.strokeStyle = 'rgba(0, 255, 43, 1)';
+			c.font = "40px Arial";
+			c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+			c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+		}
 	}
 
 	function execKeys(hitKeys, matchKey) {
@@ -1716,6 +1802,9 @@ function main() {
 
 	var moveSpeed = 1;
 
+// ----------------------------------------
+//     Move the other characters
+// ----------------------------------------
 	function moveOthersY(i) {
 		if (player.HEALTH != 0)
 			player2.Y += moveSpeed * i;
@@ -1734,7 +1823,9 @@ function main() {
 			player4.X += moveSpeed * i;
 	}
 
-	//enemy ai
+// ----------------------------------------
+//    Human Enemy AI
+// ----------------------------------------
 	var othersSpeed = .25;
 	var skip = false;
 	var humanSpeed = 40;
@@ -1770,7 +1861,9 @@ function main() {
 		}
 	}, humanSpeed);
 
-	//fish enemy ai
+// ----------------------------------------
+//     Fish Enemy AI
+// ----------------------------------------
 	var fishSkip = false;
 	var fishSpeed = 20;
 	setInterval(function() {
@@ -1805,6 +1898,7 @@ function main() {
 		}
 	}, fishSpeed);
 
+// Player 2 movement
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player2.X > player.X)
@@ -1817,6 +1911,7 @@ function main() {
 				player2.Y += othersSpeed;
 		}
 	}, 20);
+// Player 3 movement
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player3.X > player.X)
@@ -1829,6 +1924,7 @@ function main() {
 				player3.Y += othersSpeed;
 		}
 	}, 25);
+// Player 4 movement
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player4.X > player.X)
@@ -1843,6 +1939,8 @@ function main() {
 	}, 30);
 
 	//the lower the faster
+// Player movement, controls all the other objects
+// Move Down	
 	var playerSpeed = 100;
 	setInterval(function() {
 		if (goDown) {
@@ -1870,7 +1968,7 @@ function main() {
 			}
 		}
 	}, playerSpeed);
-
+// Move Up
 	setInterval(function() {
 		if (goUp) {
 			if (center[1] > 3) {
@@ -1898,7 +1996,7 @@ function main() {
 
 		}
 	}, playerSpeed);
-
+// Move Left
 	setInterval(function() {
 		if (goLeft) {
 			if (center[0] > -3) {
@@ -1925,7 +2023,7 @@ function main() {
 			}
 		}
 	}, playerSpeed);
-
+// Move Right
 	setInterval(function() {
 		if (goRight) {
 			if (center[0] < tiles_dimension - 4) {
@@ -2148,6 +2246,9 @@ function main() {
 
 	//draw all objects
 	var range = 17;
+// ----------------------------------------
+//     Draws everything
+// ----------------------------------------
 	function drawAll() {
 		//draw floor
 		drawTiles(center);
@@ -2257,7 +2358,9 @@ function main() {
 	var keysDone = false;
 	//var keySym;
 	var hitKeys = new Array();
+	var AIKeys = new Array();
 	var currKey = 0;
+	var AIcurrKey = 0;
 	var count = 0;
 	var playerCount = 0;
 	var enemyPosition = -1;
@@ -2375,6 +2478,7 @@ function main() {
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				drawKeys(hitKeys);
+				drawAIKeys(AIKeys)
 				changeKeyColor(hitKeys);
 				if (currKey == hitKeys.length && hitKeys.length != 0) {
 					keysDone = true;

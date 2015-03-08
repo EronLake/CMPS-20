@@ -53,6 +53,9 @@ caveImg.src = 'Images/cool_cave.png';
 var caveShadowImg = new Image();
 caveShadowImg.src = 'Images/cool_cave_shadow.png';
 
+var sunImg = new Image();
+sunImg.src = 'Images/cool_sun.png';
+
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
 
@@ -327,10 +330,17 @@ function main() {
 		var waterLevel = "ml: " + player.WATER;
 		var uvLevel = "UV: " + player.UV;
 		c.beginPath();
-		c.fillStyle = 'rgb(200, 150, 100)';
+
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
+		if (colOffset == player.X + .3 && rowOffset == player.Y + .3) {
+			c.fillStyle = 'rgba(0, 0, 0, 0.5)';
+			c.fillRect(-100 + player.UVORIG/2, 10, player.UVORIG/2, 3);
+			c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
+			c.fillRect(-50 + player.UV/2, 10, -player.UV/2, 3);
+		}
+		c.fillStyle = 'rgb(200, 150, 100)';
 		c.fillRect(-15, -30, 20, 35);
 		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
 		c.transform(1, 0, -.7, 1, 5, 0);
@@ -566,8 +576,7 @@ function main() {
 	function drawUI() {
 		//draw ui sun
 		if (day) {
-			c.fillStyle = 'rgba(255, 220, 100, 0.7)';
-			c.fillRect(canvasWidth - 100, 0, 100, 100);
+			c.drawImage(sunImg, canvasWidth - 203, 0, 203, 242);
 			c.fillStyle = "rgba(50, 25, 100, " + (.1 + counter % dayLength) / (dayLength * 3) + ")";
 			c.fillRect(0, 0, canvasWidth, canvasHeight);
 		} else {
@@ -641,7 +650,6 @@ function main() {
 					c.fillRect(100, 400 + tiles_dimension / 10, tiles_dimension / 5, 1);
 					c.fillRect(100, 400 + tiles_dimension / (20 / 3), tiles_dimension / 5, 1);
 					if (player.PEN == true) {
-
 						c.fillStyle = 'rgba(145, 120, 110, 1)';
 						for (var j = 0; j < villagePenPos.length; j += 2) {
 							c.fillRect(100 + villagePenPos[j], 400 + villagePenPos[j + 1], 2, 2);
@@ -1328,7 +1336,7 @@ function main() {
 		//var drawEnd = Math.random() * (90 - 70) + 70;
 		//var yourHealth = "Health: " + player.HEALTH;
 		//var yourWater = "ml: " + player.WATER;
-		
+
 		// Colors the screen darker
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1339,21 +1347,21 @@ function main() {
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.strokeText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		
+
 		// Draw Fish's health bar
 		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
-		c.fillRect(canvasWidth / 2 , canvasHeight / 2 - 15, 110, 25);
+		c.fillRect(canvasWidth / 2, canvasHeight / 2 - 15, 110, 25);
 		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
-		c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 -  10, 100, 15);
+		c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, 100, 15);
 		c.fillStyle = 'rgba(200, ' + fishHealth * 2 + ', ' + (fishHealth * 2 + 55) + ', 1)';
 		if (fishHealth > 0)
-			c.fillRect(canvasWidth / 2  + 5, canvasHeight / 2 - 10, fishHealth , 15);
+			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth, 15);
 		c.font = "15px Arial";
 		c.lineWidth = 3;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, .75)';
-		c.strokeText("Enemy Health", canvasWidth / 2  + 5, canvasHeight / 3 + 90);
-		c.fillText("Enemy Health", canvasWidth / 2  + 5, canvasHeight / 3 + 90);
+		c.strokeText("Enemy Health", canvasWidth / 2 + 5, canvasHeight / 3 + 90);
+		c.fillText("Enemy Health", canvasWidth / 2 + 5, canvasHeight / 3 + 90);
 
 		// If you successfuly beat the fish, delete fish from grid and gain reward
 		if (fishHealth < 1) {
@@ -1463,7 +1471,7 @@ function main() {
 	//multiples of 8
 	var caves = new Array(1200);
 	//multiples of 12
-	var boats = new Array(120);
+	var boats = new Array(240);
 
 	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length + caves.length + boats.length;
 	var allObjects = new Array(objectSize);
@@ -1491,33 +1499,33 @@ function main() {
 		UVORIG : 100,
 		UV : 100,
 		HEALTH : 100,
-		ATTACK: 5,
-		SHOVEL : true,
-		DETECTOR : true,
-		COMPASS : true,
-		MAP : true,
-		PEN : true
+		ATTACK : 5,
+		SHOVEL : false,
+		DETECTOR : false,
+		COMPASS : false,
+		MAP : false,
+		PEN : false
 	};
 
 	var player2 = {
 		X : 2,
 		Y : -2,
 		HEALTH : 100,
-		ATTACK: 5
+		ATTACK : 5
 	};
 
 	var player3 = {
 		X : 2,
 		Y : -2,
 		HEALTH : 100,
-		ATTACK: 5
+		ATTACK : 5
 	};
 
 	var player4 = {
 		X : 2,
 		Y : -2,
 		HEALTH : 100,
-		ATTACK: 5
+		ATTACK : 5
 	};
 
 	var homeBase = {
@@ -1721,14 +1729,14 @@ function main() {
 	// ----------------------------------------
 	//function fight() {
 
-// ----------------------------------------
-//     Fish Fight Mechanics
-// ----------------------------------------
+	// ----------------------------------------
+	//     Fish Fight Mechanics
+	// ----------------------------------------
 	function setKeys() {
 		var keyNum = 0;
 		printKeys = true;
 		// Set player Keys
-		if(resetHumKeys) {
+		if (resetHumKeys) {
 			for (var i = 0; i < 4; ++i) {
 				keyNum = Math.random();
 				if (keyNum >= 0 && keyNum < .25) {
@@ -1743,9 +1751,9 @@ function main() {
 			}
 			resetHumKeys = false;
 		}
-		
+
 		// set AI Keys
-		if(resetFishKeys) {
+		if (resetFishKeys) {
 			for (var i = 0; i < 7; ++i) {
 				keyNum = Math.random();
 				if (keyNum >= 0 && keyNum < .25) {
@@ -1793,23 +1801,23 @@ function main() {
 			c.fillText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20) * 40, (canvasHeight / 10));
 		}
 	}
-	
-    function AIexecKeys () {
-    	var damageGiven = 15;
-    	if(fishBat && inBattle) {
-    		calcDamage(damageGiven, true);
-    		AIcurrKey++;
-    		if(AIcurrKey == AIKeys.length) {
-    			damageGiven = 10;
-    			calcDamage(damageGiven, false);
+
+	function AIexecKeys() {
+		var damageGiven = 15;
+		if (fishBat && inBattle) {
+			calcDamage(damageGiven, true);
+			AIcurrKey++;
+			if (AIcurrKey == AIKeys.length) {
+				damageGiven = 10;
+				calcDamage(damageGiven, false);
 				AIcurrKey = 0;
 				AIKeys.length = 0;
 				resetFishKeys = true;
 				setKeys();
 			}
-    	}
-    }
-    
+		}
+	}
+
 	function drawKeys(hitKeys) {
 		for (var i = 0; i < hitKeys.length; i++) {
 			c.lineWidth = 3;
@@ -1847,48 +1855,48 @@ function main() {
 			c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
 		}
 	}
+
 	var playerAttack = 0;
-	function calcAttack () {
+	function calcAttack() {
 		playerAttack = 0;
-		if(player.HEALTH >= 1) 
+		if (player.HEALTH >= 1)
 			playerAttack += player.ATTACK;
-		if(player2.HEALTH >= 1) 
+		if (player2.HEALTH >= 1)
 			playerAttack += player2.ATTACK;
-		if(player3.HEALTH >= 1) 
+		if (player3.HEALTH >= 1)
 			playerAttack += player3.ATTACK;
-		if(player4.HEALTH >= 1) 
-			playerAttack += player4.ATTACK;		
-		if(perfectString == 4) {
+		if (player4.HEALTH >= 1)
+			playerAttack += player4.ATTACK;
+		if (perfectString == 4) {
 			playerAttack += numOfPlayers * 5;
 			perfectString = 0;
 		}
 	}
-	
-	function calcDamage (damage, isEnemy) {
+
+	function calcDamage(damage, isEnemy) {
 		var chooseP = 0;
-		if(isEnemy){
+		if (isEnemy) {
 			chooseP = Math.random();
-			if(player.HEALTH >= 1 && chooseP >= 0 && chooseP < .25) 
+			if (player.HEALTH >= 1 && chooseP >= 0 && chooseP < .25)
 				player.HEALTH -= damage;
-			if(player2.HEALTH >= 1 && chooseP >= .25 && chooseP < .50) 
+			if (player2.HEALTH >= 1 && chooseP >= .25 && chooseP < .50)
 				player2.HEALTH -= damage;
-			if(player3.HEALTH >= 1 && chooseP >= .50 && chooseP < .75) 
+			if (player3.HEALTH >= 1 && chooseP >= .50 && chooseP < .75)
 				player3.HEALTH -= damage;
-			if(player4.HEALTH >= 1 && chooseP >= .75 && chooseP <= 1) 
-				player4.HEALTH -= damage;	
-			}
-		else {
-			if(player.HEALTH >= 1) 
+			if (player4.HEALTH >= 1 && chooseP >= .75 && chooseP <= 1)
+				player4.HEALTH -= damage;
+		} else {
+			if (player.HEALTH >= 1)
 				player.HEALTH -= damage;
-			if(player2.HEALTH >= 1) 
+			if (player2.HEALTH >= 1)
 				player2.HEALTH -= damage;
-			if(player3.HEALTH >= 1) 
+			if (player3.HEALTH >= 1)
 				player3.HEALTH -= damage;
-			if(player4.HEALTH >= 1) 
+			if (player4.HEALTH >= 1)
 				player4.HEALTH -= damage;
 		}
-		
-	}	
+
+	}
 
 	function execKeys(hitKeys, matchKey) {
 		// Keeps track of the current index we are at
@@ -1898,13 +1906,13 @@ function main() {
 			fishHealth -= playerAttack;
 			currKey++;
 			perfectString++;
-			if(currKey == hitKeys.length) {
+			if (currKey == hitKeys.length) {
 				currKey = 0;
 				hitKeys.length = 0;
 				resetHumKeys = true;
 				setKeys();
 			}
-			
+
 		} else {
 			perfectString = 0;
 			hitKeys.length = 0;
@@ -2042,7 +2050,7 @@ function main() {
 			if (player3.Y < player.Y)
 				player3.Y += othersSpeed;
 		}
-	}, 25);
+	}, 22);
 	// Player 4 movement
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
@@ -2055,12 +2063,12 @@ function main() {
 			if (player4.Y < player.Y)
 				player4.Y += othersSpeed;
 		}
-	}, 30);
+	}, 24);
 
 	//the lower the faster
 	// Player movement, controls all the other objects
 	// Move Down
-	var playerSpeed = 100;
+	var playerSpeed = 120;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 2) {

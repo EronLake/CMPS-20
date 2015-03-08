@@ -43,8 +43,15 @@ shackImg.src = 'Images/cool_shack_1.png';
 var shackShadowImg = new Image();
 shackShadowImg.src = 'Images/cool_shack_1_shadow.png';
 
-var village1Img = new Image();
-village1Img.src = 'Images/cool_village.png';
+var villageImg = new Image();
+villageImg.src = 'Images/cool_village.png';
+var villageShadowImg = new Image();
+villageShadowImg.src = 'Images/cool_village_shadow.png';
+
+var caveImg = new Image();
+caveImg.src = 'Images/cool_cave.png';
+var caveShadowImg = new Image();
+caveShadowImg.src = 'Images/cool_cave_shadow.png';
 
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
@@ -365,7 +372,9 @@ function main() {
 		c.save();
 		c.translate(pt[0], pt[1]);
 		if (i % 12 == 0 && i2 % 1 == 0) {
-			c.drawImage(village1Img, -95, -125, 295, 150);
+			c.drawImage(villageImg, -95, -125, 295, 150);
+			c.transform(1, 0, .7, -1, -8, 28);
+			c.drawImage(villageShadowImg, -90, -117, 295, 120);
 		}
 		c.restore();
 	}
@@ -413,14 +422,19 @@ function main() {
 		c.restore();
 	}
 
-	function drawCave(colOffset, rowOffset) {
+	function drawCave(colOffset, rowOffset, i, i2) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(50, 25, 25)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-50, -38, 64, 64);
+		if (i % 8 == 0 && i2 % 1 == 0) {
+			c.drawImage(caveImg, -57, -85, 202, 110);
+			c.transform(1, 0, .7, -1, -8, 28);
+			c.drawImage(caveShadowImg, -47, -97, 180, 100);
+		}
+		//c.fillRect(-50, -38, 64, 64);
 		c.restore();
 	}
 
@@ -546,9 +560,9 @@ function main() {
 	var travelX = 0;
 	var travelY = 0;
 	var travelPos = new Array();
-// ----------------------------------------
-//     Draw User Interface
-// ----------------------------------------	
+	// ----------------------------------------
+	//     Draw User Interface
+	// ----------------------------------------
 	function drawUI() {
 		//draw ui sun
 		if (day) {
@@ -774,9 +788,9 @@ function main() {
 		}
 	}
 
-// ----------------------------------------
-//     Clues Setup
-// ----------------------------------------
+	// ----------------------------------------
+	//     Clues Setup
+	// ----------------------------------------
 	var clues = new Array(20);
 	function setClues() {
 		if (promiseWater[1] > 0) {
@@ -847,9 +861,10 @@ function main() {
 		bestClues[8] = "Was is " + finalX + "," + finalY + " or " + finalY + "," + finalX + "?";
 		bestClues[9] = "Was is " + finalY + "," + finalX + " or " + finalX + "," + finalY + "?";
 	}
-// ----------------------------------------
-//     Village Setup
-// ----------------------------------------
+
+	// ----------------------------------------
+	//     Village Setup
+	// ----------------------------------------
 	var buyHealth = false;
 	var buyWater = false;
 	var buyItem = false;
@@ -980,9 +995,9 @@ function main() {
 		}
 	}
 
-// ----------------------------------------
-//     Player moves on screen
-// ----------------------------------------
+	// ----------------------------------------
+	//     Player moves on screen
+	// ----------------------------------------
 	function drawTravellerUI(i) {
 		if (travellerStats[i + 1] != 0)
 			var food = " 1. Here have some of my food: " + travellerStats[i + 1];
@@ -1036,9 +1051,9 @@ function main() {
 		}
 	}
 
-// ----------------------------------------
-//     Draw Cave
-// ----------------------------------------
+	// ----------------------------------------
+	//     Draw Cave
+	// ----------------------------------------
 	function drawCaveUI(i) {
 		var water1;
 		var water2;
@@ -1121,9 +1136,9 @@ function main() {
 
 	}
 
-// ----------------------------------------
-//     Draw Boat
-// ----------------------------------------
+	// ----------------------------------------
+	//     Draw Boat
+	// ----------------------------------------
 	function drawBoatUI(i) {
 		var boatItem;
 		var boatItemString;
@@ -1193,9 +1208,9 @@ function main() {
 
 	}
 
-// ----------------------------------------
-//     Draw Battle Screen
-// ----------------------------------------
+	// ----------------------------------------
+	//     Draw Battle Screen
+	// ----------------------------------------
 	var hurt = false;
 	var drawStart = 20;
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
@@ -1303,9 +1318,9 @@ function main() {
 		hurt = false;
 	}
 
-// ----------------------------------------
-//     Draw Fish Battle Screen
-// ----------------------------------------
+	// ----------------------------------------
+	//     Draw Fish Battle Screen
+	// ----------------------------------------
 	function drawBattleScreen_fish(i, count, playerCount) {
 		//var drawEnd = Math.random() * (90 - 70) + 70;
 		var yourHealth = "Health: " + player.HEALTH;
@@ -1344,9 +1359,9 @@ function main() {
 		hurt = false;
 	}
 
-// ----------------------------------------
-//     Initialize Start position
-// ----------------------------------------
+	// ----------------------------------------
+	//     Initialize Start position
+	// ----------------------------------------
 	function homeUI() {
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1360,9 +1375,9 @@ function main() {
 		c.fillText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
 	}
 
-// ----------------------------------------
-//     When the game is over
-// ----------------------------------------
+	// ----------------------------------------
+	//     When the game is over
+	// ----------------------------------------
 	function gameOverUI() {
 		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
 		var humKilled = "Killed " + humanEnemiesKilled + " bandits";
@@ -1384,9 +1399,9 @@ function main() {
 		c.fillText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
 	}
 
-// ----------------------------------------
-//     When the game is won
-// ----------------------------------------
+	// ----------------------------------------
+	//     When the game is won
+	// ----------------------------------------
 	function winScreen() {
 		var time = "Time at sea: " + Math.floor(counter / 60) + " : " + counter % 60;
 		var humKilled = "Killed " + humanEnemiesKilled + " bandits";
@@ -1429,7 +1444,7 @@ function main() {
 	var homeBase = new Array(2);
 	var promiseWater = new Array(2);
 	//multiples of 12
-	var villages = new Array(7200);
+	var villages = new Array(2600);
 	//multiples of 8
 	var caves = new Array(1200);
 	//multiples of 12
@@ -1682,9 +1697,9 @@ function main() {
 		boats[i] += moveSpeed;
 	}
 
-// ----------------------------------------
-//     Fish Fight Mechanics
-// ----------------------------------------
+	// ----------------------------------------
+	//     Fish Fight Mechanics
+	// ----------------------------------------
 	function fight() {
 		var keyNum = 0;
 		// var keySym;
@@ -1716,7 +1731,7 @@ function main() {
 		}
 
 	}
-	
+
 	function drawAIKeys(AIKeys) {
 		for (var i = 0; i < AIKeys.length; i++) {
 			c.lineWidth = 3;
@@ -1738,17 +1753,16 @@ function main() {
 			//console.log("size of changekeycolorarray: " + hitKeys.length);
 			//console.log("contents of change key color" + hitKeys[i]);
 		}
-		if(AIcurrKey <= AIKeys.length - 1 ) {	
+		if (AIcurrKey <= AIKeys.length - 1) {
 			//Outline current key green
 			c.lineWidth = 3;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 255, 43, 1)';
 			c.font = "40px Arial";
-			c.strokeText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20)* 40, (canvasHeight / 10));
+			c.strokeText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20) * 40, (canvasHeight / 10));
 			c.fillText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20) * 40, (canvasHeight / 10));
 		}
 	}
-	
 
 	function drawKeys(hitKeys) {
 		for (var i = 0; i < hitKeys.length; i++) {
@@ -1762,16 +1776,17 @@ function main() {
 		}
 		//console.log("size of array: " + hitKeys.length);
 	}
+
 	setInterval(AIexecKeys, 3000);
-    
-    function AIexecKeys () {
-    	console.log("is it even doing anything");
-    	if(fishBat && inBattle) {
-    		AIcurrKey++;
-    		console.log("it should be working");
-    	}
-    }
-    
+
+	function AIexecKeys() {
+		console.log("is it even doing anything");
+		if (fishBat && inBattle) {
+			AIcurrKey++;
+			console.log("it should be working");
+		}
+	}
+
 	function changeKeyColor(hitKeys) {
 		for (var i = 0; i < currKey; i++) {
 			//Outline finished keys red
@@ -1784,7 +1799,7 @@ function main() {
 			//console.log("size of changekeycolorarray: " + hitKeys.length);
 			//console.log("contents of change key color" + hitKeys[i]);
 		}
-		if(currKey <= hitKeys.length - 1) {
+		if (currKey <= hitKeys.length - 1) {
 			//Outline current key green
 			c.lineWidth = 3;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
@@ -1807,9 +1822,9 @@ function main() {
 
 	var moveSpeed = 1;
 
-// ----------------------------------------
-//     Move the other characters
-// ----------------------------------------
+	// ----------------------------------------
+	//     Move the other characters
+	// ----------------------------------------
 	function moveOthersY(i) {
 		if (player.HEALTH != 0)
 			player2.Y += moveSpeed * i;
@@ -1828,9 +1843,9 @@ function main() {
 			player4.X += moveSpeed * i;
 	}
 
-// ----------------------------------------
-//    Human Enemy AI
-// ----------------------------------------
+	// ----------------------------------------
+	//    Human Enemy AI
+	// ----------------------------------------
 	var othersSpeed = .25;
 	var skip = false;
 	var humanSpeed = 40;
@@ -1866,9 +1881,9 @@ function main() {
 		}
 	}, humanSpeed);
 
-// ----------------------------------------
-//     Fish Enemy AI
-// ----------------------------------------
+	// ----------------------------------------
+	//     Fish Enemy AI
+	// ----------------------------------------
 	var fishSkip = false;
 	var fishSpeed = 20;
 	setInterval(function() {
@@ -1903,7 +1918,7 @@ function main() {
 		}
 	}, fishSpeed);
 
-// Player 2 movement
+	// Player 2 movement
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player2.X > player.X)
@@ -1916,7 +1931,7 @@ function main() {
 				player2.Y += othersSpeed;
 		}
 	}, 20);
-// Player 3 movement
+	// Player 3 movement
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player3.X > player.X)
@@ -1929,7 +1944,7 @@ function main() {
 				player3.Y += othersSpeed;
 		}
 	}, 25);
-// Player 4 movement
+	// Player 4 movement
 	setInterval(function() {
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
 			if (player4.X > player.X)
@@ -1944,8 +1959,8 @@ function main() {
 	}, 30);
 
 	//the lower the faster
-// Player movement, controls all the other objects
-// Move Down	
+	// Player movement, controls all the other objects
+	// Move Down
 	var playerSpeed = 100;
 	setInterval(function() {
 		if (goDown) {
@@ -1973,7 +1988,7 @@ function main() {
 			}
 		}
 	}, playerSpeed);
-// Move Up
+	// Move Up
 	setInterval(function() {
 		if (goUp) {
 			if (center[1] > 3) {
@@ -2001,7 +2016,7 @@ function main() {
 
 		}
 	}, playerSpeed);
-// Move Left
+	// Move Left
 	setInterval(function() {
 		if (goLeft) {
 			if (center[0] > -3) {
@@ -2028,7 +2043,7 @@ function main() {
 			}
 		}
 	}, playerSpeed);
-// Move Right
+	// Move Right
 	setInterval(function() {
 		if (goRight) {
 			if (center[0] < tiles_dimension - 4) {
@@ -2262,105 +2277,78 @@ function main() {
 
 	//draw all objects
 	var range = 17;
-// ----------------------------------------
-//     Draws everything
-// ----------------------------------------
+	// ----------------------------------------
+	//     Draws everything
+	// ----------------------------------------
 	function drawAll() {
 		//draw floor
 		drawTiles(center);
 		for (var i = 0; i < allObjects.length; i += 2) {
 			if (shadows[i] < range && shadows[i] > -range && shadows[i + 1] < range && shadows[i + 1] > -range) {
 				//comment this out when draw all shadow sprites
-				drawTile(shadows[i], shadows[i + 1], 1.0);
+				//drawTile(shadows[i], shadows[i + 1], 1.0);
 			}
-			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] <= player.X && rockPos[i + 1] <= player.Y) {
+			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] <= player.X && rockPos[i + 1] <= player.Y)
 				drawRock(rockPos[i], rockPos[i + 1], i);
-			}
-			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] <= player.X && cactusPos[i + 1] <= player.Y) {
+			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] <= player.X && cactusPos[i + 1] <= player.Y)
 				drawCactus(cactusPos[i], cactusPos[i + 1]);
-			}
-			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] <= player.X && villages[i + 1] <= player.Y) {
+			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] <= player.X && villages[i + 1] <= player.Y)
 				drawVillage(villages[i], villages[i + 1], i, i + 1);
-			}
-			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] <= player.X && caves[i + 1] <= player.Y) {
-				drawCave(caves[i], caves[i + 1]);
-			}
-			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] <= player.X && boats[i + 1] <= player.Y) {
+			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] <= player.X && caves[i + 1] <= player.Y)
+				drawCave(caves[i], caves[i + 1], i, i + 1);
+			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] <= player.X && boats[i + 1] <= player.Y)
 				drawBoat(boats[i], boats[i + 1]);
-			}
-			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] <= player.X && homeBase[i + 1] <= player.Y) {
+			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] <= player.X && homeBase[i + 1] <= player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
-			}
-			if (humanEnemies[i] < range && humanEnemies[i] > -range && humanEnemies[i + 1] < range && humanEnemies[i + 1] > -range) {
+			if (humanEnemies[i] < range && humanEnemies[i] > -range && humanEnemies[i + 1] < range && humanEnemies[i + 1] > -range)
 				drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
-			}
-			if (!day && fishEnemies[i] < range && fishEnemies[i] > -range && fishEnemies[i + 1] < range && fishEnemies[i + 1] > -range) {
+			if (!day && fishEnemies[i] < range && fishEnemies[i] > -range && fishEnemies[i + 1] < range && fishEnemies[i + 1] > -range)
 				drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
-			}
-			if (travellers[i] < range && travellers[i] > -range && travellers[i + 1] < range && travellers[i + 1] > -range) {
+			if (travellers[i] < range && travellers[i] > -range && travellers[i + 1] < range && travellers[i + 1] > -range)
 				drawTraveller(travellers[i], travellers[i + 1]);
-			}
 		}
 		drawPlayers();
 		for (var i = 0; i < allObjects.length; i += 2) {
-			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] >= player.X && rockPos[i + 1] >= player.Y) {
+			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] >= player.X && rockPos[i + 1] >= player.Y)
 				drawRock(rockPos[i], rockPos[i + 1], i);
-			}
-			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] >= player.X && cactusPos[i + 1] >= player.Y) {
+			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] >= player.X && cactusPos[i + 1] >= player.Y)
 				drawCactus(cactusPos[i], cactusPos[i + 1]);
-			}
-			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] >= player.X && villages[i + 1] >= player.Y) {
+			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] >= player.X && villages[i + 1] >= player.Y)
 				drawVillage(villages[i], villages[i + 1], i, i + 1);
-			}
-			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] >= player.X && caves[i + 1] >= player.Y) {
-				drawCave(caves[i], caves[i + 1]);
-			}
-			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] >= player.X && boats[i + 1] >= player.Y) {
+			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] >= player.X && caves[i + 1] >= player.Y)
+				drawCave(caves[i], caves[i + 1], i, i + 1);
+			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] >= player.X && boats[i + 1] >= player.Y)
 				drawBoat(boats[i], boats[i + 1]);
-			}
-			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] >= player.X && homeBase[i + 1] >= player.Y) {
+			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] >= player.X && homeBase[i + 1] >= player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
-			}
 		}
 		for (var i = 0; i < allObjects.length; i += 2) {
-			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] < player.X && rockPos[i + 1] > player.Y) {
+			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] < player.X && rockPos[i + 1] > player.Y)
 				drawRock(rockPos[i], rockPos[i + 1], i);
-			}
-			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] < player.X && cactusPos[i + 1] > player.Y) {
+			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] < player.X && cactusPos[i + 1] > player.Y)
 				drawCactus(cactusPos[i], cactusPos[i + 1]);
-			}
-			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] < player.X && villages[i + 1] > player.Y) {
+			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] < player.X && villages[i + 1] > player.Y)
 				drawVillage(villages[i], villages[i + 1], i, i + 1);
-			}
-			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] < player.X && caves[i + 1] > player.Y) {
-				drawCave(caves[i], caves[i + 1]);
-			}
-			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] < player.X && boats[i + 1] > player.Y) {
+			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] < player.X && caves[i + 1] > player.Y)
+				drawCave(caves[i], caves[i + 1], i, i + 1);
+			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] < player.X && boats[i + 1] > player.Y)
 				drawBoat(boats[i], boats[i + 1]);
-			}
-			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] < player.X && homeBase[i + 1] > player.Y) {
+			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] < player.X && homeBase[i + 1] > player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
-			}
 		}
 		for (var i = 0; i < allObjects.length; i += 2) {
-			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] > player.X && rockPos[i + 1] < player.Y) {
+			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] > player.X && rockPos[i + 1] < player.Y)
 				drawRock(rockPos[i], rockPos[i + 1], i);
-			}
-			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] > player.X && cactusPos[i + 1] < player.Y) {
+			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] > player.X && cactusPos[i + 1] < player.Y)
 				drawCactus(cactusPos[i], cactusPos[i + 1]);
-			}
-			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] > player.X && villages[i + 1] < player.Y) {
+			if (villages[i] < range && villages[i] > -range && villages[i + 1] < range && villages[i + 1] > -range && villages[i] > player.X && villages[i + 1] < player.Y)
 				drawVillage(villages[i], villages[i + 1], i, i + 1);
-			}
-			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] > player.X && caves[i + 1] < player.Y) {
-				drawCave(caves[i], caves[i + 1]);
-			}
-			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] > player.X && boats[i + 1] < player.Y) {
+			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] > player.X && caves[i + 1] < player.Y)
+				drawCave(caves[i], caves[i + 1], i, i + 1);
+			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] > player.X && boats[i + 1] < player.Y)
 				drawBoat(boats[i], boats[i + 1]);
-			}
-			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] > player.X && homeBase[i + 1] < player.Y) {
+			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] > player.X && homeBase[i + 1] < player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
-			}
 		}
 	}
 
@@ -2569,7 +2557,7 @@ function main() {
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				drawKeys(hitKeys);
-				drawAIKeys(AIKeys)
+				drawAIKeys(AIKeys);
 				changeKeyColor(hitKeys);
 				if (currKey == hitKeys.length && hitKeys.length != 0) {
 					keysDone = true;

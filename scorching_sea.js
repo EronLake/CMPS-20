@@ -1306,22 +1306,41 @@ function main() {
 // ----------------------------------------
 //     Draw Fish Battle Screen
 // ----------------------------------------
+	var fishHealth = 100;
+
 	function drawBattleScreen_fish(i, count, playerCount) {
 		//var drawEnd = Math.random() * (90 - 70) + 70;
-		var yourHealth = "Health: " + player.HEALTH;
-		var yourWater = "ml: " + player.WATER;
+		//var yourHealth = "Health: " + player.HEALTH;
+		//var yourWater = "ml: " + player.WATER;
+		
+		// Colors the screen darker
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
-		c.lineWidth = 20;
 		// Display prompt fight on screen
-		c.lineWidth = 20;
+		c.lineWidth = 10;
 		c.font = "60px Arial";
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.strokeText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		
+		// Draw Fish's health bar
+		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
+		c.fillRect(canvasWidth / 2 , canvasHeight / 2 - 15, 110, 25);
+		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
+		c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 -  10, 100, 15);
+		c.fillStyle = 'rgba(200, ' + fishHealth * 2 + ', ' + (fishHealth * 2 + 55) + ', 1)';
+		if (fishHealth > 0)
+			c.fillRect(canvasWidth / 2  + 5, canvasHeight / 2 - 10, fishHealth , 15);
+		c.font = "15px Arial";
+		c.lineWidth = 3;
+		c.fillStyle = 'rgba(255, 255, 255, 1)';
+		c.strokeStyle = 'rgba(0, 0, 0, .75)';
+		c.strokeText("Enemy Health", canvasWidth / 2  + 5, canvasHeight / 3 + 90);
+		c.fillText("Enemy Health", canvasWidth / 2  + 5, canvasHeight / 3 + 90);
+
 		// If you successfuly beat the fish, delete fish from grid and gain reward
-		if (keysDone == true) {
+		if (fishHealth < 1) {
 			fishEnemies[i] = -tiles_dimension;
 			fishEnemies[i + 1] = -tiles_dimension;
 			playerCount = 0;
@@ -1334,12 +1353,7 @@ function main() {
 			AIKeys.length = 0;
 			AIcurrKey = 0;
 			fishEnemiesKilled++;
-		}
-		//If you do not beat the fish, lose some health and continue fight
-		if (hurt == true) {
-			player.HEALTH -= Math.floor((Math.random() * 10) + 1);
-			player.WATER -= Math.floor((Math.random() * (500 - 250)) + 250);
-			playerCount = 0;
+			fishHealth = 100;
 		}
 		hurt = false;
 	}
@@ -1461,6 +1475,7 @@ function main() {
 		UVORIG : 100,
 		UV : 100,
 		HEALTH : 100,
+		ATTACK: 5,
 		SHOVEL : true,
 		DETECTOR : true,
 		COMPASS : true,
@@ -1471,19 +1486,22 @@ function main() {
 	var player2 = {
 		X : 2,
 		Y : -2,
-		HEALTH : 100
+		HEALTH : 100,
+		ATTACK: 5
 	};
 
 	var player3 = {
 		X : 2,
 		Y : -2,
-		HEALTH : 100
+		HEALTH : 100,
+		ATTACK: 5
 	};
 
 	var player4 = {
 		X : 2,
 		Y : -2,
-		HEALTH : 100
+		HEALTH : 100,
+		ATTACK: 5
 	};
 
 	var homeBase = {
@@ -1685,36 +1703,42 @@ function main() {
 // ----------------------------------------
 //     Fish Fight Mechanics
 // ----------------------------------------
-	function fight() {
+	function setKeys() {
 		var keyNum = 0;
-		// var keySym;
-		// var keyPosX = 0;
 		printKeys = true;
-		for (var i = 0; i < 4; ++i) {
-			keyNum = Math.random();
-			if (keyNum >= 0 && keyNum < .25) {
-				//keySym = "w";
-				//drawKey(keySym, keyPosX);
-				hitKeys.push("W");
-				AIKeys.push("D");
-			} else if (keyNum >= .25 && keyNum < .50) {
-				//keySym = "a";
-				//drawKey(keySym, keyPosX);
-				hitKeys.push("A");
-				AIKeys.push("S");
-			} else if (keyNum >= .50 && keyNum < .75) {
-				//keySym = "s";
-				//drawKey(keySym, keyPosX);
-				hitKeys.push("S");
-				AIKeys.push("A");
-			} else {
-				//keySym = "d";
-				//drawKey(keySym, keyPosX);
-				hitKeys.push("D");
-				AIKeys.push("W");
+		// Set player Keys
+		if(resetHumKeys) {
+			for (var i = 0; i < 4; ++i) {
+				keyNum = Math.random();
+				if (keyNum >= 0 && keyNum < .25) {
+					hitKeys.push("W");
+				} else if (keyNum >= .25 && keyNum < .50) {
+					hitKeys.push("A");
+				} else if (keyNum >= .50 && keyNum < .75) {
+					hitKeys.push("S");
+				} else {
+					hitKeys.push("D");
+				}
 			}
+			resetHumKeys = false;
 		}
-
+		
+		// set AI Keys
+		if(resetFishKeys) {
+			for (var i = 0; i < 7; ++i) {
+				keyNum = Math.random();
+				if (keyNum >= 0 && keyNum < .25) {
+					AIKeys.push("D");
+				} else if (keyNum >= .25 && keyNum < .50) {
+					AIKeys.push("S");
+				} else if (keyNum >= .50 && keyNum < .75) {
+					AIKeys.push("A");
+				} else {
+					AIKeys.push("W");
+				}
+			}
+			resetFishKeys = false;
+		}
 	}
 	
 	function drawAIKeys(AIKeys) {
@@ -1749,7 +1773,22 @@ function main() {
 		}
 	}
 	
-
+    function AIexecKeys () {
+    	var damageGiven = 15;
+    	if(fishBat && inBattle) {
+    		calcDamage(damageGiven, true);
+    		AIcurrKey++;
+    		if(AIcurrKey == AIKeys.length) {
+    			damageGiven = 10;
+    			calcDamage(damageGiven, false);
+				AIcurrKey = 0;
+				AIKeys.length = 0;
+				resetFishKeys = true;
+				setKeys();
+			}
+    	}
+    }
+    
 	function drawKeys(hitKeys) {
 		for (var i = 0; i < hitKeys.length; i++) {
 			c.lineWidth = 3;
@@ -1763,14 +1802,6 @@ function main() {
 		//console.log("size of array: " + hitKeys.length);
 	}
 	setInterval(AIexecKeys, 3000);
-    
-    function AIexecKeys () {
-    	console.log("is it even doing anything");
-    	if(fishBat && inBattle) {
-    		AIcurrKey++;
-    		console.log("it should be working");
-    	}
-    }
     
 	function changeKeyColor(hitKeys) {
 		for (var i = 0; i < currKey; i++) {
@@ -1794,15 +1825,74 @@ function main() {
 			c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
 		}
 	}
+	var playerAttack = 0;
+	function calcAttack () {
+		playerAttack = 0;
+		if(player.HEALTH >= 1) 
+			playerAttack += player.ATTACK;
+		if(player2.HEALTH >= 1) 
+			playerAttack += player2.ATTACK;
+		if(player3.HEALTH >= 1) 
+			playerAttack += player3.ATTACK;
+		if(player4.HEALTH >= 1) 
+			playerAttack += player4.ATTACK;		
+		if(perfectString == 4) {
+			playerAttack += numOfPlayers * 5;
+			perfectString = 0;
+		}
+	}
+	
+	function calcDamage (damage, isEnemy) {
+		var chooseP = 0;
+		if(isEnemy){
+			chooseP = Math.random();
+			if(player.HEALTH >= 1 && chooseP >= 0 && chooseP < .25) 
+				player.HEALTH -= damage;
+			if(player2.HEALTH >= 1 && chooseP >= .25 && chooseP < .50) 
+				player2.HEALTH -= damage;
+			if(player3.HEALTH >= 1 && chooseP >= .50 && chooseP < .75) 
+				player3.HEALTH -= damage;
+			if(player4.HEALTH >= 1 && chooseP >= .75 && chooseP <= 1) 
+				player4.HEALTH -= damage;	
+			}
+		else {
+			if(player.HEALTH >= 1) 
+				player.HEALTH -= damage;
+			if(player2.HEALTH >= 1) 
+				player2.HEALTH -= damage;
+			if(player3.HEALTH >= 1) 
+				player3.HEALTH -= damage;
+			if(player4.HEALTH >= 1) 
+				player4.HEALTH -= damage;
+		}
+		
+	}	
 
 	function execKeys(hitKeys, matchKey) {
 		// Keeps track of the current index we are at
+		var penalty = 3;
 		if (hitKeys[currKey] == matchKey) {
+			calcAttack();
+			fishHealth -= playerAttack;
 			currKey++;
-			console.log(currKey);
-		} else
-			hurt = true;
-
+			perfectString++;
+			if(currKey == hitKeys.length) {
+				currKey = 0;
+				hitKeys.length = 0;
+				resetHumKeys = true;
+				setKeys();
+			}
+			
+		} else {
+			perfectString = 0;
+			hitKeys.length = 0;
+			currKey = 0;
+			resetHumKeys = true;
+			setKeys();
+			// Players take some damage for missing keys
+			calcDamage(penalty, false);
+			//hurt = true;
+		}
 	}
 
 	var moveSpeed = 1;
@@ -1895,7 +1985,9 @@ function main() {
 					inBattle = true;
 					fishBat = true;
 					enemyPosition = i;
-					fight();
+					resetHumKeys = true;
+					resetFishKeys = true;
+					setKeys();
 					break;
 				}
 				fishSkip = false;
@@ -2438,6 +2530,9 @@ function main() {
 	var hitKeys = new Array();
 	var AIKeys = new Array();
 	var currKey = 0;
+	var perfectString = 0;
+	var resetFishKeys = true;
+	var resetHumKeys = true;
 	var AIcurrKey = 0;
 	var count = 0;
 	var playerCount = 0;

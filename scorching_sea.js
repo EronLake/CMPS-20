@@ -1318,17 +1318,12 @@ function main() {
 		hurt = false;
 	}
 
-<<<<<<< HEAD
 	// ----------------------------------------
 	//     Draw Fish Battle Screen
 	// ----------------------------------------
-=======
-// ----------------------------------------
-//     Draw Fish Battle Screen
-// ----------------------------------------
+
 	var fishHealth = 100;
 
->>>>>>> a8cf13d6b8c5d6153f12f3abd59aa352a6644fbd
 	function drawBattleScreen_fish(i, count, playerCount) {
 		//var drawEnd = Math.random() * (90 - 70) + 70;
 		//var yourHealth = "Health: " + player.HEALTH;
@@ -1724,7 +1719,7 @@ function main() {
 	// ----------------------------------------
 	//     Fish Fight Mechanics
 	// ----------------------------------------
-	function fight() {
+	//function fight() {
 
 // ----------------------------------------
 //     Fish Fight Mechanics

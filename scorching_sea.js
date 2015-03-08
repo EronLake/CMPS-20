@@ -1330,13 +1330,20 @@ function main() {
 	//     Draw Fish Battle Screen
 	// ----------------------------------------
 
-	var fishHealth = 100;
+	var fishHealth = 0;
 
 	function drawBattleScreen_fish(i, count, playerCount) {
-		//var drawEnd = Math.random() * (90 - 70) + 70;
-		//var yourHealth = "Health: " + player.HEALTH;
-		//var yourWater = "ml: " + player.WATER;
-
+		if(setHealth == true) {
+			if (numOfPlayers == 4)
+				fishHealth = 150;
+			if (numOfPlayers == 3)
+				fishHealth = 100
+			if (numOfPlayers == 2)
+				fishHealth = 50
+			if (numOfPlayers == 1)
+				fishHealth = 25;	
+			setHealth = false;
+		}
 		// Colors the screen darker
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1354,9 +1361,14 @@ function main() {
 		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
 		c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, 100, 15);
 		c.fillStyle = 'rgba(200, ' + fishHealth * 2 + ', ' + (fishHealth * 2 + 55) + ', 1)';
-		if (fishHealth > 0)
+		if (fishHealth > 0 && numOfPlayers == 4)
+			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * (2/3), 15);
+		if (fishHealth > 0 && numOfPlayers == 3)
 			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth, 15);
-		c.font = "15px Arial";
+		if (fishHealth > 0 && numOfPlayers == 2)
+			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * 2, 15);c.font = "15px Arial";
+		if (fishHealth > 0 && numOfPlayers == 1)
+			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * 4, 15);
 		c.lineWidth = 3;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, .75)';
@@ -1368,7 +1380,7 @@ function main() {
 			fishEnemies[i] = -tiles_dimension;
 			fishEnemies[i + 1] = -tiles_dimension;
 			playerCount = 0;
-			player.WATER += Math.floor((Math.random() * (1000 - 500)) + 500);
+			player.WATER += Math.floor((Math.random() * (500 - 50)) + 50);
 			inBattle = false;
 			fishBat = false;
 			keysDone = false;
@@ -1378,6 +1390,8 @@ function main() {
 			AIcurrKey = 0;
 			fishEnemiesKilled++;
 			fishHealth = 100;
+			setHealth = true;
+			perfectString = 0;
 		}
 		hurt = false;
 	}
@@ -1501,7 +1515,7 @@ function main() {
 		UVORIG : 100,
 		UV : 100,
 		HEALTH : 100,
-		ATTACK : 5,
+		ATTACK : 4,
 		SHOVEL : false,
 		DETECTOR : false,
 		COMPASS : false,
@@ -1513,7 +1527,7 @@ function main() {
 		X : 2,
 		Y : -2,
 		HEALTH : 100,
-		ATTACK : 5
+		ATTACK : 4
 	};
 
 	var player3 = {
@@ -1826,7 +1840,6 @@ function main() {
 			c.font = "40px Arial";
 			c.strokeText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
 			c.fillText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
-			//console.log("contents of hitkeys " + hitKeys[i]);
 		}
 		for (var i = 0; i < AIcurrKey; i++) {
 			//Outline finished keys red
@@ -1836,8 +1849,6 @@ function main() {
 			c.font = "40px Arial";
 			c.strokeText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
 			c.fillText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
-			//console.log("size of changekeycolorarray: " + hitKeys.length);
-			//console.log("contents of change key color" + hitKeys[i]);
 		}
 		if (AIcurrKey <= AIKeys.length - 1) {
 			//Outline current key green
@@ -1851,12 +1862,12 @@ function main() {
 	}
 
 	function AIexecKeys() {
-		var damageGiven = 15;
+		var damageGiven = Math.floor(Math.random() * (15 - 10) + 10);
 		if (fishBat && inBattle) {
 			calcDamage(damageGiven, true);
 			AIcurrKey++;
 			if (AIcurrKey == AIKeys.length) {
-				damageGiven = 10;
+				damageGiven = Math.floor(Math.random() * (10 - 5) + 5);
 				calcDamage(damageGiven, false);
 				AIcurrKey = 0;
 				AIKeys.length = 0;
@@ -1874,9 +1885,7 @@ function main() {
 			c.font = "40px Arial";
 			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
 			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
-			//console.log("contents of hitkeys " + hitKeys[i]);
 		}
-		//console.log("size of array: " + hitKeys.length);
 	}
 
 	setInterval(AIexecKeys, 3000);
@@ -1890,8 +1899,7 @@ function main() {
 			c.font = "40px Arial";
 			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
 			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
-			//console.log("size of changekeycolorarray: " + hitKeys.length);
-			//console.log("contents of change key color" + hitKeys[i]);
+
 		}
 		if (currKey <= hitKeys.length - 1) {
 			//Outline current key green
@@ -1907,15 +1915,36 @@ function main() {
 	var playerAttack = 0;
 	function calcAttack() {
 		playerAttack = 0;
-		if (player.HEALTH >= 1)
-			playerAttack += player.ATTACK;
-		if (player2.HEALTH >= 1)
-			playerAttack += player2.ATTACK;
-		if (player3.HEALTH >= 1)
-			playerAttack += player3.ATTACK;
-		if (player4.HEALTH >= 1)
-			playerAttack += player4.ATTACK;
-		if (perfectString == 4) {
+		if(numOfPlayers == 4) {
+			if (player.HEALTH >= 1)
+				playerAttack += player.ATTACK;
+			if (player2.HEALTH >= 1)
+				playerAttack += player2.ATTACK;
+			if (player3.HEALTH >= 1)
+				playerAttack += player3.ATTACK;
+			if (player4.HEALTH >= 1)
+				playerAttack += player4.ATTACK;
+		}
+		if(numOfPlayers == 3) {
+			if (player.HEALTH >= 1)
+				playerAttack += player.ATTACK;
+			if (player2.HEALTH >= 1)
+				playerAttack += player2.ATTACK;
+			if (player3.HEALTH >= 1)
+				playerAttack += player3.ATTACK;
+		}
+		if(numOfPlayers == 2) {
+			if (player.HEALTH >= 1)
+				playerAttack += player.ATTACK;
+			if (player2.HEALTH >= 1)
+				playerAttack += player2.ATTACK;
+		}		
+		if(numOfPlayers == 1) {
+			if (player.HEALTH >= 1)
+				playerAttack += player.ATTACK;
+		}
+		
+		if (perfectString == 3) {
 			playerAttack += numOfPlayers * 5;
 			perfectString = 0;
 		}
@@ -1951,6 +1980,7 @@ function main() {
 		var penalty = 3;
 		if (hitKeys[currKey] == matchKey) {
 			calcAttack();
+			console.log(playerAttack);
 			fishHealth -= playerAttack;
 			currKey++;
 			perfectString++;
@@ -1958,6 +1988,7 @@ function main() {
 				currKey = 0;
 				hitKeys.length = 0;
 				resetHumKeys = true;
+				perfectString = 0;
 				setKeys();
 			}
 
@@ -2588,6 +2619,7 @@ function main() {
 	//var keySym;
 	var hitKeys = new Array();
 	var AIKeys = new Array();
+	var setHealth = true;
 	var currKey = 0;
 	var perfectString = 0;
 	var resetFishKeys = true;
@@ -2719,7 +2751,6 @@ function main() {
 
 			// If in a Fish battle, display keys on screen
 			if (fishBat && !enter && inBattle && !humBat && !inVillage && !inHome && !gameOver && !youWin) {
-				//console.log("2 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
 				drawKeys(hitKeys);
@@ -2727,7 +2758,6 @@ function main() {
 				changeKeyColor(hitKeys);
 				if (currKey == hitKeys.length && hitKeys.length != 0) {
 					keysDone = true;
-					console.log(currKey);
 				}
 			}
 

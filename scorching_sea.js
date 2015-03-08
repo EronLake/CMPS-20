@@ -336,9 +336,9 @@ function main() {
 		c.translate(pt[0], pt[1]);
 		if (colOffset == player.X + .3 && rowOffset == player.Y + .3) {
 			c.fillStyle = 'rgba(0, 0, 0, 0.5)';
-			c.fillRect(-100 + player.UVORIG/2, 10, player.UVORIG/2, 3);
+			c.fillRect(-100 + player.UVORIG / 2, 10, player.UVORIG / 2, 3);
 			c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
-			c.fillRect(-50 + player.UV/2, 10, -player.UV/2, 3);
+			c.fillRect(-50 + player.UV / 2, 10, -player.UV / 2, 3);
 		}
 		c.fillStyle = 'rgb(200, 150, 100)';
 		c.fillRect(-15, -30, 20, 35);
@@ -1220,18 +1220,18 @@ function main() {
 	//     Draw Battle Screen
 	// ----------------------------------------
 	var hurt = false;
-	var drawStart = 20;
+	var drawStart = 40;
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
 
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
-			var drawEnd = Math.random() * (44 - 24) + 24;
+			var drawEnd = Math.random() * (64 - 48) + 48;
 		if (numOfPlayers == 2)
-			var drawEnd = Math.random() * (46 - 26) + 26;
+			var drawEnd = Math.random() * (66 - 49) + 49;
 		if (numOfPlayers == 3)
-			var drawEnd = Math.random() * (48 - 28) + 28;
+			var drawEnd = Math.random() * (68 - 50) + 50;
 		if (numOfPlayers == 4)
-			var drawEnd = Math.random() * (50 - 30) + 30;
+			var drawEnd = Math.random() * (70 - 52) + 52;
 		var yourHealth = "P1 Health: " + player.HEALTH;
 		var yourHealth2 = "P2 Health: " + player2.HEALTH;
 		var yourHealth3 = "P3 Health: " + player3.HEALTH;
@@ -1472,8 +1472,10 @@ function main() {
 	var caves = new Array(1200);
 	//multiples of 12
 	var boats = new Array(240);
+	//boundaries
+	var boundaries = new Array(tiles_dimension * 8);
 
-	var objectSize = rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length + caves.length + boats.length;
+	var objectSize = boundaries.length + rockPos.length + homeBase.length + villages.length + promiseWater.length + cactusPos.length + caves.length + boats.length;
 	var allObjects = new Array(objectSize);
 	var shadows = new Array(objectSize);
 
@@ -1539,7 +1541,7 @@ function main() {
 	var i = 0;
 	//create rocks and shadow positions
 	for (; i < rockPos.length; i++) {
-		rockPos[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		rockPos[i] = Math.floor(Math.random() * (tiles_dimension - 6) - (tiles_dimension / 2) + 3);
 		allObjects[i] = rockPos[i];
 		if (!(i % 2 == 0)) {
 			shadows[i] = rockPos[i] + 1;
@@ -1550,7 +1552,7 @@ function main() {
 
 	//creates cactus positions
 	for (var j = 0; j < cactusPos.length; j++) {
-		cactusPos[j] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		cactusPos[j] = Math.floor(Math.random() * (tiles_dimension - 6) - (tiles_dimension / 2) + 3);
 		allObjects[i] = cactusPos[j];
 		if (!(i % 2 == 0)) {
 			shadows[i] = cactusPos[j] + 1;
@@ -1558,6 +1560,50 @@ function main() {
 			shadows[i] = cactusPos[j];
 		}
 		i++;
+	}
+
+	var inc = 0;
+	for (var k = 0; k < boundaries.length; k += 2) {
+		if (k >= 0 && k < boundaries.length / 4) {
+			boundaries[k] = (-tiles_dimension / 2) + inc;
+			boundaries[k + 1] = -tiles_dimension / 2 - 1;
+
+			inc++;
+			if (inc > boundaries.length / 4) {
+				inc = 0;
+			}
+
+		}
+		if (k >= boundaries.length / 4 && k < boundaries.length / 2) {
+			boundaries[k] = -tiles_dimension / 2 - 1;
+			boundaries[k + 1] = (-tiles_dimension / 2) * 3 + inc;
+			inc++;
+			if (inc > boundaries.length / 4) {
+				inc = 0;
+			}
+		}
+		if (k >= boundaries.length / 2 && k < boundaries.length * 3 / 4) {
+			boundaries[k] = (tiles_dimension / 2) - inc - 1;
+			boundaries[k + 1] = tiles_dimension / 2;
+			inc++;
+			if (inc > boundaries.length / 4) {
+				inc = 0;
+			}
+		}
+
+		if (k >= boundaries.length * 3 / 4 && k < boundaries.length) {
+			boundaries[k] = tiles_dimension / 2;
+			boundaries[k + 1] = (-tiles_dimension / 2) * 3 + inc + 1;
+			inc++;
+			if (inc > boundaries.length / 4) {
+				inc = 0;
+			}
+		}
+		allObjects[i] = boundaries[k];
+		allObjects[i + 1] = boundaries[k + 1];
+		shadows[i] = boundaries[k];
+		shadows[i + 1] = boundaries[k + 1] + 1;
+		i += 2;
 	}
 
 	//create villages positions
@@ -1571,8 +1617,8 @@ function main() {
 		//clues 0 - 12
 		villageItems[j + 3] = Math.floor(Math.random() * clues.length);
 
-		villages[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
-		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		villages[j] = Math.floor(Math.random() * (tiles_dimension - 12) - (tiles_dimension / 2) + 6);
+		villages[j + 1] = Math.floor(Math.random() * (tiles_dimension - 12) - (tiles_dimension / 2) + 6);
 		villages[j + 2] = villages[j] + 1;
 		villages[j + 3] = villages[j + 1];
 		villages[j + 4] = villages[j] + 2;
@@ -1605,8 +1651,8 @@ function main() {
 		caveStats[j + 1] = Math.floor((Math.random() * (1000 - 100)) + 100);
 		caveStats[j + 2] = Math.floor((Math.random() * (1000 - 100)) + 100);
 		caveStats[j + 3] = Math.floor((Math.random() * (1000 - 100)) + 100);
-		caves[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
-		caves[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		caves[j] = Math.floor(Math.random() * (tiles_dimension - 8) - (tiles_dimension / 2) + 4);
+		caves[j + 1] = Math.floor(Math.random() * (tiles_dimension - 8) - (tiles_dimension / 2) + 4);
 		caves[j + 2] = caves[j] + 1;
 		caves[j + 3] = caves[j + 1];
 		caves[j + 4] = caves[j];
@@ -1632,8 +1678,8 @@ function main() {
 		boatStats[j] = Math.floor((Math.random() * (6 - 1)) + 1);
 		//helpful clues
 		boatStats[j + 1] = Math.floor((Math.random() * (11 - 1)) + 1);
-		boats[j] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
-		boats[j + 1] = Math.floor(Math.random() * (tiles_dimension) - (tiles_dimension / 2) - 2);
+		boats[j] = Math.floor(Math.random() * (tiles_dimension - 12) - (tiles_dimension / 2) + 2);
+		boats[j + 1] = Math.floor(Math.random() * (tiles_dimension - 12) - (tiles_dimension / 2) + 2);
 		boats[j + 2] = boats[j] + 1;
 		boats[j + 3] = boats[j + 1];
 		boats[j + 4] = boats[j];
@@ -1665,17 +1711,17 @@ function main() {
 	shadows[i] = homeBase[0];
 	allObjects[++i] = homeBase[1];
 	shadows[i] = player.Y;
-	promiseWater[0] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
-	promiseWater[1] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+	promiseWater[0] = Math.floor(Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2);
+	promiseWater[1] = Math.floor(Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2);
 	var finalX = promiseWater[0] + tiles_dimension / 2;
 	var finalY = promiseWater[1] + tiles_dimension / 2;
 	//create human enemy positions
 	for (var i = 0; i < humanEnemies.length; i++) {
-		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		humanEnemies[i] = Math.floor(Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2);
 	}
 
 	for (var i = 0; i < fishEnemies.length; i++) {
-		fishEnemies[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		fishEnemies[i] = Math.floor(Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2);
 		fishOrig[i] = fishEnemies[i];
 	}
 
@@ -1684,7 +1730,7 @@ function main() {
 			travellerStats[i] = Math.ceil((Math.random() * 5));
 		else
 			travellerStats[i] = Math.floor((Math.random() * (1000 - 500)) + 500);
-		travellers[i] = Math.floor(Math.random() * (tiles_dimension) - tiles_dimension / 2);
+		travellers[i] = Math.floor(Math.random() * (tiles_dimension-4) - (tiles_dimension / 2) + 2);
 	}
 
 	//-------------------------------------------
@@ -1706,6 +1752,7 @@ function main() {
 		travellers[i] -= moveSpeed;
 		caves[i] -= moveSpeed;
 		boats[i] -= moveSpeed;
+		boundaries[i] -= moveSpeed;
 	}
 
 	function inAll(i) {
@@ -1722,6 +1769,7 @@ function main() {
 		travellers[i] += moveSpeed;
 		caves[i] += moveSpeed;
 		boats[i] += moveSpeed;
+		boundaries[i] += moveSpeed;
 	}
 
 	// ----------------------------------------
@@ -2071,7 +2119,7 @@ function main() {
 	var playerSpeed = 120;
 	setInterval(function() {
 		if (goDown) {
-			if (center[1] < tiles_dimension + 2) {
+			if (center[1] < tiles_dimension + 1) {
 				center[1] += moveSpeed;
 				moveOthersY(-1);
 				for (var i = 1; i < allObjects.length; i += 2) {
@@ -2098,7 +2146,7 @@ function main() {
 	// Move Up
 	setInterval(function() {
 		if (goUp) {
-			if (center[1] > 3) {
+			if (center[1] > 2) {
 				center[1] -= moveSpeed;
 				moveOthersY(1);
 				for (var i = 1; i < allObjects.length; i += 2) {
@@ -2126,7 +2174,7 @@ function main() {
 	// Move Left
 	setInterval(function() {
 		if (goLeft) {
-			if (center[0] > -3) {
+			if (center[0] > -2) {
 				center[0] -= moveSpeed;
 				moveOthersX(1);
 				for (var i = 0; i < allObjects.length; i += 2) {
@@ -2153,7 +2201,7 @@ function main() {
 	// Move Right
 	setInterval(function() {
 		if (goRight) {
-			if (center[0] < tiles_dimension - 4) {
+			if (center[0] < tiles_dimension - 3) {
 				center[0] += moveSpeed;
 				moveOthersX(-1);
 				for (var i = 0; i < allObjects.length; i += 2) {
@@ -2299,11 +2347,11 @@ function main() {
 						counter = 0;
 				case keys.SPACE:
 					if (inBattle) {
-						document.getElementById("gunShot").volume = .25;
-						document.getElementById("gunShot").play();
 						playerCount = count;
 						count = 0;
 						hurt = true;
+						document.getElementById("gunShot").volume = .25;
+						document.getElementById("gunShot").play();
 					}
 					if (!inBattle) {
 						drinkCac = true;
@@ -2391,6 +2439,8 @@ function main() {
 		//draw floor
 		drawTiles(center);
 		for (var i = 0; i < allObjects.length; i += 2) {
+			if (boundaries[i] < range && boundaries[i] > -range && boundaries[i + 1] < range && boundaries[i + 1] > -range && boundaries[i] <= player.X && boundaries[i + 1] <= player.Y)
+				drawRock(boundaries[i], boundaries[i + 1], i);
 			if (shadows[i] < range && shadows[i] > -range && shadows[i + 1] < range && shadows[i + 1] > -range) {
 				//comment this out when draw all shadow sprites
 				//drawTile(shadows[i], shadows[i + 1], 1.0);
@@ -2416,6 +2466,8 @@ function main() {
 		}
 		drawPlayers();
 		for (var i = 0; i < allObjects.length; i += 2) {
+			if (boundaries[i] < range && boundaries[i] > -range && boundaries[i + 1] < range && boundaries[i + 1] > -range && boundaries[i] >= player.X && boundaries[i + 1] >= player.Y)
+				drawRock(boundaries[i], boundaries[i + 1], i);
 			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] >= player.X && rockPos[i + 1] >= player.Y)
 				drawRock(rockPos[i], rockPos[i + 1], i);
 			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] >= player.X && cactusPos[i + 1] >= player.Y)
@@ -2430,6 +2482,8 @@ function main() {
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
 		}
 		for (var i = 0; i < allObjects.length; i += 2) {
+			if (boundaries[i] < range && boundaries[i] > -range && boundaries[i + 1] < range && boundaries[i + 1] > -range && boundaries[i] < player.X && boundaries[i + 1] > player.Y)
+				drawRock(boundaries[i], boundaries[i + 1], i);
 			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] < player.X && rockPos[i + 1] > player.Y)
 				drawRock(rockPos[i], rockPos[i + 1], i);
 			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] < player.X && cactusPos[i + 1] > player.Y)
@@ -2444,6 +2498,8 @@ function main() {
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
 		}
 		for (var i = 0; i < allObjects.length; i += 2) {
+			if (boundaries[i] < range && boundaries[i] > -range && boundaries[i + 1] < range && boundaries[i + 1] > -range && boundaries[i] > player.X && boundaries[i + 1] < player.Y)
+				drawRock(boundaries[i], boundaries[i + 1], i);
 			if (rockPos[i] < range && rockPos[i] > -range && rockPos[i + 1] < range && rockPos[i + 1] > -range && rockPos[i] > player.X && rockPos[i + 1] < player.Y)
 				drawRock(rockPos[i], rockPos[i + 1], i);
 			if (cactusPos[i] < range && cactusPos[i] > -range && cactusPos[i + 1] < range && cactusPos[i + 1] > -range && cactusPos[i] > player.X && cactusPos[i + 1] < player.Y)

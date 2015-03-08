@@ -1775,11 +1775,6 @@ function main() {
 	// ----------------------------------------
 	//     Fish Fight Mechanics
 	// ----------------------------------------
-	//function fight() {
-
-	// ----------------------------------------
-	//     Fish Fight Mechanics
-	// ----------------------------------------
 	function setKeys() {
 		var keyNum = 0;
 		printKeys = true;
@@ -1978,6 +1973,7 @@ function main() {
 	// ----------------------------------------
 	//     Move the other characters
 	// ----------------------------------------
+	
 	function moveOthersY(i) {
 		if (player.HEALTH != 0)
 			player2.Y += moveSpeed * i;
@@ -2001,26 +1997,26 @@ function main() {
 	// ----------------------------------------
 	var othersSpeed = .25;
 	var skip = false;
-	var humanSpeed = 40;
+	var humanSpeed = 50;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
 			for (var i = 0; i < humanEnemies.length; i += 2) {
-				if (humanEnemies[i] > player.X && humanEnemies[i] < 10 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
+				if (humanEnemies[i] > player.X && humanEnemies[i] < 9 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] -= othersSpeed;
-					skip = true;
+					//skip = true;
 				}
-				if (humanEnemies[i] < player.X && humanEnemies[i] > -4 && humanEnemies[i + 1] > -10 && humanEnemies[i + 1] < 4 && skip == false) {
+				if (humanEnemies[i] < player.X && humanEnemies[i] > -3 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] += othersSpeed;
-					skip = true;
+					//skip = true;
 				}
-				if (humanEnemies[i + 1] > player.Y && humanEnemies[i + 1] < 4 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
+				if (humanEnemies[i + 1] > player.Y && humanEnemies[i + 1] < 3 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] -= othersSpeed;
-					skip = true;
+					//skip = true;
 				}
-				if (humanEnemies[i + 1] < player.Y && humanEnemies[i + 1] > -10 && humanEnemies[i] > -4 && humanEnemies[i] < 10 && skip == false) {
+				if (humanEnemies[i + 1] < player.Y && humanEnemies[i + 1] > -9 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] += othersSpeed;
-					skip = true;
+					//skip = true;
 				}
 				if (humanEnemies[i] == player.X && humanEnemies[i + 1] == player.Y) {
 					inBattle = true;
@@ -2038,26 +2034,26 @@ function main() {
 	//     Fish Enemy AI
 	// ----------------------------------------
 	var fishSkip = false;
-	var fishSpeed = 20;
+	var fishSpeed = 35;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
 			for (var i = 0; i < fishEnemies.length; i += 2) {
-				if (fishEnemies[i] > player.X && fishEnemies[i] < 12 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
+				if (fishEnemies[i] > player.X && fishEnemies[i] < 10 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] -= othersSpeed;
-					fishSkip = true;
+					//fishSkip = true;
 				}
-				if (fishEnemies[i] < player.X && fishEnemies[i] > -6 && fishEnemies[i + 1] > -12 && fishEnemies[i + 1] < 6 && fishSkip == false) {
+				if (fishEnemies[i] < player.X && fishEnemies[i] > -4 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] += othersSpeed;
-					fishSkip = true;
+					//fishSkip = true;
 				}
-				if (fishEnemies[i + 1] > player.Y && fishEnemies[i + 1] < 6 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
+				if (fishEnemies[i + 1] > player.Y && fishEnemies[i + 1] < 4 && fishEnemies[i] > -4 && fishEnemies[i] < 10 && fishSkip == false) {
 					fishEnemies[i + 1] -= othersSpeed;
-					fishSkip = true;
+					//fishSkip = true;
 				}
-				if (fishEnemies[i + 1] < player.Y && fishEnemies[i + 1] > -12 && fishEnemies[i] > -6 && fishEnemies[i] < 12 && fishSkip == false) {
+				if (fishEnemies[i + 1] < player.Y && fishEnemies[i + 1] > -10 && fishEnemies[i] > -4 && fishEnemies[i] < 10 && fishSkip == false) {
 					fishEnemies[i + 1] += othersSpeed;
-					fishSkip = true;
+					//fishSkip = true;
 				}
 				if (fishEnemies[i] == player.X && fishEnemies[i + 1] == player.Y) {
 					inBattle = true;
@@ -2113,10 +2109,10 @@ function main() {
 		}
 	}, 24);
 
-	//the lower the faster
+	// the lower the faster
 	// Player movement, controls all the other objects
 	// Move Down
-	var playerSpeed = 120;
+	var playerSpeed = 140;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 1) {
@@ -2526,13 +2522,13 @@ function main() {
 				player.WATER -= 1 * numOfPlayers;
 			if (player.WATER <= 0 || player.UV <= 0) {
 				if (numOfPlayers > 0)
-					player.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
+					player.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
 				if (numOfPlayers > 1)
-					player2.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
+					player2.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
 				if (numOfPlayers > 2)
-					player3.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
+					player3.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
 				if (numOfPlayers > 3)
-					player4.HEALTH -= Math.floor(Math.random() * (6 - 1) + 1);
+					player4.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
 			}
 
 		}

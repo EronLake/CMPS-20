@@ -61,6 +61,55 @@ groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
 
 var seaHorseImg = new Image();
 seaHorseImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/seahorse_enemy.png';
+
+// ----------------------------------------
+//     Sound Import
+// ----------------------------------------
+var wind = new Audio();
+wind.src = "Audio/wind.mp3";
+wind.volume = 0.4;
+
+var drinkSound = new Audio();
+drinkSound.src = "Audio/drinkSound1.mp3";
+drinkSound.volume = 1;
+
+var gunShot = new Audio();
+gunShot.src = "Audio/gunShot.mp3";
+gunShot.volume = 0.25;
+
+var maleGruntSnd1 = new Audio();
+maleGruntSnd1.src = "Audio/maleGruntSnd1.mp3";
+
+var maleGruntSnd2 = new Audio();
+maleGruntSnd2.src = "Audio/maleGruntSnd2.mp3";
+
+var overworld = new Audio();
+overworld.src = "Audio/overworld1.mp3";
+overworld.volume = 0.05;
+overworld.loop = true;
+
+var villageTheme = new Audio();
+villageTheme.src = "Audio/villageTheme.mp3";
+villageTheme.volume = 0.35;
+
+var whoosh = new Audio();
+whoosh.src = "Audio/whoosh.mp3";
+whoosh.volume = .5;
+
+var gameOverM = new Audio();
+gameOverM.src = "Audio/gameOverM.mp3";
+gameOverM.volume = .5;
+
+var femaleGruntSnd1 = new Audio();
+femaleGruntSnd1.src = "Audio/femaleGruntSnd1.mp3";
+
+var femaleGruntSnd2 = new Audio();
+femaleGruntSnd2.src = "Audio/femaleGruntSnd2.mp3";
+
+var fishBattleTheme = new Audio();
+fishBattleTheme.src = "Audio/fishBattleTheme.mp3";
+fishBattleTheme.volume = .25;
+
 // ----------------------------------------
 //     Canvas Setup
 // ----------------------------------------
@@ -142,7 +191,6 @@ function game_loop() {
 	draw();
 
 }
-
 var refreshIntervalId = setInterval(game_loop, 60);
 
 // ----------------------------------------
@@ -150,8 +198,7 @@ var refreshIntervalId = setInterval(game_loop, 60);
 // ----------------------------------------
 
 function main() {
-	document.getElementById("overworld").volume = 0.01;
-	document.getElementById("overworld").play();
+	overworld.play();
 	hookKeys();
 	hookKeys2();
 
@@ -873,6 +920,7 @@ function main() {
 	// ----------------------------------------
 	//     Village Setup
 	// ----------------------------------------
+	var canDrink = false; //used to prevent drinking upon leaving homeUI
 	var buyHealth = false;
 	var buyWater = false;
 	var buyItem = false;
@@ -1248,8 +1296,7 @@ function main() {
 		c.font = "60px Arial";
 		if (count > (drawStart + randDrawSpeed)) {
 			c.strokeText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
-			document.getElementById("weaponDraw").volume = .5;
-			document.getElementById("weaponDraw").play();
+			whoosh.play();
 			c.fillText("DRAW", (canvasWidth / 2) - 75, (canvasHeight / 2) - 20);
 		}
 		c.lineWidth = 10;
@@ -1300,8 +1347,8 @@ function main() {
 				inBattle = false;
 				humBat = false;
 				humanEnemiesKilled++;
-				document.getElementById("wind").pause();
-				document.getElementById("wind").currentTime = 0;
+				wind.pause();
+				wind.currentTime = 0;
 				enemyHp = Math.ceil(Math.random() * (100 - 50) + 50);
 			}
 		}
@@ -1309,17 +1356,25 @@ function main() {
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			var who = Math.ceil((Math.random() * numOfPlayers));
 			if (who == 1 && numOfPlayers > 0) {
-				document.getElementById("maleGruntSnd1").play();
+				if(player.HEALTH != 0)
+					maleGruntSnd1.play();
 				player.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			if (who == 2 && numOfPlayers > 1) {
-				document.getElementById("maleGruntSnd2").play();
+				if(player2.HEALTH != 0)
+					maleGruntSnd2.play();
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
-			if (who == 3 && numOfPlayers > 2)
+			if (who == 3 && numOfPlayers > 2){
+				if(player3.HEALTH != 0)
+					femaleGruntSnd1.play();
 				player3.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
-			if (who == 4 && numOfPlayers > 3)
+			}
+			if (who == 4 && numOfPlayers > 3){
+				if(player4.HEALTH != 0)
+					femaleGruntSnd2.play();
 				player4.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
+		    }
 			player.WATER -= Math.floor((Math.random() * (1000 - 500)) + 500);
 			playerCount = 0;
 		}
@@ -1372,6 +1427,8 @@ function main() {
 			inBattle = false;
 			fishBat = false;
 			keysDone = false;
+			fishBattleTheme.pause();
+			fishBattletheme.currentTime = 0;
 			hitKeys.length = 0;
 			currKey = 0;
 			AIKeys.length = 0;
@@ -2079,8 +2136,6 @@ function main() {
 					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 						center[1] -= moveSpeed;
 						moveOthersY(1);
-						document.getElementById("footstep").volume = 0.05;
-						document.getElementById("footstep").play();
 						for (var j = 1; j < allObjects.length; j += 2) {
 							inAll(j);
 						}
@@ -2106,8 +2161,6 @@ function main() {
 					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 						center[1] += moveSpeed;
 						moveOthersY(-1);
-						document.getElementById("footstep").volume = 0.05;
-						document.getElementById("footstep").play();
 						for (var j = 1; j < allObjects.length; j += 2) {
 							decAll(j);
 						}
@@ -2134,8 +2187,6 @@ function main() {
 					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 						center[0] += moveSpeed;
 						moveOthersX(-1);
-						document.getElementById("footstep").volume = 0.05;
-						document.getElementById("footstep").play();
 						for (var j = 0; j < allObjects.length; j += 2) {
 							decAll(j);
 						}
@@ -2161,8 +2212,6 @@ function main() {
 					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 						center[0] -= moveSpeed;
 						moveOthersX(1);
-						document.getElementById("footstep").volume = 0.05;
-						document.getElementById("footstep").play();
 						for (var j = 0; j < allObjects.length; j += 2) {
 							inAll(j);
 						}
@@ -2290,7 +2339,8 @@ function main() {
 				case keys.ENTER:
 					break;
 				case keys.PAUSE:
-					pause = true;
+					if(!gameOver)
+						pause = true;
 					break;
 				case keys.DoN_E:
 					if (day)
@@ -2299,12 +2349,14 @@ function main() {
 						counter = 0;
 				case keys.SPACE:
 					if (inBattle) {
-						document.getElementById("gunShot").volume = .25;
-						document.getElementById("gunShot").play();
 						playerCount = count;
 						count = 0;
 						hurt = true;
-					}
+						if(!gameOver){
+							if(humBat)
+								gunShot.play();
+						}
+					}	
 					if (!inBattle) {
 						drinkCac = true;
 						enter = !enter;
@@ -2314,8 +2366,9 @@ function main() {
 						if (player.SHOVEL == true)
 							dig = true;
 					}
-					if (nearHome)
+					if (nearHome){
 						inHome = false;
+				    }
 					if (talking)
 						talking = !talking;
 					if (inCave)
@@ -2324,8 +2377,9 @@ function main() {
 						inBoat = !inBoat;
 					if (inVillage) {
 						inVillage = !inVillage;
-						document.getElementById('village').pause();
-						document.getElementById('village').currentTime = 0;
+						villageTheme.pause();
+						villageTheme.currentTime = 0;
+						overworld.play();
 					}
 					if (getClue)
 						getClue = false;
@@ -2566,7 +2620,7 @@ function main() {
 	function animate() {
 		requestAnimationFrame(animate);
 		//where end game is at
-		console.log(promiseWater[0], promiseWater[1]);
+		//console.log(promiseWater[0], promiseWater[1]);
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		drawAll();
 		drawUI();
@@ -2587,8 +2641,7 @@ function main() {
 			//destroy cactus and replenish water
 			for (var i = 0; i < cactusPos.length; i += 2) {
 				if (((cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y) || (cactusPos[i] == player.X && cactusPos[i + 1] - 1 == player.Y) || (cactusPos[i] == player.X + 1 && cactusPos[i + 1] == player.Y) || (cactusPos[i] == player.X - 1 && cactusPos[i + 1] == player.Y)) && drinkCac == true) {
-					//document.getElementById('drink').volume =0.05;
-					document.getElementById('drink').play();
+					drinkSound.play();
 					player.WATER += 250;
 					if (player.HEALTH > 0 && numOfPlayers > 0) {
 						player.HEALTH += Math.floor(Math.random() * (4 - 1) + 1);
@@ -2654,15 +2707,16 @@ function main() {
 			}
 			// If Party encounters a Human battle
 			if (inBattle && !enter && !fishBat && humBat && !inVillage && !inHome && !gameOver && !youWin) {
-				document.getElementById('overworld').pause();
-				document.getElementById("wind").volume = 0.05;
-				document.getElementById('wind').play();
+				overworld.pause();
+				wind.play();
 				count++;
 				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
 			}
 
 			// If in a Fish battle, display keys on screen
 			if (fishBat && !enter && inBattle && !humBat && !inVillage && !inHome && !gameOver && !youWin) {
+				overworld.pause();
+				fishBattleTheme.play();
 				//console.log("2 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
 				count++;
 				drawBattleScreen_fish(enemyPosition, count, playerCount);
@@ -2675,16 +2729,14 @@ function main() {
 				}
 			}
 
-			//if press enter and in village go to a village ui
+			//if press spacebar and in village go to a village ui
 			if (enter && !inBattle) {
 				for (var i = 0; i < villages.length; i += 2) {
 					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						inVillage = true;
 						drawVillageUI(i);
-						document.getElementById("overworld").pause();
-						document.getElementById("overworld").currentTime = 0;
-						document.getElementById('village').volume = 0.1;
-						document.getElementById('village').play();
+						overworld.pause();
+						villageTheme.play();
 						break;
 					}
 				}
@@ -2698,20 +2750,36 @@ function main() {
 
 			//if all death conditions
 			if ((player.HEALTH < 1 && player2.HEALTH < 1 && player3.HEALTH < 1 && player4.HEALTH < 1) && numOfPlayers == 4) {
+				wind.pause();
+				overworld.pause();
+				gameOverM.play();
 				gameOverUI();
 				gameOver = true;
+				pause = false;
 			}
 			if ((player.HEALTH < 1 && player2.HEALTH < 1 && player3.HEALTH < 1) && numOfPlayers == 3) {
+				wind.pause();
+				overworld.pause();
+				gameOverM.play();
 				gameOverUI();
 				gameOver = true;
+				pause = false;
 			}
 			if ((player.HEALTH < 1 && player2.HEALTH < 1) && numOfPlayers == 2) {
+				wind.pause();
+				overworld.pause();
+				gameOverM.play();
 				gameOverUI();
 				gameOver = true;
+				pause = false;
 			}
 			if ((player.HEALTH < 1) && numOfPlayers == 1) {
+				wind.pause();
+				overworld.pause();
+				gameOverM.play();
 				gameOverUI();
 				gameOver = true;
+				pause = false;
 			}
 			if (inHome == true && nearHome == true && counter == 0) {
 				homeUI();
@@ -2721,11 +2789,8 @@ function main() {
 			}
 
 			//flow of stats based on conditions here
-			if (!inBattle && !gameOver && !inHome && !youWin) {
-				//inVillage = false;
-				document.getElementById("overworld").play();
-				//document.getElementById('village').pause();
-				//document.getElementById('village').currentTime = 0;
+			if (!inBattle && !gameOver && !inHome && !youWin && !inVillage) {
+				overworld.play();
 				//sun out?
 				if ((Math.floor(counter / dayLength)) % 2 == 1) {
 					day = false;
@@ -2744,9 +2809,12 @@ function main() {
 
 			//if at base, refill water and use base's water supply and press enter
 			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1 && enter && homeBase.WATER > 0) {
+				if(inHome == false && canDrink == true)
+					drinkSound.play();
 				homeBase.WATER -= (player.WATERORIG - player.WATER);
 				player.WATER = player.WATERORIG;
 				enter = false;
+				canDrink = true;
 			}
 			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1) {
 				nearHome = true;

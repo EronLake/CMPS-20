@@ -267,9 +267,13 @@ function main() {
 	//-----------------------------------------
 	//       Time parameters
 	//-----------------------------------------
+	/////////////////////////
+	//changes dayLength,
+	var world_speed = .5;
+	/////////////////////////
 	var day = true;
 	var counter = 0;
-	var dayLength = 60;
+	var dayLength = 60 * world_speed;
 	//seconds
 	setInterval(function() {
 		if (!pause && !inVillage && !inBattle && !gameOver && !inHome && !talking && !inCave && !inBoat) {++counter;
@@ -2178,7 +2182,7 @@ function main() {
 	// ----------------------------------------
 	var othersSpeed = .25;
 	var skip = false;
-	var humanSpeed = 50;
+	var humanSpeed = 50 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
@@ -2215,7 +2219,7 @@ function main() {
 	//     Fish Enemy AI
 	// ----------------------------------------
 	var fishSkip = false;
-	var fishSpeed = 35;
+	var fishSpeed = 35 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
@@ -2327,7 +2331,7 @@ function main() {
 	// Player movement, controls all the other objects
 	// Move Down
 	var direction = 1;
-	var playerSpeed = 140;
+	var playerSpeed = 140 * world_speed;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 1) {

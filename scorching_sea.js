@@ -1406,9 +1406,9 @@ function main() {
 			if (numOfPlayers == 4)
 				fishHealth = 150;
 			if (numOfPlayers == 3)
-				fishHealth = 100
+				fishHealth = 100;
 			if (numOfPlayers == 2)
-				fishHealth = 50
+				fishHealth = 50;
 			if (numOfPlayers == 1)
 				fishHealth = 25;	
 			setHealth = false;
@@ -2446,9 +2446,6 @@ function main() {
 								gunShot.play();
 						}
 					}	
-						document.getElementById("gunShot").volume = .25;
-						document.getElementById("gunShot").play();
-					}
 					if (!inBattle) {
 						drinkCac = true;
 						enter = !enter;
@@ -2478,8 +2475,8 @@ function main() {
 					if (getBoatClue)
 						getBoatClue = false;
 					break;
-				}
-			} else {
+				};
+			}else{
 				switch(evt.keyCode) {
 				case keys.PAUSE:
 					pause = false;

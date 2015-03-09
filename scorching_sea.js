@@ -53,6 +53,11 @@ caveImg.src = 'Images/cool_cave.png';
 var caveShadowImg = new Image();
 caveShadowImg.src = 'Images/cool_cave_shadow.png';
 
+var boatImg = new Image();
+boatImg.src = 'Images/cool_boat.png';
+var boatShadowImg = new Image();
+boatShadowImg.src = 'Images/cool_boat_shadow.png';
+
 var sunImg = new Image();
 sunImg.src = 'Images/cool_sun.png';
 
@@ -449,14 +454,22 @@ function main() {
 		c.restore();
 	}
 
-	function drawBoat(colOffset, rowOffset) {
+	function drawBoat(colOffset, rowOffset, i, i2) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(150, 150, 200)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-50, -38, 64, 64);
+		if(i%12 == 0 && i2%1 == 0){
+			c.save();
+			c.transform(1, 0, .7, -1, -8, 28);
+			c.drawImage(boatShadowImg, -40, -205, 215, 220);
+			c.restore();
+			c.drawImage(boatImg, -40, -170, 225, 200);
+			
+			
+		}
 		c.restore();
 	}
 
@@ -1472,7 +1485,7 @@ function main() {
 	//multiples of 8
 	var caves = new Array(1200);
 	//multiples of 12
-	var boats = new Array(240);
+	var boats = new Array(960);
 	//boundaries
 	var boundaries = new Array(tiles_dimension * 8);
 
@@ -2451,7 +2464,7 @@ function main() {
 			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] <= player.X && caves[i + 1] <= player.Y)
 				drawCave(caves[i], caves[i + 1], i, i + 1);
 			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] <= player.X && boats[i + 1] <= player.Y)
-				drawBoat(boats[i], boats[i + 1]);
+				drawBoat(boats[i], boats[i + 1], i, i + 1);
 			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] <= player.X && homeBase[i + 1] <= player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
 			if (humanEnemies[i] < range && humanEnemies[i] > -range && humanEnemies[i + 1] < range && humanEnemies[i + 1] > -range)
@@ -2474,7 +2487,7 @@ function main() {
 			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] >= player.X && caves[i + 1] >= player.Y)
 				drawCave(caves[i], caves[i + 1], i, i + 1);
 			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] >= player.X && boats[i + 1] >= player.Y)
-				drawBoat(boats[i], boats[i + 1]);
+				drawBoat(boats[i], boats[i + 1], i, i + 1);
 			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] >= player.X && homeBase[i + 1] >= player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
 		}
@@ -2490,7 +2503,7 @@ function main() {
 			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] < player.X && caves[i + 1] > player.Y)
 				drawCave(caves[i], caves[i + 1], i, i + 1);
 			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] < player.X && boats[i + 1] > player.Y)
-				drawBoat(boats[i], boats[i + 1]);
+				drawBoat(boats[i], boats[i + 1], i, i + 1);
 			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] < player.X && homeBase[i + 1] > player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
 		}
@@ -2506,7 +2519,7 @@ function main() {
 			if (caves[i] < range && caves[i] > -range && caves[i + 1] < range && caves[i + 1] > -range && caves[i] > player.X && caves[i + 1] < player.Y)
 				drawCave(caves[i], caves[i + 1], i, i + 1);
 			if (boats[i] < range && boats[i] > -range && boats[i + 1] < range && boats[i + 1] > -range && boats[i] > player.X && boats[i + 1] < player.Y)
-				drawBoat(boats[i], boats[i + 1]);
+				drawBoat(boats[i], boats[i + 1], i, i + 1);
 			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] > player.X && homeBase[i + 1] < player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
 		}

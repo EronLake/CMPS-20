@@ -13,10 +13,6 @@
 // ----------------------------------------
 var img = new Image();
 img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
-//img.src = 'http://ccrgeek.files.wordpress.com/2012/11/a2-tiles-with-overlays_2.png?w=512&h=384';
-
-//var img2 = new Image();
-//img2.src = '/Images/village_prototype.png';
 
 var cactusImg = new Image();
 cactusImg.src = 'Images/cool_cactus_1.png';
@@ -60,6 +56,50 @@ boatShadowImg.src = 'Images/cool_boat_shadow.png';
 
 var sunImg = new Image();
 sunImg.src = 'Images/cool_sun.png';
+
+var hero1FrontImg = new Image();
+hero1FrontImg.src = 'Images/Hero_1_front.png';
+var hero1BackImg = new Image();
+hero1BackImg.src = 'Images/Hero_1_back.png';
+var hero1RightImg = new Image();
+hero1RightImg.src = 'Images/Hero_1_right.png';
+var hero1LeftImg = new Image();
+hero1LeftImg.src = 'Images/Hero_1_left.png';
+
+var hero1FrontImg = new Image();
+hero1FrontImg.src = 'Images/Hero_1_front.png';
+var hero1BackImg = new Image();
+hero1BackImg.src = 'Images/Hero_1_back.png';
+var hero1RightImg = new Image();
+hero1RightImg.src = 'Images/Hero_1_right.png';
+var hero1LeftImg = new Image();
+hero1LeftImg.src = 'Images/Hero_1_left.png';
+
+var hero2FrontImg = new Image();
+hero2FrontImg.src = 'Images/Hero_2_front.png';
+var hero2BackImg = new Image();
+hero2BackImg.src = 'Images/Hero_2_back.png';
+var hero2RightImg = new Image();
+hero2RightImg.src = 'Images/Hero_2_right.png';
+var hero2LeftImg = new Image();
+hero2LeftImg.src = 'Images/Hero_2_left.png';
+
+var hero3FrontImg = new Image();
+hero3FrontImg.src = 'Images/Hero_3_front.png';
+var hero3BackImg = new Image();
+hero3BackImg.src = 'Images/Hero_3_back.png';
+var hero3RightImg = new Image();
+hero3RightImg.src = 'Images/Hero_3_right.png';
+var hero3LeftImg = new Image();
+hero3LeftImg.src = 'Images/Hero_3_left.png';
+
+var heroShadowImg = new Image();
+heroShadowImg.src = 'Images/Hero_shadow.png';
+
+var seaHorseLeftImg = new Image();
+seaHorseLeftImg.src = 'Images/Sea_Horse_left.png';
+var seaHorseRightImg = new Image();
+seaHorseRightImg.src = 'Images/Sea_Horse_Right.png';
 
 var groundImg = new Image();
 groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
@@ -335,25 +375,63 @@ function main() {
 		var waterLevel = "ml: " + player.WATER;
 		var uvLevel = "UV: " + player.UV;
 		c.beginPath();
-
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-
-		c.fillStyle = 'rgb(200, 150, 100)';
-		c.fillRect(-15, -30, 20, 35);
-		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
-		c.transform(1, 0, -.7, 1, 5, 0);
-		c.fillRect(-15, 5, 20, 25);
-		c.lineWidth = 5;
+		if (direction == 1)
+			c.drawImage(hero1FrontImg, -30, -43, 50, 50);
+		if (direction == 2)
+			c.drawImage(hero1LeftImg, -30, -43, 50, 50);
+		if (direction == 3)
+			c.drawImage(hero1BackImg, -30, -43, 50, 50);
+		if (direction == 4)
+			c.drawImage(hero1RightImg, -30, -43, 50, 50);
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(heroShadowImg, -15, 5, 44, 25);
 		if (colOffset == player.X + .3 && rowOffset == player.Y + .3) {
 			c.fillStyle = 'rgba(0, 0, 0, 0.5)';
-			c.fillRect(-100 + player.UVORIG / 2, 10, player.UVORIG / 2, 3);
+			c.fillRect(-90 + player.UVORIG / 2, 20, player.UVORIG / 2, 3);
 			c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
-			c.fillRect(-50 + player.UV / 2, 10, -player.UV / 2, 3);
+			c.fillRect(-40 + player.UV / 2, 20, -player.UV / 2, 3);
 		}
-		c.fillStyle = 'rgba(255, 255, 255, 0.75)';
-		c.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+		c.restore();
+	}
+
+	function drawPlayer2(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		if (direction == 1)
+			c.drawImage(hero2FrontImg, -30, -43, 50, 50);
+		if (direction == 2)
+			c.drawImage(hero2LeftImg, -30, -43, 50, 50);
+		if (direction == 3)
+			c.drawImage(hero2BackImg, -30, -43, 50, 50);
+		if (direction == 4)
+			c.drawImage(hero2RightImg, -30, -43, 50, 50);
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(heroShadowImg, -15, 5, 44, 25);
+		c.restore();
+	}
+
+	function drawPlayer3(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		if (direction == 1)
+			c.drawImage(hero3FrontImg, -30, -43, 50, 50);
+		if (direction == 2)
+			c.drawImage(hero3LeftImg, -30, -43, 50, 50);
+		if (direction == 3)
+			c.drawImage(hero3BackImg, -30, -43, 50, 50);
+		if (direction == 4)
+			c.drawImage(hero3RightImg, -30, -43, 50, 50);
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(heroShadowImg, -15, 5, 44, 25);
 		c.restore();
 	}
 
@@ -461,14 +539,13 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if(i%12 == 0 && i2%1 == 0){
+		if (i % 12 == 0 && i2 % 1 == 0) {
 			c.save();
 			c.transform(1, 0, .7, -1, -8, 28);
 			c.drawImage(boatShadowImg, -40, -205, 215, 220);
 			c.restore();
 			c.drawImage(boatImg, -40, -170, 225, 200);
-			
-			
+
 		}
 		c.restore();
 	}
@@ -1347,15 +1424,15 @@ function main() {
 	var fishHealth = 0;
 
 	function drawBattleScreen_fish(i, count, playerCount) {
-		if(setHealth == true) {
+		if (setHealth == true) {
 			if (numOfPlayers == 4)
 				fishHealth = 150;
 			if (numOfPlayers == 3)
-				fishHealth = 100
+				fishHealth = 100;
 			if (numOfPlayers == 2)
-				fishHealth = 50
+				fishHealth = 50;
 			if (numOfPlayers == 1)
-				fishHealth = 25;	
+				fishHealth = 25;
 			setHealth = false;
 		}
 		// Colors the screen darker
@@ -1376,11 +1453,12 @@ function main() {
 		c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, 100, 15);
 		c.fillStyle = 'rgba(200, ' + fishHealth * 2 + ', ' + (fishHealth * 2 + 55) + ', 1)';
 		if (fishHealth > 0 && numOfPlayers == 4)
-			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * (2/3), 15);
+			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * (2 / 3), 15);
 		if (fishHealth > 0 && numOfPlayers == 3)
 			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth, 15);
 		if (fishHealth > 0 && numOfPlayers == 2)
-			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * 2, 15);c.font = "15px Arial";
+			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * 2, 15);
+		c.font = "15px Arial";
 		if (fishHealth > 0 && numOfPlayers == 1)
 			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * 4, 15);
 		c.lineWidth = 3;
@@ -1495,11 +1573,11 @@ function main() {
 	var homeBase = new Array(2);
 	var promiseWater = new Array(2);
 	//multiples of 12
-	var villages = new Array(2600);
+	var villages = new Array(2400);
 	//multiples of 8
-	var caves = new Array(1200);
+	var caves = new Array(800);
 	//multiples of 12
-	var boats = new Array(960);
+	var boats = new Array(720);
 	//boundaries
 	var boundaries = new Array(tiles_dimension * 8);
 
@@ -1509,9 +1587,9 @@ function main() {
 
 	//multiples of 2
 	var humanEnemies = new Array(2000);
-	var fishEnemies = new Array(3000);
+	var fishEnemies = new Array(2000);
 	var fishOrig = new Array(fishEnemies.length);
-	var travellers = new Array(100);
+	var travellers = new Array(150);
 
 	//items/stats
 	var travellerStats = new Array(travellers.length);
@@ -1924,7 +2002,7 @@ function main() {
 	var playerAttack = 0;
 	function calcAttack() {
 		playerAttack = 0;
-		if(numOfPlayers == 4) {
+		if (numOfPlayers == 4) {
 			if (player.HEALTH >= 1)
 				playerAttack += player.ATTACK;
 			if (player2.HEALTH >= 1)
@@ -1934,7 +2012,7 @@ function main() {
 			if (player4.HEALTH >= 1)
 				playerAttack += player4.ATTACK;
 		}
-		if(numOfPlayers == 3) {
+		if (numOfPlayers == 3) {
 			if (player.HEALTH >= 1)
 				playerAttack += player.ATTACK;
 			if (player2.HEALTH >= 1)
@@ -1942,17 +2020,17 @@ function main() {
 			if (player3.HEALTH >= 1)
 				playerAttack += player3.ATTACK;
 		}
-		if(numOfPlayers == 2) {
+		if (numOfPlayers == 2) {
 			if (player.HEALTH >= 1)
 				playerAttack += player.ATTACK;
 			if (player2.HEALTH >= 1)
 				playerAttack += player2.ATTACK;
-		}		
-		if(numOfPlayers == 1) {
+		}
+		if (numOfPlayers == 1) {
 			if (player.HEALTH >= 1)
 				playerAttack += player.ATTACK;
 		}
-		
+
 		if (perfectString == 3) {
 			playerAttack += numOfPlayers * 5;
 			perfectString = 0;
@@ -2115,48 +2193,82 @@ function main() {
 	}, fishSpeed);
 
 	// Player 2 movement
+	var direction2 = 1;
 	setInterval(function() {
+		/*
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player2.X > player.X)
+			if (player2.X > player.X) {
 				player2.X -= othersSpeed;
-			if (player2.X < player.X)
+				direction2 = 2;
+			}
+			if (player2.X < player.X) {
 				player2.X += othersSpeed;
-			if (player2.Y > player.Y)
+				direction2 = 4;
+			}
+			if (player2.Y > player.Y) {
 				player2.Y -= othersSpeed;
-			if (player2.Y < player.Y)
+				direction2 = 3;
+			}
+			if (player2.Y < player.Y) {
 				player2.Y += othersSpeed;
+				direction2 = 1;
+			}
 		}
-	}, 20);
+		*/
+	}, 30);
 	// Player 3 movement
+	var direction3 = 1;
 	setInterval(function() {
+		/*
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player3.X > player.X)
+			if (player3.X > player.X) {
 				player3.X -= othersSpeed;
-			if (player3.X < player.X)
+				direction3 = 2;
+			}
+			if (player3.X < player.X) {
 				player3.X += othersSpeed;
-			if (player3.Y > player.Y)
+				direction3 = 4;
+			}
+			if (player3.Y > player.Y) {
 				player3.Y -= othersSpeed;
-			if (player3.Y < player.Y)
+				direction3 = 3;
+			}
+			if (player3.Y < player.Y) {
 				player3.Y += othersSpeed;
+				direction3 = 1;
+			}
 		}
-	}, 22);
+		*/
+	}, 40);
 	// Player 4 movement
+	var direction4 = 1;
 	setInterval(function() {
+		/*
 		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player4.X > player.X)
+			if (player4.X > player.X) {
 				player4.X -= othersSpeed;
-			if (player4.X < player.X)
+				direction4 = 2;
+			}
+			if (player4.X < player.X) {
 				player4.X += othersSpeed;
-			if (player4.Y > player.Y)
+				direction4 = 4;
+			}
+			if (player4.Y > player.Y) {
 				player4.Y -= othersSpeed;
-			if (player4.Y < player.Y)
+				direction4 = 3;
+			}
+			if (player4.Y < player.Y) {
 				player4.Y += othersSpeed;
+				direction4 = 1;
+			}
 		}
-	}, 24);
+		*/
+	}, 50);
 
 	// the lower the faster
 	// Player movement, controls all the other objects
 	// Move Down
+	var direction = 1;
 	var playerSpeed = 140;
 	setInterval(function() {
 		if (goDown) {
@@ -2182,6 +2294,7 @@ function main() {
 				}
 				player.WATER -= 1 * numOfPlayers;
 			}
+			direction = 1;
 		}
 	}, playerSpeed);
 	// Move Up
@@ -2209,7 +2322,7 @@ function main() {
 				}
 				player.WATER -= 1 * numOfPlayers;
 			}
-
+			direction = 3;
 		}
 	}, playerSpeed);
 	// Move Left
@@ -2237,6 +2350,7 @@ function main() {
 				}
 				player.WATER -= 1 * numOfPlayers;
 			}
+			direction = 2;
 		}
 	}, playerSpeed);
 	// Move Right
@@ -2264,7 +2378,7 @@ function main() {
 				}
 				player.WATER -= 1 * numOfPlayers;
 			}
-
+			direction = 4;
 		}
 	}, playerSpeed);
 
@@ -2462,11 +2576,11 @@ function main() {
 
 	function drawPlayers() {
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
-			drawPlayer(player4.X - .3, player4.Y - .3);
+			drawPlayer(player.X - .3, player.Y - .3);
 		if (player3.HEALTH > 0 && numOfPlayers > 2)
-			drawPlayer(player3.X - .3, player3.Y + .3);
+			drawPlayer3(player.X - .3, player.Y + .3);
 		if (player2.HEALTH > 0 && numOfPlayers > 1)
-			drawPlayer(player2.X + .3, player2.Y - .3);
+			drawPlayer2(player.X + .3, player.Y - .3);
 		if (player.HEALTH > 0 && numOfPlayers > 0)
 			drawPlayer(player.X + .3, player.Y + .3);
 	}

@@ -185,6 +185,7 @@ function draw() {
 	//clears screen every loop
 	canvas.width = canvas.width;
 	if (titleScreen) {
+		c.textAlign = "center";
 		var titleimg = new Image();
 		titleimg.src = "http://i.imgur.com/nDxvHh5.png?5";
 		c.drawImage(titleimg, 400, 0, 522, 670);
@@ -196,34 +197,34 @@ function draw() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
 		c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
-		c.strokeText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
-		c.fillText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
+		c.strokeText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
+		c.fillText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
 	} else if (titleScreen == false && instrScreen == true) {
 		c.fillRect(0, 0, canvas.width, canvas.height);
+		c.textAlign = "center";
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.font = "40px Arial";
-		c.fillText("Instructions", canvas.width / 2 - 150, canvas.height / 2 - 200);
-		c.font = "15px Arial";
-		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", 0, canvas.height / 2 - 160);
-		c.fillText("Spacebar is the main action key and is used to fight, enter and exit villages, cut cacti, etc.", 0, canvas.height / 2 - 140);
-		c.fillText("At the beginning of the game press 1, 2, 3, or 4 to decide how many people to take in your party and then press spacebar to confirm your selection", 0, canvas.height / 2 - 120);
-		c.fillText("If your blue water meter hits zero then your health will begin to decrease", 0, canvas.height / 2 - 100);
-		c.fillText("If your health hits zero then the game ends", 0, canvas.height / 2 - 80);
-		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", 0, canvas.height / 2 - 60);
-		c.fillText("During the day, a yellow box representing the sun will be displayed in the upper right and the screen will be brighter", 0, canvas.height / 2 - 40);
-		c.fillText("Skin integrity determines how many steps that you can take in the sun and it will decrease as you move during the day", 0, canvas.height / 2 - 20);
-		c.fillText("You will lose more water during the day, but the stronger orange enemies won't appear", 0, canvas.height / 2);
-		c.fillText("The enemies are represented for now by the orange and green rectangles", 0, canvas.height / 2 + 20);
-		c.fillText("The main base is represented by the aqua square that you start at in the beginning", 0, canvas.height / 2 + 40);
-		c.fillText("The ml: represents the milileters of water that you have left, while the Home ml: denotes how much water is left at the base", 0, canvas.height / 2 + 60);
-		c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", 0, canvas.height / 2 + 80);
-		c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", 0, canvas.height / 2 + 100);
-		c.fillText("Villages contain items that will be useful to you on your journey", 0, canvas.height / 2 + 120);
-		c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", 0, canvas.height / 2 + 140);
-		c.fillText("Press the escape key to pause and press again to unpause", 0, canvas.height / 2 + 160);
-		c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", 0, canvas.height / 2 + 180);
-		c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", 0, canvas.height / 2 + 200);
-		c.fillText("You can replenish your water at home base", 0, canvas.height / 2 + 220);
+		c.fillText("Instructions", canvas.width / 2, canvas.height / 2 - 220);
+		c.font = "30px Arial";
+		c.fillText("Use 'A' 'W' 'S' 'D' to move", canvas.width /2, canvas.height / 2 - 150);
+		c.fillText("Spacebar is the main action key and is used to enter and exit villages, cut cacti, talk to travelers, etc.", canvas.width /2, canvas.height / 2 - 110);
+		c.fillText("Press the escape key to pause", canvas.width/2, canvas.height / 2 - 70);
+		c.fillText("Press Spacebar to continue", canvas.width /2 , canvas.height / 2 + 100);
+		//c.fillText("At the beginning of the game, '1' '2' '3' '4' will determine your party size. Press Spacebar to continue", 0, canvas.height / 2 - 100);
+		//c.fillText("If your blue water meter hits zero then your health will begin to decrease", 0, canvas.height / 2 - 100);
+		//c.fillText("If your health hits zero then the game ends", 0, canvas.height / 2 - 80);
+		//c.fillText("Take refuge in shade to keep skin integrity and water from depleting", 0, canvas.height / 2 - 60);
+		//c.fillText("You will lose more water during the day, less water duing the night", 0, canvas.height / 2);
+		//c.fillText("The enemies are represented for now by the orange and green rectangles", 0, canvas.height / 2 + 20);
+		//c.fillText("The main base is represented by the aqua square that you start at in the beginning", 0, canvas.height / 2 + 40);
+		//c.fillText("The ml: represents the milileters of water that you have left, while the Home ml: denotes how much water is left at the base", 0, canvas.height / 2 + 60);
+		//c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", 0, canvas.height / 2 + 80);
+		//c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", 0, canvas.height / 2 + 100);
+		//c.fillText("Villages contain items that will be useful to you on your journey", 0, canvas.height / 2 + 120);
+		//c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", 0, canvas.height / 2 + 140);
+		//c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", 0, canvas.height / 2 + 180);
+		//c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", 0, canvas.height / 2 + 200);
+		//c.fillText("You can replenish your water at home base", 0, canvas.height / 2 + 220);
 	} else if (titleScreen == false && instrScreen == false) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
@@ -1363,6 +1364,12 @@ function main() {
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
 
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
+		if(humTut) {
+			c.font = "20px Arial";
+			c.strokeText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
+			c.fillText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
+			setInterval(function (){humTut = true;}, 6000)
+		}
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (64 - 48) + 48;
 		if (numOfPlayers == 2)
@@ -2783,7 +2790,7 @@ function main() {
 	// ----------------------------------------
 	//     Animation
 	// ----------------------------------------
-
+	var humTut = true;
 	var inSun = false;
 	var inBattle = false;
 	var printKeys = false;
@@ -2793,9 +2800,7 @@ function main() {
 	var drinkCac = false;
 	var fishBat = false;
 	var humBat = false;
-	//var changeColor = false;
 	var keysDone = false;
-	//var keySym;
 	var hitKeys = new Array();
 	var AIKeys = new Array();
 	var setHealth = true;

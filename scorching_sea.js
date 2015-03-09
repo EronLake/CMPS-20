@@ -149,6 +149,8 @@ friendlyLeftImg.src = 'Images/friendly_left.png';
 
 var enemyShadowImg = new Image();
 enemyShadowImg.src = 'Images/Enemy_shadow.png';
+var fishShadowImg = new Image();
+fishShadowImg.src = 'Images/fish_shadow.png';
 
 // ----------------------------------------
 //     Sound Import
@@ -610,6 +612,11 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
+		c.save();
+		c.transform(1, 0, -.7, 1, 5, 0);
+		c.drawImage(fishShadowImg, -40, -7, 65, 65);
+
+		c.restore();
 		if (i == 1) {
 			if (j % 4 == 0) {
 				c.drawImage(seaHorseRightImg, -45, -45, 64, 64);
@@ -627,9 +634,6 @@ function main() {
 				c.drawImage(anglerLeftImg, -45, -45, 80, 80);
 			}
 		}
-		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
-		c.transform(1, 0, -.7, 1, 5, 0);
-		c.fillRect(-15, 5, 20, 25);
 		c.restore();
 	}
 

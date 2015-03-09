@@ -138,6 +138,18 @@ enemy4RightImg.src = 'Images/Enemy_4_right.png';
 var enemy4LeftImg = new Image();
 enemy4LeftImg.src = 'Images/Enemy_4_left.png';
 
+var friendlyFrontImg = new Image();
+friendlyFrontImg.src = 'Images/friendly_front.png';
+var friendlyBackImg = new Image();
+friendlyBackImg.src = 'Images/friendly_back.png';
+var friendlyRightImg = new Image();
+friendlyRightImg.src = 'Images/friendly_right.png';
+var friendlyLeftImg = new Image();
+friendlyLeftImg.src = 'Images/friendly_left.png';
+
+var enemyShadowImg = new Image();
+enemyShadowImg.src = 'Images/Enemy_shadow.png';
+
 // ----------------------------------------
 //     Sound Import
 // ----------------------------------------
@@ -301,7 +313,7 @@ function main() {
 	//-----------------------------------------
 	/////////////////////////
 	//changes dayLength,
-	var world_speed = .5;
+	var world_speed = 1;
 	/////////////////////////
 	var day = true;
 	var counter = 0;
@@ -584,9 +596,10 @@ function main() {
 				c.drawImage(enemy1LeftImg, -45, -45, 64, 64);
 			}
 		}
-		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
-		c.transform(1, 0, -.7, 1, 5, 0);
-		c.fillRect(-15, 5, 20, 25);
+		//c.fillStyle = 'rgba(100, 63, 63, 0.5)';
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(enemyShadowImg, -30, -7, 65, 25);
+		//c.fillRect(-15, 5, 20, 25);
 		c.restore();
 	}
 
@@ -627,10 +640,9 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-15, -30, 20, 35);
-		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
-		c.transform(1, 0, -.7, 1, 5, 0);
-		c.fillRect(-15, 5, 20, 25);
+		c.drawImage(friendlyFrontImg, -45, -45, 64, 64);
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(enemyShadowImg, -24, -7, 65, 25);
 		c.restore();
 	}
 

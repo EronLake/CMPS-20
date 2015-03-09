@@ -299,9 +299,13 @@ function main() {
 	//-----------------------------------------
 	//       Time parameters
 	//-----------------------------------------
+	/////////////////////////
+	//changes dayLength,
+	var world_speed = .5;
+	/////////////////////////
 	var day = true;
 	var counter = 0;
-	var dayLength = 60;
+	var dayLength = 60 * world_speed;
 	//seconds
 	setInterval(function() {
 		if (!pause && !inVillage && !inBattle && !gameOver && !inHome && !talking && !inCave && !inBoat) {++counter;
@@ -1597,7 +1601,7 @@ function main() {
 			fishBat = false;
 			keysDone = false;
 			fishBattleTheme.pause();
-			fishBattletheme.currentTime = 0;
+			fishBattleTheme.currentTime = 0;
 			hitKeys.length = 0;
 			currKey = 0;
 			AIKeys.length = 0;
@@ -1606,6 +1610,7 @@ function main() {
 			fishHealth = 100;
 			setHealth = true;
 			perfectString = 0;
+			console.log(fishHealth);
 		}
 		hurt = false;
 	}
@@ -2242,11 +2247,11 @@ function main() {
 	// ----------------------------------------
 	var othersSpeed = .25;
 	var skip = false;
-	var humanSpeed = 50;
 	var humDir = new Array(humanEnemies.length / 2);
 	for (var k = 0; k < humanEnemies.length / 2; k++) {
 		humDir[i] = Math.ceil(Math.random() * 2);
 	}
+	var humanSpeed = 50 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
@@ -2285,12 +2290,11 @@ function main() {
 	//     Fish Enemy AI
 	// ----------------------------------------
 	var fishSkip = false;
-	var fishSpeed = 35;
 	var fishDir = new Array(fishEnemies.length / 2);
 	for (var k = 0; k < fishEnemies.length / 2; k++) {
 		fishDir[i] = Math.ceil(Math.random() * 2);
 	}
-
+	var fishSpeed = 35 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
@@ -2404,7 +2408,7 @@ function main() {
 	// Player movement, controls all the other objects
 	// Move Down
 	var direction = 1;
-	var playerSpeed = 140;
+	var playerSpeed = 140 * world_speed;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 1) {

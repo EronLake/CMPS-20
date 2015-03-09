@@ -1532,7 +1532,7 @@ function main() {
 			fishBat = false;
 			keysDone = false;
 			fishBattleTheme.pause();
-			fishBattletheme.currentTime = 0;
+			fishBattleTheme.currentTime = 0;
 			hitKeys.length = 0;
 			currKey = 0;
 			AIKeys.length = 0;
@@ -1541,6 +1541,7 @@ function main() {
 			fishHealth = 100;
 			setHealth = true;
 			perfectString = 0;
+			console.log(fishHealth);
 		}
 		hurt = false;
 	}

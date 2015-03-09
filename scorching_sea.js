@@ -1449,12 +1449,12 @@ function main() {
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
 
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
-		if(humTut) {
+		/*if(humTut) {
 			c.font = "20px Arial";
 			c.strokeText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
 			c.fillText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
 			setInterval(function (){humTut = true;}, 6000)
-		}
+		}*/
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (64 - 48) + 48;
 		if (numOfPlayers == 2)

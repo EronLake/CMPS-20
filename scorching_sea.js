@@ -1642,7 +1642,7 @@ function main() {
 			}
 			if (who == 4 && numOfPlayers > 3) {
 				if (player4.HEALTH != 0)
-					femaleGruntSnd2.play();
+					femaleGruntSnd2.play(); 
 				player4.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			player.WATER -= Math.floor((Math.random() * (1000 - 500)) + 500);

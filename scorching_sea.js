@@ -2662,7 +2662,7 @@ function main() {
 				case keys.DOWN:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goDown = true;
-					else if (!inVillage && fishBat && inBattle) {
+					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "S";
 						execKeys(hitKeys, matchKey);
 					}
@@ -2670,7 +2670,7 @@ function main() {
 				case keys.UP:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goUp = true;
-					else if (!inVillage && fishBat && inBattle) {
+					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "W";
 						execKeys(hitKeys, matchKey);
 					}
@@ -2678,7 +2678,7 @@ function main() {
 				case keys.LEFT:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goLeft = true;
-					else if (!inVillage && fishBat && inBattle) {
+					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "A";
 						execKeys(hitKeys, matchKey);
 					}
@@ -2686,7 +2686,7 @@ function main() {
 				case keys.RIGHT:
 					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
 						goRight = true;
-					else if (!inVillage && fishBat && inBattle) {
+					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "D";
 						execKeys(hitKeys, matchKey);
 					}

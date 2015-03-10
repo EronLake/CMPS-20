@@ -129,12 +129,12 @@ var maleGruntSnd2 = new Audio();
 maleGruntSnd2.src = "Audio/maleGruntSnd2.mp3";
 
 var overworld = new Audio();
-overworld.src = "Audio/overworld1.mp3";
+overworld.src = "Audio/overworld2.mp3";
 overworld.volume = 0.05;
 overworld.loop = true;
 
 var villageTheme = new Audio();
-villageTheme.src = "Audio/villageTheme.mp3";
+villageTheme.src = "Audio/villageTheme1.mp3";
 villageTheme.volume = 0.35;
 
 var whoosh = new Audio();
@@ -154,6 +154,20 @@ femaleGruntSnd2.src = "Audio/femaleGruntSnd2.mp3";
 var fishBattleTheme = new Audio();
 fishBattleTheme.src = "Audio/fishBattleTheme.mp3";
 fishBattleTheme.volume = .25;
+
+var swordSlash = new Audio();
+swordSlash.src = "Audio/swordSnd.mp3";
+swordSlash.volume = 0.5;
+
+var bubbleSound = new Audio();
+bubbleSound.src = "Audio/bubbleSound2.mp3";
+
+var getItem = new Audio();
+getItem.src = "Audio/getItem.mp3";
+
+
+var eatingSound = new Audio();
+eatingSound.src = "Audio/eatingSound.mp3";
 
 // ----------------------------------------
 //     Canvas Setup
@@ -1085,6 +1099,7 @@ function main() {
 			villageItems[place] -= 1;
 			if (player.HEALTH > 0 && numOfPlayers > 0) {
 				player.HEALTH += 10;
+				eatingSound.play();
 			}
 			if (player2.HEALTH > 0 && numOfPlayers > 1) {
 				player2.HEALTH += 10;
@@ -1102,18 +1117,24 @@ function main() {
 			player.WATER += villageItems[place + 1];
 			villageItems[place + 1] -= villageItems[place + 1];
 			buyWater = false;
+			bubbleSound.play();
 		}
 		if (buyItem && player.WATER > 2500 && !(item == 0 || item > 5)) {
 			if (item == 1)
 				player.SHOVEL = true;
+				getItem.play();
 			if (item == 2)
 				player.DETECTOR = true;
+				getItem.play();
 			if (item == 3)
 				player.COMPASS = true;
+				getItem.play();
 			if (item == 4)
 				player.MAP = true;
+				getItem.play();
 			if (item == 5)
 				player.PEN = true;
+				getItem.play();
 			villageItems[place + 2] = 0;
 			player.WATER -= 2500;
 			buyItem = false;
@@ -1171,19 +1192,24 @@ function main() {
 			player.WATER += travellerStats[i];
 			travellerStats[i] = 0;
 			getWater = false;
+			bubbleSound.play();
 		}
 		if (getFood) {
 			if (player.HEALTH > 0 && numOfPlayers > 0) {
 				player.HEALTH += 10;
+				eatingSound.play();
 			}
 			if (player2.HEALTH > 0 && numOfPlayers > 1) {
 				player2.HEALTH += 10;
+				eatingSound.play();
 			}
 			if (player3.HEALTH > 0 && numOfPlayers > 2) {
 				player3.HEALTH += 10;
+				eatingSound.play();
 			}
 			if (player4.HEALTH > 0 && numOfPlayers > 3) {
 				player4.HEALTH += 10;
+				eatingSound.play();
 			}
 			travellerStats[i + 1]--;
 			getFood = false;
@@ -1256,21 +1282,25 @@ function main() {
 			player.WATER += caveStats[place];
 			caveStats[place] = 0;
 			caveWater1 = false;
+			bubbleSound.play();
 		}
 		if (caveWater2) {
 			player.WATER += caveStats[place + 1];
 			caveStats[place + 1] = 0;
 			caveWater2 = false;
+			bubbleSound.play();
 		}
 		if (caveWater3) {
 			player.WATER += caveStats[place + 2];
 			caveStats[place + 2] = 0;
 			caveWater3 = false;
+			bubbleSound.play();
 		}
 		if (caveWater4) {
 			player.WATER += caveStats[place + 3];
 			caveStats[place + 3] = 0;
 			caveWater4 = false;
+			bubbleSound.play();
 		}
 		if (player.PEN == true && player.MAP == true) {
 			caveX = center[0];
@@ -1328,14 +1358,19 @@ function main() {
 		if (getBoatItem) {
 			if (boatItem == 1)
 				player.SHOVEL = true;
+				getItem.play();
 			if (boatItem == 2)
 				player.DETECTOR = true;
+				getItem.play();
 			if (boatItem == 3)
 				player.COMPASS = true;
+				getItem.play();
 			if (boatItem == 4)
 				player.MAP = true;
+				getItem.play();
 			if (boatItem == 5)
 				player.PEN = true;
+				getItem.play();
 			boatStats[place] = 0;
 			getBoatItem = false;
 		}
@@ -2044,7 +2079,6 @@ function main() {
 			c.font = "40px Arial";
 			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
 			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
-
 		}
 		if (currKey <= hitKeys.length - 1) {
 			//Outline current key green
@@ -2127,6 +2161,7 @@ function main() {
 			calcAttack();
 			console.log(playerAttack);
 			fishHealth -= playerAttack;
+			swordSlash.play();
 			currKey++;
 			perfectString++;
 			if (currKey == hitKeys.length) {
@@ -2964,6 +2999,7 @@ function main() {
 			if ((player.HEALTH < 1 && player2.HEALTH < 1 && player3.HEALTH < 1 && player4.HEALTH < 1) && numOfPlayers == 4) {
 				wind.pause();
 				overworld.pause();
+				fishBattleTheme.pause();
 				gameOverM.play();
 				gameOverUI();
 				gameOver = true;
@@ -2972,6 +3008,7 @@ function main() {
 			if ((player.HEALTH < 1 && player2.HEALTH < 1 && player3.HEALTH < 1) && numOfPlayers == 3) {
 				wind.pause();
 				overworld.pause();
+				fishBattleTheme.pause();
 				gameOverM.play();
 				gameOverUI();
 				gameOver = true;
@@ -2980,6 +3017,7 @@ function main() {
 			if ((player.HEALTH < 1 && player2.HEALTH < 1) && numOfPlayers == 2) {
 				wind.pause();
 				overworld.pause();
+				fishBattleTheme.pause();
 				gameOverM.play();
 				gameOverUI();
 				gameOver = true;
@@ -2988,6 +3026,7 @@ function main() {
 			if ((player.HEALTH < 1) && numOfPlayers == 1) {
 				wind.pause();
 				overworld.pause();
+				fishBattleTheme.pause();
 				gameOverM.play();
 				gameOverUI();
 				gameOver = true;

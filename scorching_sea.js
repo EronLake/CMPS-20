@@ -84,6 +84,15 @@ hero3RightImg.src = 'Images/Hero_3_right.png';
 var hero3LeftImg = new Image();
 hero3LeftImg.src = 'Images/Hero_3_left.png';
 
+var hero4FrontImg = new Image();
+hero4FrontImg.src = 'Images/Hero_4_front.png';
+var hero4BackImg = new Image();
+hero4BackImg.src = 'Images/Hero_4_back.png';
+var hero4RightImg = new Image();
+hero4RightImg.src = 'Images/Hero_4_right.png';
+var hero4LeftImg = new Image();
+hero4LeftImg.src = 'Images/Hero_4_left.png';
+
 var heroShadowImg = new Image();
 heroShadowImg.src = 'Images/Hero_shadow.png';
 
@@ -532,6 +541,25 @@ function main() {
 		c.restore();
 	}
 
+	function drawPlayer4(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		if (direction == 1)
+			c.drawImage(hero4FrontImg, -30, -43, 50, 50);
+		if (direction == 2)
+			c.drawImage(hero4LeftImg, -30, -43, 50, 50);
+		if (direction == 3)
+			c.drawImage(hero4BackImg, -30, -43, 50, 50);
+		if (direction == 4)
+			c.drawImage(hero4RightImg, -30, -43, 50, 50);
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(heroShadowImg, -15, 5, 44, 25);
+		c.restore();
+	}
+
 	function drawHomeBase(colOffset, rowOffset) {
 		var pt = [0, 0];
 		var homeWaterLev = "ml: " + homeBase.WATER;
@@ -587,7 +615,8 @@ function main() {
 			} else {
 				c.drawImage(enemy1RightImg, -45, -45, 64, 64);
 			}
-		} else {
+		}
+		if (i == 2) {
 			if (j % 4 == 0) {
 				c.drawImage(enemy4LeftImg, -45, -45, 64, 64);
 			} else if (j % 6 == 0) {
@@ -598,6 +627,29 @@ function main() {
 				c.drawImage(enemy1LeftImg, -45, -45, 64, 64);
 			}
 		}
+		if (i == 3) {
+			if (j % 4 == 0) {
+				c.drawImage(enemy4BackImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(enemy2BackImg, -45, -45, 64, 64);
+			} else if (j % 8 == 0) {
+				c.drawImage(enemy3BackImg, -45, -45, 64, 64);
+			} else {
+				c.drawImage(enemy1BackImg, -45, -45, 64, 64);
+			}
+		}
+		if (i == 4) {
+			if (j % 4 == 0) {
+				c.drawImage(enemy4FrontImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(enemy2FrontImg, -45, -45, 64, 64);
+			} else if (j % 8 == 0) {
+				c.drawImage(enemy3FrontImg, -45, -45, 64, 64);
+			} else {
+				c.drawImage(enemy1FrontImg, -45, -45, 64, 64);
+			}
+		}
+
 		//c.fillStyle = 'rgba(100, 63, 63, 0.5)';
 		c.transform(1, 0, .7, -1, -33, 35);
 		c.drawImage(enemyShadowImg, -30, -7, 65, 25);
@@ -2265,7 +2317,7 @@ function main() {
 	var skip = false;
 	var humDir = new Array(humanEnemies.length / 2);
 	for (var k = 0; k < humanEnemies.length / 2; k++) {
-		humDir[i] = Math.ceil(Math.random() * 2);
+		humDir[k] = Math.floor((Math.random() * 4)) + 1;
 	}
 	var humanSpeed = 50 * world_speed;
 	setInterval(function() {
@@ -2284,10 +2336,12 @@ function main() {
 				}
 				if (humanEnemies[i + 1] > player.Y && humanEnemies[i + 1] < 3 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] -= othersSpeed;
+					humDir[i] = 3;
 					//skip = true;
 				}
 				if (humanEnemies[i + 1] < player.Y && humanEnemies[i + 1] > -9 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] += othersSpeed;
+					humDir[i] = 4;
 					//skip = true;
 				}
 				if (humanEnemies[i] == player.X && humanEnemies[i + 1] == player.Y) {
@@ -2308,7 +2362,7 @@ function main() {
 	var fishSkip = false;
 	var fishDir = new Array(fishEnemies.length / 2);
 	for (var k = 0; k < fishEnemies.length / 2; k++) {
-		fishDir[i] = Math.ceil(Math.random() * 2);
+		fishDir[k] = Math.floor(Math.random() * 2) + 1;
 	}
 	var fishSpeed = 35 * world_speed;
 	setInterval(function() {
@@ -2728,7 +2782,7 @@ function main() {
 
 	function drawPlayers() {
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
-			drawPlayer(player.X - .3, player.Y - .3);
+			drawPlayer4(player.X - .3, player.Y - .3);
 		if (player3.HEALTH > 0 && numOfPlayers > 2)
 			drawPlayer3(player.X - .3, player.Y + .3);
 		if (player2.HEALTH > 0 && numOfPlayers > 1)

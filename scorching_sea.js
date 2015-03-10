@@ -12,7 +12,7 @@
 //     Image Import
 // ----------------------------------------
 var img = new Image();
-img.src = 'http://people.ucsc.edu/~brlgomez/20/textures/dune.png';
+img.src = 'Images/sand-2.png';
 
 var cactusImg = new Image();
 cactusImg.src = 'Images/cool_cactus_1.png';
@@ -66,15 +66,6 @@ hero1RightImg.src = 'Images/Hero_1_right.png';
 var hero1LeftImg = new Image();
 hero1LeftImg.src = 'Images/Hero_1_left.png';
 
-var hero1FrontImg = new Image();
-hero1FrontImg.src = 'Images/Hero_1_front.png';
-var hero1BackImg = new Image();
-hero1BackImg.src = 'Images/Hero_1_back.png';
-var hero1RightImg = new Image();
-hero1RightImg.src = 'Images/Hero_1_right.png';
-var hero1LeftImg = new Image();
-hero1LeftImg.src = 'Images/Hero_1_left.png';
-
 var hero2FrontImg = new Image();
 hero2FrontImg.src = 'Images/Hero_2_front.png';
 var hero2BackImg = new Image();
@@ -93,19 +84,82 @@ hero3RightImg.src = 'Images/Hero_3_right.png';
 var hero3LeftImg = new Image();
 hero3LeftImg.src = 'Images/Hero_3_left.png';
 
+var hero4FrontImg = new Image();
+hero4FrontImg.src = 'Images/Hero_4_front.png';
+var hero4BackImg = new Image();
+hero4BackImg.src = 'Images/Hero_4_back.png';
+var hero4RightImg = new Image();
+hero4RightImg.src = 'Images/Hero_4_right.png';
+var hero4LeftImg = new Image();
+hero4LeftImg.src = 'Images/Hero_4_left.png';
+
 var heroShadowImg = new Image();
 heroShadowImg.src = 'Images/Hero_shadow.png';
 
 var seaHorseLeftImg = new Image();
 seaHorseLeftImg.src = 'Images/Sea_Horse_left.png';
 var seaHorseRightImg = new Image();
-seaHorseRightImg.src = 'Images/Sea_Horse_Right.png';
+seaHorseRightImg.src = 'Images/Sea_horse_right.png';
 
-var groundImg = new Image();
-groundImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/ground.png';
+var anglerLeftImg = new Image();
+anglerLeftImg.src = 'Images/Angler_fish_left.png';
+var anglerRightImg = new Image();
+anglerRightImg.src = 'Images/Angler_fish_right.png';
 
-var seaHorseImg = new Image();
-seaHorseImg.src = 'http://people.ucsc.edu/~brlgomez/20/textures/seahorse_enemy.png';
+var hammerheadLeftImg = new Image();
+hammerheadLeftImg.src = 'Images/Hammerhead_shark_left.png';
+var hammerheadRightImg = new Image();
+hammerheadRightImg.src = 'Images/Hammerhead_Shark_right.png';
+
+var enemy1FrontImg = new Image();
+enemy1FrontImg.src = 'Images/Enemy_1_front.png';
+var enemy1BackImg = new Image();
+enemy1BackImg.src = 'Images/Enemy_1_back.png';
+var enemy1RightImg = new Image();
+enemy1RightImg.src = 'Images/Enemy_1_right.png';
+var enemy1LeftImg = new Image();
+enemy1LeftImg.src = 'Images/Enemy_1_left.png';
+
+var enemy2FrontImg = new Image();
+enemy2FrontImg.src = 'Images/Enemy_2_front.png';
+var enemy2BackImg = new Image();
+enemy2BackImg.src = 'Images/Enemy_2_back.png';
+var enemy2RightImg = new Image();
+enemy2RightImg.src = 'Images/Enemy_2_right.png';
+var enemy2LeftImg = new Image();
+enemy2LeftImg.src = 'Images/Enemy_2_left.png';
+
+var enemy3FrontImg = new Image();
+enemy3FrontImg.src = 'Images/Enemy_3_front.png';
+var enemy3BackImg = new Image();
+enemy3BackImg.src = 'Images/Enemy_3_back.png';
+var enemy3RightImg = new Image();
+enemy3RightImg.src = 'Images/Enemy_3_right.png';
+var enemy3LeftImg = new Image();
+enemy3LeftImg.src = 'Images/Enemy_3_left.png';
+
+var enemy4FrontImg = new Image();
+enemy4FrontImg.src = 'Images/Enemy_4_front.png';
+var enemy4BackImg = new Image();
+enemy4BackImg.src = 'Images/Enemy_4_back.png';
+var enemy4RightImg = new Image();
+enemy4RightImg.src = 'Images/Enemy_4_right.png';
+var enemy4LeftImg = new Image();
+enemy4LeftImg.src = 'Images/Enemy_4_left.png';
+
+var friendlyFrontImg = new Image();
+friendlyFrontImg.src = 'Images/friendly_front.png';
+var friendlyBackImg = new Image();
+friendlyBackImg.src = 'Images/friendly_back.png';
+var friendlyRightImg = new Image();
+friendlyRightImg.src = 'Images/friendly_right.png';
+var friendlyLeftImg = new Image();
+friendlyLeftImg.src = 'Images/friendly_left.png';
+
+var enemyShadowImg = new Image();
+enemyShadowImg.src = 'Images/Enemy_shadow.png';
+var fishShadowImg = new Image();
+fishShadowImg.src = 'Images/fish_shadow.png';
 
 // ----------------------------------------
 //     Sound Import
@@ -199,6 +253,7 @@ function draw() {
 	//clears screen every loop
 	canvas.width = canvas.width;
 	if (titleScreen) {
+		c.textAlign = "center";
 		var titleimg = new Image();
 		titleimg.src = "http://i.imgur.com/nDxvHh5.png?5";
 		c.drawImage(titleimg, 400, 0, 522, 670);
@@ -210,34 +265,34 @@ function draw() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
 		c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
-		c.strokeText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
-		c.fillText("press spacebar to play", canvas.width / 2, canvas.height / 2 + 200);
+		c.strokeText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
+		c.fillText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
 	} else if (titleScreen == false && instrScreen == true) {
 		c.fillRect(0, 0, canvas.width, canvas.height);
+		c.textAlign = "center";
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.font = "40px Arial";
-		c.fillText("Instructions", canvas.width / 2 - 150, canvas.height / 2 - 200);
-		c.font = "15px Arial";
-		c.fillText("Use the 'A' 'W' 'S' 'D' keys to move", 0, canvas.height / 2 - 160);
-		c.fillText("Spacebar is the main action key and is used to fight, enter and exit villages, cut cacti, etc.", 0, canvas.height / 2 - 140);
-		c.fillText("At the beginning of the game press 1, 2, 3, or 4 to decide how many people to take in your party and then press spacebar to confirm your selection", 0, canvas.height / 2 - 120);
-		c.fillText("If your blue water meter hits zero then your health will begin to decrease", 0, canvas.height / 2 - 100);
-		c.fillText("If your health hits zero then the game ends", 0, canvas.height / 2 - 80);
-		c.fillText("Take refuge in shade to keep skin integrity and water from depleting", 0, canvas.height / 2 - 60);
-		c.fillText("During the day, a yellow box representing the sun will be displayed in the upper right and the screen will be brighter", 0, canvas.height / 2 - 40);
-		c.fillText("Skin integrity determines how many steps that you can take in the sun and it will decrease as you move during the day", 0, canvas.height / 2 - 20);
-		c.fillText("You will lose more water during the day, but the stronger orange enemies won't appear", 0, canvas.height / 2);
-		c.fillText("The enemies are represented for now by the orange and green rectangles", 0, canvas.height / 2 + 20);
-		c.fillText("The main base is represented by the aqua square that you start at in the beginning", 0, canvas.height / 2 + 40);
-		c.fillText("The ml: represents the milileters of water that you have left, while the Home ml: denotes how much water is left at the base", 0, canvas.height / 2 + 60);
-		c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", 0, canvas.height / 2 + 80);
-		c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", 0, canvas.height / 2 + 100);
-		c.fillText("Villages contain items that will be useful to you on your journey", 0, canvas.height / 2 + 120);
-		c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", 0, canvas.height / 2 + 140);
-		c.fillText("Press the escape key to pause and press again to unpause", 0, canvas.height / 2 + 160);
-		c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", 0, canvas.height / 2 + 180);
-		c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", 0, canvas.height / 2 + 200);
-		c.fillText("You can replenish your water at home base", 0, canvas.height / 2 + 220);
+		c.fillText("Instructions", canvas.width / 2, canvas.height / 2 - 220);
+		c.font = "30px Arial";
+		c.fillText("Use 'A' 'W' 'S' 'D' to move", canvas.width /2, canvas.height / 2 - 150);
+		c.fillText("Spacebar is the main action key and is used to enter and exit villages, cut cacti, talk to travelers, etc.", canvas.width /2, canvas.height / 2 - 110);
+		c.fillText("Press the escape key to pause", canvas.width/2, canvas.height / 2 - 70);
+		c.fillText("Press Spacebar to continue", canvas.width /2 , canvas.height / 2 + 100);
+		//c.fillText("At the beginning of the game, '1' '2' '3' '4' will determine your party size. Press Spacebar to continue", 0, canvas.height / 2 - 100);
+		//c.fillText("If your blue water meter hits zero then your health will begin to decrease", 0, canvas.height / 2 - 100);
+		//c.fillText("If your health hits zero then the game ends", 0, canvas.height / 2 - 80);
+		//c.fillText("Take refuge in shade to keep skin integrity and water from depleting", 0, canvas.height / 2 - 60);
+		//c.fillText("You will lose more water during the day, less water duing the night", 0, canvas.height / 2);
+		//c.fillText("The enemies are represented for now by the orange and green rectangles", 0, canvas.height / 2 + 20);
+		//c.fillText("The main base is represented by the aqua square that you start at in the beginning", 0, canvas.height / 2 + 40);
+		//c.fillText("The ml: represents the milileters of water that you have left, while the Home ml: denotes how much water is left at the base", 0, canvas.height / 2 + 60);
+		//c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", 0, canvas.height / 2 + 80);
+		//c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", 0, canvas.height / 2 + 100);
+		//c.fillText("Villages contain items that will be useful to you on your journey", 0, canvas.height / 2 + 120);
+		//c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", 0, canvas.height / 2 + 140);
+		//c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", 0, canvas.height / 2 + 180);
+		//c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", 0, canvas.height / 2 + 200);
+		//c.fillText("You can replenish your water at home base", 0, canvas.height / 2 + 220);
 	} else if (titleScreen == false && instrScreen == false) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
@@ -250,6 +305,7 @@ function game_loop() {
 	draw();
 
 }
+
 var refreshIntervalId = setInterval(game_loop, 60);
 
 // ----------------------------------------
@@ -281,9 +337,13 @@ function main() {
 	//-----------------------------------------
 	//       Time parameters
 	//-----------------------------------------
+	/////////////////////////
+	//changes dayLength,
+	var world_speed = 1;
+	/////////////////////////
 	var day = true;
 	var counter = 0;
-	var dayLength = 60;
+	var dayLength = 60 * world_speed;
 	//seconds
 	setInterval(function() {
 		if (!pause && !inVillage && !inBattle && !gameOver && !inHome && !talking && !inCave && !inBoat) {++counter;
@@ -496,6 +556,25 @@ function main() {
 		c.restore();
 	}
 
+	function drawPlayer4(colOffset, rowOffset) {
+		var pt = [0, 0];
+		c.beginPath();
+		projectFromCenter(colOffset, rowOffset, pt);
+		c.save();
+		c.translate(pt[0], pt[1]);
+		if (direction == 1)
+			c.drawImage(hero4FrontImg, -30, -43, 50, 50);
+		if (direction == 2)
+			c.drawImage(hero4LeftImg, -30, -43, 50, 50);
+		if (direction == 3)
+			c.drawImage(hero4BackImg, -30, -43, 50, 50);
+		if (direction == 4)
+			c.drawImage(hero4RightImg, -30, -43, 50, 50);
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(heroShadowImg, -15, 5, 44, 25);
+		c.restore();
+	}
+
 	function drawHomeBase(colOffset, rowOffset) {
 		var pt = [0, 0];
 		var homeWaterLev = "ml: " + homeBase.WATER;
@@ -534,32 +613,94 @@ function main() {
 		c.restore();
 	}
 
-	function drawEnemy(colOffset, rowOffset) {
+	function drawEnemy(colOffset, rowOffset, i, j) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(100, 150, 100)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-15, -30, 20, 35);
-		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
-		c.transform(1, 0, -.7, 1, 5, 0);
-		c.fillRect(-15, 5, 20, 25);
+		if (i == 1) {
+			if (j % 4 == 0) {
+				c.drawImage(enemy4RightImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(enemy2RightImg, -45, -45, 64, 64);
+			} else if (j % 8 == 0) {
+				c.drawImage(enemy3RightImg, -45, -45, 64, 64);
+			} else {
+				c.drawImage(enemy1RightImg, -45, -45, 64, 64);
+			}
+		}
+		if (i == 2) {
+			if (j % 4 == 0) {
+				c.drawImage(enemy4LeftImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(enemy2LeftImg, -45, -45, 64, 64);
+			} else if (j % 8 == 0) {
+				c.drawImage(enemy3LeftImg, -45, -45, 64, 64);
+			} else {
+				c.drawImage(enemy1LeftImg, -45, -45, 64, 64);
+			}
+		}
+		if (i == 3) {
+			if (j % 4 == 0) {
+				c.drawImage(enemy4BackImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(enemy2BackImg, -45, -45, 64, 64);
+			} else if (j % 8 == 0) {
+				c.drawImage(enemy3BackImg, -45, -45, 64, 64);
+			} else {
+				c.drawImage(enemy1BackImg, -45, -45, 64, 64);
+			}
+		}
+		if (i == 4) {
+			if (j % 4 == 0) {
+				c.drawImage(enemy4FrontImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(enemy2FrontImg, -45, -45, 64, 64);
+			} else if (j % 8 == 0) {
+				c.drawImage(enemy3FrontImg, -45, -45, 64, 64);
+			} else {
+				c.drawImage(enemy1FrontImg, -45, -45, 64, 64);
+			}
+		}
+
+		//c.fillStyle = 'rgba(100, 63, 63, 0.5)';
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(enemyShadowImg, -30, -7, 65, 25);
+		//c.fillRect(-15, 5, 20, 25);
 		c.restore();
 	}
 
-	function drawFishEnemy(colOffset, rowOffset) {
+	function drawFishEnemy(colOffset, rowOffset, i, j) {
 		var pt = [0, 0];
 		c.beginPath();
 		c.fillStyle = 'rgb(200, 125, 75)';
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.drawImage(seaHorseImg, -45, -45, 64, 64);
-		//c.fillRect(-15, -30, 20, 35);
-		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
+		c.save();
 		c.transform(1, 0, -.7, 1, 5, 0);
-		c.fillRect(-15, 5, 20, 25);
+		c.drawImage(fishShadowImg, -40, -7, 65, 65);
+
+		c.restore();
+		if (i == 1) {
+			if (j % 4 == 0) {
+				c.drawImage(seaHorseRightImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(hammerheadRightImg, -45, -45, 96, 96);
+			} else {
+				c.drawImage(anglerRightImg, -45, -45, 80, 80);
+			}
+		} else {
+			if (j % 4 == 0) {
+				c.drawImage(seaHorseLeftImg, -45, -45, 64, 64);
+			} else if (j % 6 == 0) {
+				c.drawImage(hammerheadLeftImg, -45, -45, 96, 96);
+			} else {
+				c.drawImage(anglerLeftImg, -45, -45, 80, 80);
+			}
+		}
 		c.restore();
 	}
 
@@ -570,10 +711,9 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		c.fillRect(-15, -30, 20, 35);
-		c.fillStyle = 'rgba(100, 63, 63, 0.5)';
-		c.transform(1, 0, -.7, 1, 5, 0);
-		c.fillRect(-15, 5, 20, 25);
+		c.drawImage(friendlyFrontImg, -45, -45, 64, 64);
+		c.transform(1, 0, .7, -1, -33, 35);
+		c.drawImage(enemyShadowImg, -24, -7, 65, 25);
 		c.restore();
 	}
 
@@ -606,26 +746,24 @@ function main() {
 			c.drawImage(boatShadowImg, -40, -205, 215, 220);
 			c.restore();
 			c.drawImage(boatImg, -40, -170, 225, 200);
-
 		}
 		c.restore();
 	}
 
 	// with sprites
 	function drawFilledTile(colOffset, rowOffset, tileValue) {
-		tileValue = tileValue % 11;
+		tileValue = tileValue % 1;
 		//1
 		var pt = [colOffset - 0.5, rowOffset - 0.5];
 		// where is the tile ?
 		//var tileBitmapX = (0 | (tileValue / 1)) * 32 * 2;
 		//var tileBitmapY = (tileValue % 1) * 32 * 2;//3
-		var tileBitmapX = tileValue % 32;
-		var tileBitmapY = tileValue / 224;
+		var tileBitmapX = tileValue % 304;
+		var tileBitmapY = tileValue / 304;
 		//c.drawImage(groundImg, tileBitmapX, tileBitmapY, 64, 64, colOffset - 0.5, rowOffset - 0.5, 1, 1);
-		c.drawImage(img, tileBitmapX, tileBitmapY, 32, 32, colOffset - 0.5, rowOffset - 0.5, 1, 1);
+		c.drawImage(img, tileBitmapX, tileBitmapY, 304, 304, colOffset - 0.5, rowOffset - 0.5, 1, 1);
 		// c.drawImage(img, 0, 0, 32,32,
 		// colOffset - 0.5, rowOffset - 0.5, 1, 1);
-
 	}
 
 	// draw a tile at (colOffset, rowOffset ) centered world coordinates.
@@ -665,7 +803,6 @@ function main() {
 	function drawTiles(newCenterPoint) {
 		// get rounded coordinates and floating part.
 		var centerPoint = [0, 0];
-
 		centerPoint[0] = Math.floor(newCenterPoint[0]);
 		centerPoint[1] = Math.floor(newCenterPoint[1]);
 		var remains = [newCenterPoint[0] - centerPoint[0], newCenterPoint[1] - centerPoint[1]];
@@ -1025,7 +1162,8 @@ function main() {
 	// ----------------------------------------
 	//     Village Setup
 	// ----------------------------------------
-	var canDrink = false; //used to prevent drinking upon leaving homeUI
+	var canDrink = false;
+	//used to prevent drinking upon leaving homeUI
 	var buyHealth = false;
 	var buyWater = false;
 	var buyItem = false;
@@ -1398,6 +1536,12 @@ function main() {
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
 
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
+		/*if(humTut) {
+			c.font = "20px Arial";
+			c.strokeText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
+			c.fillText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
+			setInterval(function (){humTut = true;}, 6000)
+		}*/
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (64 - 48) + 48;
 		if (numOfPlayers == 2)
@@ -1482,25 +1626,25 @@ function main() {
 		if (hurt == true && ((playerCount > (drawEnd + randDrawSpeed)) || (playerCount < (drawStart + randDrawSpeed))) && playerCount != 0) {
 			var who = Math.ceil((Math.random() * numOfPlayers));
 			if (who == 1 && numOfPlayers > 0) {
-				if(player.HEALTH != 0)
+				if (player.HEALTH != 0)
 					maleGruntSnd1.play();
 				player.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			if (who == 2 && numOfPlayers > 1) {
-				if(player2.HEALTH != 0)
+				if (player2.HEALTH != 0)
 					maleGruntSnd2.play();
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
-			if (who == 3 && numOfPlayers > 2){
-				if(player3.HEALTH != 0)
+			if (who == 3 && numOfPlayers > 2) {
+				if (player3.HEALTH != 0)
 					femaleGruntSnd1.play();
 				player3.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
-			if (who == 4 && numOfPlayers > 3){
-				if(player4.HEALTH != 0)
+			if (who == 4 && numOfPlayers > 3) {
+				if (player4.HEALTH != 0)
 					femaleGruntSnd2.play();
 				player4.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
-		    }
+			}
 			player.WATER -= Math.floor((Math.random() * (1000 - 500)) + 500);
 			playerCount = 0;
 		}
@@ -2213,25 +2357,33 @@ function main() {
 	// ----------------------------------------
 	var othersSpeed = .25;
 	var skip = false;
-	var humanSpeed = 50;
+	var humDir = new Array(humanEnemies.length / 2);
+	for (var k = 0; k < humanEnemies.length / 2; k++) {
+		humDir[k] = Math.floor((Math.random() * 4)) + 1;
+	}
+	var humanSpeed = 50 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
 			for (var i = 0; i < humanEnemies.length; i += 2) {
 				if (humanEnemies[i] > player.X && humanEnemies[i] < 9 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] -= othersSpeed;
+					humDir[i] = 2;
 					//skip = true;
 				}
 				if (humanEnemies[i] < player.X && humanEnemies[i] > -3 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] += othersSpeed;
+					humDir[i] = 1;
 					//skip = true;
 				}
 				if (humanEnemies[i + 1] > player.Y && humanEnemies[i + 1] < 3 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] -= othersSpeed;
+					humDir[i] = 3;
 					//skip = true;
 				}
 				if (humanEnemies[i + 1] < player.Y && humanEnemies[i + 1] > -9 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] += othersSpeed;
+					humDir[i] = 4;
 					//skip = true;
 				}
 				if (humanEnemies[i] == player.X && humanEnemies[i + 1] == player.Y) {
@@ -2250,17 +2402,23 @@ function main() {
 	//     Fish Enemy AI
 	// ----------------------------------------
 	var fishSkip = false;
-	var fishSpeed = 35;
+	var fishDir = new Array(fishEnemies.length / 2);
+	for (var k = 0; k < fishEnemies.length / 2; k++) {
+		fishDir[k] = Math.floor(Math.random() * 2) + 1;
+	}
+	var fishSpeed = 35 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
 			for (var i = 0; i < fishEnemies.length; i += 2) {
 				if (fishEnemies[i] > player.X && fishEnemies[i] < 10 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] -= othersSpeed;
+					fishDir[i] = 2;
 					//fishSkip = true;
 				}
 				if (fishEnemies[i] < player.X && fishEnemies[i] > -4 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] += othersSpeed;
+					fishDir[i] = 1;
 					//fishSkip = true;
 				}
 				if (fishEnemies[i + 1] > player.Y && fishEnemies[i + 1] < 4 && fishEnemies[i] > -4 && fishEnemies[i] < 10 && fishSkip == false) {
@@ -2289,80 +2447,80 @@ function main() {
 	var direction2 = 1;
 	setInterval(function() {
 		/*
-		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player2.X > player.X) {
-				player2.X -= othersSpeed;
-				direction2 = 2;
-			}
-			if (player2.X < player.X) {
-				player2.X += othersSpeed;
-				direction2 = 4;
-			}
-			if (player2.Y > player.Y) {
-				player2.Y -= othersSpeed;
-				direction2 = 3;
-			}
-			if (player2.Y < player.Y) {
-				player2.Y += othersSpeed;
-				direction2 = 1;
-			}
-		}
-		*/
+		 if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
+		 if (player2.X > player.X) {
+		 player2.X -= othersSpeed;
+		 direction2 = 2;
+		 }
+		 if (player2.X < player.X) {
+		 player2.X += othersSpeed;
+		 direction2 = 4;
+		 }
+		 if (player2.Y > player.Y) {
+		 player2.Y -= othersSpeed;
+		 direction2 = 3;
+		 }
+		 if (player2.Y < player.Y) {
+		 player2.Y += othersSpeed;
+		 direction2 = 1;
+		 }
+		 }
+		 */
 	}, 30);
 	// Player 3 movement
 	var direction3 = 1;
 	setInterval(function() {
 		/*
-		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player3.X > player.X) {
-				player3.X -= othersSpeed;
-				direction3 = 2;
-			}
-			if (player3.X < player.X) {
-				player3.X += othersSpeed;
-				direction3 = 4;
-			}
-			if (player3.Y > player.Y) {
-				player3.Y -= othersSpeed;
-				direction3 = 3;
-			}
-			if (player3.Y < player.Y) {
-				player3.Y += othersSpeed;
-				direction3 = 1;
-			}
-		}
-		*/
+		 if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
+		 if (player3.X > player.X) {
+		 player3.X -= othersSpeed;
+		 direction3 = 2;
+		 }
+		 if (player3.X < player.X) {
+		 player3.X += othersSpeed;
+		 direction3 = 4;
+		 }
+		 if (player3.Y > player.Y) {
+		 player3.Y -= othersSpeed;
+		 direction3 = 3;
+		 }
+		 if (player3.Y < player.Y) {
+		 player3.Y += othersSpeed;
+		 direction3 = 1;
+		 }
+		 }
+		 */
 	}, 40);
 	// Player 4 movement
 	var direction4 = 1;
 	setInterval(function() {
 		/*
-		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player4.X > player.X) {
-				player4.X -= othersSpeed;
-				direction4 = 2;
-			}
-			if (player4.X < player.X) {
-				player4.X += othersSpeed;
-				direction4 = 4;
-			}
-			if (player4.Y > player.Y) {
-				player4.Y -= othersSpeed;
-				direction4 = 3;
-			}
-			if (player4.Y < player.Y) {
-				player4.Y += othersSpeed;
-				direction4 = 1;
-			}
-		}
-		*/
+		 if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
+		 if (player4.X > player.X) {
+		 player4.X -= othersSpeed;
+		 direction4 = 2;
+		 }
+		 if (player4.X < player.X) {
+		 player4.X += othersSpeed;
+		 direction4 = 4;
+		 }
+		 if (player4.Y > player.Y) {
+		 player4.Y -= othersSpeed;
+		 direction4 = 3;
+		 }
+		 if (player4.Y < player.Y) {
+		 player4.Y += othersSpeed;
+		 direction4 = 1;
+		 }
+		 }
+		 */
 	}, 50);
 
 	// the lower the faster
 	// Player movement, controls all the other objects
 	// Move Down
 	var direction = 1;
-	var playerSpeed = 140;
+	var playerSpeed = 140 * world_speed;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 1) {
@@ -2578,7 +2736,7 @@ function main() {
 				case keys.ENTER:
 					break;
 				case keys.PAUSE:
-					if(!gameOver)
+					if (!gameOver)
 						pause = true;
 					break;
 				case keys.DoN_E:
@@ -2591,11 +2749,11 @@ function main() {
 						playerCount = count;
 						count = 0;
 						hurt = true;
-						if(!gameOver){
-							if(humBat)
+						if (!gameOver) {
+							if (humBat)
 								gunShot.play();
 						}
-					}	
+					}
 					if (!inBattle) {
 						drinkCac = true;
 						enter = !enter;
@@ -2605,9 +2763,9 @@ function main() {
 						if (player.SHOVEL == true)
 							dig = true;
 					}
-					if (nearHome){
+					if (nearHome) {
 						inHome = false;
-				    }
+					}
 					if (talking)
 						talking = !talking;
 					if (inCave)
@@ -2626,7 +2784,7 @@ function main() {
 						getBoatClue = false;
 					break;
 				};
-			}else{
+			} else {
 				switch(evt.keyCode) {
 				case keys.PAUSE:
 					pause = false;
@@ -2666,7 +2824,7 @@ function main() {
 
 	function drawPlayers() {
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
-			drawPlayer(player.X - .3, player.Y - .3);
+			drawPlayer4(player.X - .3, player.Y - .3);
 		if (player3.HEALTH > 0 && numOfPlayers > 2)
 			drawPlayer3(player.X - .3, player.Y + .3);
 		if (player2.HEALTH > 0 && numOfPlayers > 1)
@@ -2703,9 +2861,9 @@ function main() {
 			if (homeBase[i] < range && homeBase[i] > -range && homeBase[i + 1] < range && homeBase[i + 1] > -range && homeBase[i] <= player.X && homeBase[i + 1] <= player.Y)
 				drawHomeBase(homeBase[i], homeBase[i + 1]);
 			if (humanEnemies[i] < range && humanEnemies[i] > -range && humanEnemies[i + 1] < range && humanEnemies[i + 1] > -range)
-				drawEnemy(humanEnemies[i], humanEnemies[i + 1]);
+				drawEnemy(humanEnemies[i], humanEnemies[i + 1], humDir[i], i);
 			if (!day && fishEnemies[i] < range && fishEnemies[i] > -range && fishEnemies[i + 1] < range && fishEnemies[i + 1] > -range)
-				drawFishEnemy(fishEnemies[i], fishEnemies[i + 1]);
+				drawFishEnemy(fishEnemies[i], fishEnemies[i + 1], fishDir[i], i);
 			if (travellers[i] < range && travellers[i] > -range && travellers[i + 1] < range && travellers[i + 1] > -range)
 				drawTraveller(travellers[i], travellers[i + 1]);
 		}
@@ -2818,7 +2976,7 @@ function main() {
 	// ----------------------------------------
 	//     Animation
 	// ----------------------------------------
-
+	var humTut = true;
 	var inSun = false;
 	var inBattle = false;
 	var printKeys = false;
@@ -2828,9 +2986,7 @@ function main() {
 	var drinkCac = false;
 	var fishBat = false;
 	var humBat = false;
-	//var changeColor = false;
 	var keysDone = false;
-	//var keySym;
 	var hitKeys = new Array();
 	var AIKeys = new Array();
 	var setHealth = true;
@@ -3060,7 +3216,7 @@ function main() {
 
 			//if at base, refill water and use base's water supply and press enter
 			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1 && enter && homeBase.WATER > 0) {
-				if(inHome == false && canDrink == true)
+				if (inHome == false && canDrink == true)
 					drinkSound.play();
 				homeBase.WATER -= (player.WATERORIG - player.WATER);
 				player.WATER = player.WATERORIG;

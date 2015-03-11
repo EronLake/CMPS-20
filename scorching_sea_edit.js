@@ -351,7 +351,7 @@ function main() {
 	//-----------------------------------------
 	/////////////////////////
 	//changes dayLength,
-	var world_speed = 1;
+	var world_speed = .1;
 	/////////////////////////
 	var day = true;
 	var counter = 0;
@@ -1291,7 +1291,16 @@ function main() {
 		});
 		
 		//----------------------------------------------
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
 		
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		//----------------------------------------------		
+
 		c.strokeText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		//-------------------------
@@ -1705,35 +1714,7 @@ function main() {
 	// ----------------------------------------
 	//     Draw Boat
 	// ----------------------------------------
-	function drawBoatUI(i) {
-		var boatItem;
-		var boatItemString;
-		var boatClue;
-		var place = i;
-		var foundClue = "2. What does this paper say?";
-		if (i % 12 == 0) {
-			boatItem = boatStats[i];
-			boatClue = boatStats[i + 1];
-		}
-		if (i % 12 == 2) {
-			boatItem = boatStats[i - 2];
-			boatClue = boatStats[i - 1];
-			place = i - 2;
-		}
-		if (boatItem == 0)
-			var boatItemString = "Nothing in here";
-		if (boatItem == 1)
-			var boatItemString = "1. Item found: Shovel";
-		if (boatItem == 2)
-			var boatItemString = "1. Item found: Detector";
-		if (boatItem == 3)
-			var boatItemString = "1. Item found: Compass";
-		if (boatItem == 4)
-			var boatItemString = "1. Item found: Map";
-		if (boatItem == 5)
-			var boatItemString = "1. Item found: Pen";
-			
-		 //-------------------------------------------------------
+	//-------------------------------------------------------
 		 addEventListener("keyup", function(key){
 		 //lets you move up options
 		    if(key.keyCode == "87"){
@@ -1784,6 +1765,36 @@ function main() {
 		    }
 		//---------------------------------------------------------
 		});	
+	
+	function drawBoatUI(i) {
+		var boatItem;
+		var boatItemString;
+		var boatClue;
+		var place = i;
+		var foundClue = "2. What does this paper say?";
+		if (i % 12 == 0) {
+			boatItem = boatStats[i];
+			boatClue = boatStats[i + 1];
+		}
+		if (i % 12 == 2) {
+			boatItem = boatStats[i - 2];
+			boatClue = boatStats[i - 1];
+			place = i - 2;
+		}
+		if (boatItem == 0)
+			var boatItemString = "Nothing in here";
+		if (boatItem == 1)
+			var boatItemString = "1. Item found: Shovel";
+		if (boatItem == 2)
+			var boatItemString = "1. Item found: Detector";
+		if (boatItem == 3)
+			var boatItemString = "1. Item found: Compass";
+		if (boatItem == 4)
+			var boatItemString = "1. Item found: Map";
+		if (boatItem == 5)
+			var boatItemString = "1. Item found: Pen";
+			
+		 
 			
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -3062,7 +3073,7 @@ function main() {
 							break;
 						}
 					if (inBoat)
-						if(cave_selection == 1){
+						if(boat_selection == 2){
 							getBoatClue = true;
 						}
 			     //----------------------------------

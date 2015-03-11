@@ -279,7 +279,7 @@ function draw() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.font = "40px Arial";
 		c.fillText("Instructions", canvas.width / 2, canvas.height / 2 - 220);
-		c.font = "30px Arial";
+		c.font = "25px Arial";
 		c.fillText("Use 'A' 'W' 'S' 'D' to move", canvas.width / 2, canvas.height / 2 - 150);
 		c.fillText("Spacebar is the main action key and is used to enter and exit villages, cut cacti, talk to travelers, etc.", canvas.width / 2, canvas.height / 2 - 110);
 		c.fillText("Press the escape key to pause", canvas.width / 2, canvas.height / 2 - 70);
@@ -2700,7 +2700,7 @@ function main() {
 	for (var k = 0; k < humanEnemies.length / 2; k++) {
 		humDir[k] = Math.floor((Math.random() * 4)) + 1;
 	}
-	var humanSpeed = 60 * world_speed;
+	var humanSpeed = 80 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
@@ -2745,7 +2745,7 @@ function main() {
 	for (var k = 0; k < fishEnemies.length / 2; k++) {
 		fishDir[k] = Math.floor(Math.random() * 2) + 1;
 	}
-	var fishSpeed = 40 * world_speed;
+	var fishSpeed = 60 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
@@ -2857,7 +2857,7 @@ function main() {
 	// Player movement, controls all the other objects
 	// Move Down
 	var direction = 1;
-	var playerSpeed = 50 * world_speed;
+	var playerSpeed = 100 * world_speed;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 1) {
@@ -3463,7 +3463,7 @@ function main() {
 			//if near a traveller
 			if (talk && !inBattle) {
 				for (var i = 0; i < travellers.length; i += 2) {
-					if ((player.X == travellers[i] && player.Y == travellers[i + 1]) || (player.X == travellers[i] + 1 && player.Y == travellers[i + 1]) || (player.X == travellers[i] - 1 && player.Y == travellers[i + 1]) || (player.X == travellers[i] && player.Y == travellers[i + 1] + 1) || (player.X == travellers[i] && player.Y == travellers[i + 1] - 1)) {
+					if (travellers[i] > player.X - 1 && travellers[i] < player.X + 1 && travellers[i + 1] + 1 > player.Y - 1 && travellers[i + 1] + 1 < player.Y + 1) {
 						talking = true;
 						drawTravellerUI(i);
 						break;

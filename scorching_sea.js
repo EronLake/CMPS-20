@@ -1637,12 +1637,12 @@ function main() {
 			}
 			if (who == 2 && numOfPlayers > 1) {
 				if (player2.HEALTH != 0)
-					maleGruntSnd2.play();
+					femaleGruntSnd1.play();	
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			if (who == 3 && numOfPlayers > 2) {
 				if (player3.HEALTH != 0)
-					femaleGruntSnd1.play();
+					maleGruntSnd2.play();
 				player3.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			if (who == 4 && numOfPlayers > 3) {

@@ -1736,14 +1736,22 @@ function main() {
 	function homeUI() {
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
-		c.lineWidth = 10;
+		c.lineWidth = 5;
+		//c.lineJoin="miter";
+		//c.miterLimit=20;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
 		c.strokeText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.strokeText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
-		c.fillText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
+		c.strokeText("Choose your party size: Decide with '1' '2' '3' '4' ", (canvasWidth / 3) - 50, (canvasHeight / 3));
+		c.fillText("Choose your party size: Decide with '1' '2' '3' '4' ", (canvasWidth / 3) - 50, (canvasHeight / 3));
+		c.strokeText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight/3) + 30);
+		c.fillText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight/3) + 30);
+		c.strokeText("Find your first village and watch out for bandits", (canvasWidth/3) - 50, (canvasHeight/3) + 160);
+		c.fillText("Find your first village and watch out for bandits", (canvasWidth/3) - 50, (canvasHeight/3) + 160);
+		c.strokeText("Press spacebar to continue", (canvasWidth/3) - 50, (canvasHeight/3) + 190);
+		c.fillText("Press spacebar to continue", (canvasWidth/3) - 50, (canvasHeight/3) + 190);
 	}
 
 	// ----------------------------------------
@@ -2659,7 +2667,7 @@ function main() {
 		ENTER : 13,
 		PAUSE : 27,
 		SPACE : 32,
-		DoN_E : 69
+		//DoN_E : 69
 	};
 
 	var goUp = false;
@@ -2750,11 +2758,11 @@ function main() {
 					if (!gameOver)
 						pause = true;
 					break;
-				case keys.DoN_E:
+				/*case keys.DoN_E:
 					if (day)
 						counter = 60;
 					else
-						counter = 0;
+						counter = 0;*/
 				case keys.SPACE:
 					if (inBattle) {
 						playerCount = count;

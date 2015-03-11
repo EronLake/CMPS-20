@@ -1051,7 +1051,8 @@ function main() {
 			c.fillRect(canvasWidth / 12 + space, canvasHeight / 8 + (-player.UVORIG + player.UVORIG) + 5, 25, player.UVORIG + 10);
 			c.fillStyle = 'rgba(150, 150, 150, 0.75)';
 			c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + (-player.UVORIG + player.UVORIG) + 10, 15, player.UVORIG);
-			c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
+			//c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
+			c.fiilStyle = 'rgba(150,200,250)';
 			c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + -player.UV + 100 + 10, 15, player.UV);
 			c.strokeText("UV", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
 			c.fillText("UV", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
@@ -2874,7 +2875,7 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV--;
+					player.UV-=.25;
 				}
 				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}
@@ -2900,7 +2901,7 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV--;
+					player.UV-=.25;
 				}
 				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}
@@ -2926,7 +2927,7 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV--;
+					player.UV-=.25;
 				}
 				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}
@@ -2952,7 +2953,7 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV--;
+					player.UV-=.25;
 				}
 				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}

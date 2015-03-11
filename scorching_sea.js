@@ -226,7 +226,6 @@ bubbleSound.src = "Audio/bubbleSound2.mp3";
 var getItem = new Audio();
 getItem.src = "Audio/getItem.mp3";
 
-
 var eatingSound = new Audio();
 eatingSound.src = "Audio/eatingSound.mp3";
 
@@ -1265,19 +1264,19 @@ function main() {
 		if (buyItem && player.WATER > 2500 && !(item == 0 || item > 5)) {
 			if (item == 1)
 				player.SHOVEL = true;
-				getItem.play();
+			getItem.play();
 			if (item == 2)
 				player.DETECTOR = true;
-				getItem.play();
+			getItem.play();
 			if (item == 3)
 				player.COMPASS = true;
-				getItem.play();
+			getItem.play();
 			if (item == 4)
 				player.MAP = true;
-				getItem.play();
+			getItem.play();
 			if (item == 5)
 				player.PEN = true;
-				getItem.play();
+			getItem.play();
 			villageItems[place + 2] = 0;
 			player.WATER -= 2500;
 			buyItem = false;
@@ -1337,7 +1336,7 @@ function main() {
 			getWater = false;
 			bubbleSound.play();
 		}
-		if (getFood && travellerStats[i+1] > 0) {
+		if (getFood && travellerStats[i + 1] > 0) {
 			if (player.HEALTH > 0 && numOfPlayers > 0) {
 				player.HEALTH += 10;
 				eatingSound.play();
@@ -1501,19 +1500,19 @@ function main() {
 		if (getBoatItem) {
 			if (boatItem == 1)
 				player.SHOVEL = true;
-				getItem.play();
+			getItem.play();
 			if (boatItem == 2)
 				player.DETECTOR = true;
-				getItem.play();
+			getItem.play();
 			if (boatItem == 3)
 				player.COMPASS = true;
-				getItem.play();
+			getItem.play();
 			if (boatItem == 4)
 				player.MAP = true;
-				getItem.play();
+			getItem.play();
 			if (boatItem == 5)
 				player.PEN = true;
-				getItem.play();
+			getItem.play();
 			boatStats[place] = 0;
 			getBoatItem = false;
 		}
@@ -1647,7 +1646,7 @@ function main() {
 			}
 			if (who == 4 && numOfPlayers > 3) {
 				if (player4.HEALTH != 0)
-					femaleGruntSnd2.play(); 
+					femaleGruntSnd2.play();
 				player4.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			player.WATER -= Math.floor((Math.random() * (1000 - 500)) + 500);
@@ -1832,7 +1831,7 @@ function main() {
 	var fishEnemies = new Array(2000);
 	var fishOrig = new Array(fishEnemies.length);
 	var travellers = new Array(150);
-	var foilage = new Array(25000);
+	var foilage = new Array(allObjects.length);
 
 	//items/stats
 	var travellerStats = new Array(travellers.length);
@@ -1880,7 +1879,7 @@ function main() {
 	};
 
 	var homeBase = {
-		WATER : 20000*4
+		WATER : 20000 * 4
 	};
 
 	//------------------------------------------
@@ -2552,7 +2551,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= 1 * numOfPlayers-1;
+				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}
 			direction = 1;
 		}
@@ -2578,7 +2577,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= 1 * numOfPlayers-1;
+				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}
 			direction = 3;
 		}
@@ -2604,7 +2603,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= 1 * numOfPlayers-1;
+				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}
 			direction = 2;
 		}
@@ -2630,7 +2629,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= 1 * numOfPlayers-1;
+				player.WATER -= (1 * numOfPlayers - 1)/4;
 			}
 			direction = 4;
 		}
@@ -3044,6 +3043,14 @@ function main() {
 		drawAll();
 		drawUI();
 		if (!pause) {
+			/*
+			if ((goUp == true && goLeft == true) || (goUp == true && goRight == true)) {
+				moveSpeed = (.25) / 2;
+			} else if ((goDown == true && goLeft == true) || (goDown == true && goRight == true)) {
+				moveSpeed = (.25) / 2;
+			} else {
+				moveSpeed = .25;
+			}*/
 			//---------------------conditions-----------------------
 			//if in shadow
 			//if (allObjects[i+1] > player.Y-1 && allObjects[i+1] < player.Y+1 && allObjects[i] > player.X-1 && allObjects[i] < player.X+1) {

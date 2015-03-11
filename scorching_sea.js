@@ -515,7 +515,8 @@ function main() {
 		if (colOffset == player.X + .3 && rowOffset == player.Y + .3) {
 			c.fillStyle = 'rgba(0, 0, 0, 0.5)';
 			c.fillRect(-90 + player.UVORIG / 2, 20, player.UVORIG / 2, 3);
-			c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
+			//c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
+			c.fillStyle = 'rgba(150,200,250, 1)';
 			c.fillRect(-40 + player.UV / 2, 20, -player.UV / 2, 3);
 		}
 		c.restore();
@@ -1052,7 +1053,7 @@ function main() {
 			c.fillStyle = 'rgba(150, 150, 150, 0.75)';
 			c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + (-player.UVORIG + player.UVORIG) + 10, 15, player.UVORIG);
 			//c.fillStyle = 'rgba(' + (-player.UV + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', ' + (-player.UV * 2 + player.UVORIG * 2 + 125) + ', 1)';
-			c.fiilStyle = 'rgba(150,200,250)';
+			c.fillStyle = 'rgba(150,200,250, 1)';
 			c.fillRect(canvasWidth / 12 + space + 5, canvasHeight / 8 + -player.UV + 100 + 10, 15, player.UV);
 			c.strokeText("UV", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);
 			c.fillText("UV", canvasWidth / 12 + space + 5, canvasHeight / 8 + 50);

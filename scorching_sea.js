@@ -343,7 +343,7 @@ function main() {
 	//-----------------------------------------
 	/////////////////////////
 	//changes dayLength,
-	var world_speed = 1;
+	var world_speed = .5;
 	/////////////////////////
 	var day = true;
 	var counter = 0;
@@ -1294,9 +1294,10 @@ function main() {
 		    }
 		//---------------------------------------------------------
 		});
-		
 		//----------------------------------------------
-		
+		c.fillStyle = 'rgb(250,0,0,)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,600,250);
+		//----------------------------------------------		
 		c.strokeText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		//-------------------------
@@ -3073,7 +3074,7 @@ function main() {
 							break;
 						}
 					if (inBoat)
-						if(cave_selection == 1){
+						if(boat_selection == 2){
 							getBoatClue = true;
 						}
 			     //----------------------------------

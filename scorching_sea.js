@@ -343,7 +343,7 @@ function main() {
 	//-----------------------------------------
 	/////////////////////////
 	//changes dayLength,
-	var world_speed = .5;
+	var world_speed = 1;
 	/////////////////////////
 	var day = true;
 	var counter = 0;
@@ -1294,10 +1294,18 @@ function main() {
 		    }
 		//---------------------------------------------------------
 		});
+		
 		//----------------------------------------------
-		c.fillStyle = 'rgb(250,0,0,)';
-		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,600,250);
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
+		
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		//----------------------------------------------		
+		
 		c.strokeText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		//-------------------------
@@ -1481,9 +1489,19 @@ function main() {
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
 		
+		//----------------------------------------------
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
 		
-		c.strokeText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.fillText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		//----------------------------------------------		
+		
+		c.strokeText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		
 		if(talking_selection == 1) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
@@ -1642,6 +1660,17 @@ function main() {
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
 		
+		//----------------------------------------------
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
+		
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		//----------------------------------------------		
+		
 		c.strokeText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		
@@ -1797,6 +1826,17 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
+		
+		//----------------------------------------------
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
+		
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		//----------------------------------------------		
 		
 		c.strokeText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);

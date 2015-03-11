@@ -239,6 +239,21 @@ var canvasHeight = canvas.height;
 // --------------------------------------------
 var instrScreen = false;
 var titleScreen = true;
+
+/////////////////////////////
+//setting timer
+var startButton = true;
+function startButtonFunc(){
+	if (startButton == true) {
+		startButton = false;
+	} else if (startButton == false){
+		startButton = true;
+	}
+console.log(startButton);
+}
+window.setInterval(startButtonFunc(), 1000);
+
+
 addEventListener("keydown", function(key) {
 	if (key.keyCode == 32 && instrScreen == false) {
 		titleScreen = false;
@@ -247,6 +262,8 @@ addEventListener("keydown", function(key) {
 		instrScreen = false;
 	}
 });
+
+//-------------------------------
 //c.textAlign = "center"
 var titleImage = document.getElementById("title");
 function draw() {
@@ -265,8 +282,15 @@ function draw() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		//c.strokeText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
 		//c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
+		//----------------
+		//otherwise
+		//if (startButton == true){
 		c.strokeText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
 		c.fillText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
+		//}
+		//------------------------------
+		
+		
 	} else if (titleScreen == false && instrScreen == true) {
 		c.fillRect(0, 0, canvas.width, canvas.height);
 		c.textAlign = "center";
@@ -1409,8 +1433,6 @@ function main() {
 			pickClue = Math.floor(Math.random() * clues.length);
 		}
 	}
-
-//inBattle || gameOver || inVillage || youWin || talking || inCave || inBoat
 
 	// ----------------------------------------
 	//     Player moves on screen

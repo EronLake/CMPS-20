@@ -161,13 +161,6 @@ enemyShadowImg.src = 'Images/Enemy_shadow.png';
 var fishShadowImg = new Image();
 fishShadowImg.src = 'Images/fish_shadow.png';
 
-var foilage1Img = new Image();
-foilage1Img.src = 'Images/cool_foilage_1.png';
-var foilage2Img = new Image();
-foilage2Img.src = 'Images/cool_foilage_2.png';
-var foilage3Img = new Image();
-foilage3Img.src = 'Images/cool_foilage_3.png';
-
 // ----------------------------------------
 //     Sound Import
 // ----------------------------------------
@@ -226,6 +219,7 @@ bubbleSound.src = "Audio/bubbleSound2.mp3";
 var getItem = new Audio();
 getItem.src = "Audio/getItem.mp3";
 
+
 var eatingSound = new Audio();
 eatingSound.src = "Audio/eatingSound.mp3";
 
@@ -280,10 +274,25 @@ function draw() {
 		c.font = "40px Arial";
 		c.fillText("Instructions", canvas.width / 2, canvas.height / 2 - 220);
 		c.font = "30px Arial";
-		c.fillText("Use 'A' 'W' 'S' 'D' to move", canvas.width / 2, canvas.height / 2 - 150);
-		c.fillText("Spacebar is the main action key and is used to enter and exit villages, cut cacti, talk to travelers, etc.", canvas.width / 2, canvas.height / 2 - 110);
-		c.fillText("Press the escape key to pause", canvas.width / 2, canvas.height / 2 - 70);
-		c.fillText("Press Spacebar to continue", canvas.width / 2, canvas.height / 2 + 100);
+		c.fillText("Use 'A' 'W' 'S' 'D' to move", canvas.width /2, canvas.height / 2 - 150);
+		c.fillText("Spacebar is the main action key and is used to enter and exit villages, cut cacti, talk to travelers, etc.", canvas.width /2, canvas.height / 2 - 110);
+		c.fillText("Press the escape key to pause", canvas.width/2, canvas.height / 2 - 70);
+		c.fillText("Press Spacebar to continue", canvas.width /2 , canvas.height / 2 + 100);
+		//c.fillText("At the beginning of the game, '1' '2' '3' '4' will determine your party size. Press Spacebar to continue", 0, canvas.height / 2 - 100);
+		//c.fillText("If your blue water meter hits zero then your health will begin to decrease", 0, canvas.height / 2 - 100);
+		//c.fillText("If your health hits zero then the game ends", 0, canvas.height / 2 - 80);
+		//c.fillText("Take refuge in shade to keep skin integrity and water from depleting", 0, canvas.height / 2 - 60);
+		//c.fillText("You will lose more water during the day, less water duing the night", 0, canvas.height / 2);
+		//c.fillText("The enemies are represented for now by the orange and green rectangles", 0, canvas.height / 2 + 20);
+		//c.fillText("The main base is represented by the aqua square that you start at in the beginning", 0, canvas.height / 2 + 40);
+		//c.fillText("The ml: represents the milileters of water that you have left, while the Home ml: denotes how much water is left at the base", 0, canvas.height / 2 + 60);
+		//c.fillText("Boulders and cacti provide shade but cacti can also be cut to replenish water by pressing spacebar", 0, canvas.height / 2 + 80);
+		//c.fillText("Villages are represented by the gray collections of squares and can be entered by pressing spacebar and exited in the same fashion", 0, canvas.height / 2 + 100);
+		//c.fillText("Villages contain items that will be useful to you on your journey", 0, canvas.height / 2 + 120);
+		//c.fillText("Village items are numbered 1,2,3,4 and can be obtained by pressing the corresponding key as many times as the number of each available", 0, canvas.height / 2 + 140);
+		//c.fillText("Fight green enemies by pressing spacebar as soon as the word 'Draw' appears onscreen", 0, canvas.height / 2 + 180);
+		//c.fillText("Fight orange enemies by pressing the keys displayed onscreen in order(quick time style)", 0, canvas.height / 2 + 200);
+		//c.fillText("You can replenish your water at home base", 0, canvas.height / 2 + 220);
 	} else if (titleScreen == false && instrScreen == false) {
 		clearInterval(refreshIntervalId);
 		//stop game_loop after spacebar pressed
@@ -342,7 +351,7 @@ function main() {
 	//-----------------------------------------
 	/////////////////////////
 	//changes dayLength,
-	var world_speed = .5;
+	var world_speed = .1;
 	/////////////////////////
 	var day = true;
 	var counter = 0;
@@ -373,13 +382,13 @@ function main() {
 	var experimental_useBitmapTiles = true;
 
 	// how many tiles do we show in the back ?
-	var viewBackDepth = 13;
+	var viewBackDepth = 12;
 	// how many tiles do we show in the front ?
-	var viewFrontDepth = 18;
+	var viewFrontDepth = 17;
 	// how many tiles do we show on the left ?
-	var viewLeftDepth = 7;
+	var viewLeftDepth = 6;
 	// how many tiles do we show on the right ?
-	var viewRightDepth = 10;
+	var viewRightDepth = 9;
 
 	// tile offset from 0,0 at which we start shadowing.
 	var shadowStart = 9;
@@ -527,13 +536,13 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (direction2 == 1)
+		if (direction == 1)
 			c.drawImage(hero2FrontImg, -30, -43, 50, 50);
-		if (direction2 == 2)
+		if (direction == 2)
 			c.drawImage(hero2LeftImg, -30, -43, 50, 50);
-		if (direction2 == 3)
+		if (direction == 3)
 			c.drawImage(hero2BackImg, -30, -43, 50, 50);
-		if (direction2 == 4)
+		if (direction == 4)
 			c.drawImage(hero2RightImg, -30, -43, 50, 50);
 		c.transform(1, 0, .7, -1, -33, 35);
 		c.drawImage(heroShadowImg, -15, 5, 44, 25);
@@ -546,13 +555,13 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (direction3 == 1)
+		if (direction == 1)
 			c.drawImage(hero3FrontImg, -30, -43, 50, 50);
-		if (direction3 == 2)
+		if (direction == 2)
 			c.drawImage(hero3LeftImg, -30, -43, 50, 50);
-		if (direction3 == 3)
+		if (direction == 3)
 			c.drawImage(hero3BackImg, -30, -43, 50, 50);
-		if (direction3 == 4)
+		if (direction == 4)
 			c.drawImage(hero3RightImg, -30, -43, 50, 50);
 		c.transform(1, 0, .7, -1, -33, 35);
 		c.drawImage(heroShadowImg, -15, 5, 44, 25);
@@ -565,13 +574,13 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (direction4 == 1)
+		if (direction == 1)
 			c.drawImage(hero4FrontImg, -30, -43, 50, 50);
-		if (direction4 == 2)
+		if (direction == 2)
 			c.drawImage(hero4LeftImg, -30, -43, 50, 50);
-		if (direction4 == 3)
+		if (direction == 3)
 			c.drawImage(hero4BackImg, -30, -43, 50, 50);
-		if (direction4 == 4)
+		if (direction == 4)
 			c.drawImage(hero4RightImg, -30, -43, 50, 50);
 		c.transform(1, 0, .7, -1, -33, 35);
 		c.drawImage(heroShadowImg, -15, 5, 44, 25);
@@ -655,7 +664,8 @@ function main() {
 			} else {
 				c.drawImage(enemy1BackImg, -45, -45, 64, 64);
 			}
-		} else {
+		}
+		if (i == 4) {
 			if (j % 4 == 0) {
 				c.drawImage(enemy4FrontImg, -45, -45, 64, 64);
 			} else if (j % 6 == 0) {
@@ -684,6 +694,7 @@ function main() {
 		c.save();
 		c.transform(1, 0, -.7, 1, 5, 0);
 		c.drawImage(fishShadowImg, -40, -7, 65, 65);
+
 		c.restore();
 		if (i == 1) {
 			if (j % 4 == 0) {
@@ -730,6 +741,7 @@ function main() {
 			c.transform(1, 0, .7, -1, -8, 28);
 			c.drawImage(caveShadowImg, -47, -97, 180, 100);
 		}
+		//c.fillRect(-50, -38, 64, 64);
 		c.restore();
 	}
 
@@ -747,22 +759,6 @@ function main() {
 			c.restore();
 			c.drawImage(boatImg, -40, -170, 225, 200);
 		}
-		c.restore();
-	}
-
-	function drawFoilage(colOffset, rowOffset, i) {
-		var pt = [0, 0];
-		c.beginPath();
-		projectFromCenter(colOffset, rowOffset, pt);
-		c.fillStyle = 'rgb(0, 0, 0)';
-		c.save();
-		c.translate(pt[0], pt[1]);
-		if (i % 4 == 0)
-			c.drawImage(foilage2Img, -20, -20, 50, 50);
-		else if (i % 6 == 0)
-			c.drawImage(foilage1Img, -20, -20, 50, 50);
-		else
-			c.drawImage(foilage3Img, -20, -20, 50, 50);
 		c.restore();
 	}
 
@@ -1293,10 +1289,18 @@ function main() {
 		    }
 		//---------------------------------------------------------
 		});
+		
 		//----------------------------------------------
-		c.fillStyle = 'rgb(250,0,0,)';
-		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,600,250);
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
+		
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		//----------------------------------------------		
+
 		c.strokeText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		//-------------------------
@@ -1363,19 +1367,19 @@ function main() {
 		if (buyItem && player.WATER > 2500 && !(item == 0 || item > 5)) {
 			if (item == 1)
 				player.SHOVEL = true;
-			getItem.play();
+				getItem.play();
 			if (item == 2)
 				player.DETECTOR = true;
-			getItem.play();
+				getItem.play();
 			if (item == 3)
 				player.COMPASS = true;
-			getItem.play();
+				getItem.play();
 			if (item == 4)
 				player.MAP = true;
-			getItem.play();
+				getItem.play();
 			if (item == 5)
 				player.PEN = true;
-			getItem.play();
+				getItem.play();
 			villageItems[place + 2] = 0;
 			player.WATER -= 2500;
 			buyItem = false;
@@ -1480,9 +1484,19 @@ function main() {
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
 		
+		//----------------------------------------------
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
 		
-		c.strokeText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.fillText("HELLO, STANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		//----------------------------------------------		
+		
+		c.strokeText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.fillText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		
 		if(talking_selection == 1) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
@@ -1504,7 +1518,7 @@ function main() {
 			getWater = false;
 			bubbleSound.play();
 		}
-		if (getFood && travellerStats[i + 1] > 0) {
+		if (getFood) {
 			if (player.HEALTH > 0 && numOfPlayers > 0) {
 				player.HEALTH += 10;
 				eatingSound.play();
@@ -1641,6 +1655,17 @@ function main() {
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
 		
+		//----------------------------------------------
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
+		
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		//----------------------------------------------		
+		
 		c.strokeText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		
@@ -1710,35 +1735,7 @@ function main() {
 	// ----------------------------------------
 	//     Draw Boat
 	// ----------------------------------------
-	function drawBoatUI(i) {
-		var boatItem;
-		var boatItemString;
-		var boatClue;
-		var place = i;
-		var foundClue = "2. What does this paper say?";
-		if (i % 12 == 0) {
-			boatItem = boatStats[i];
-			boatClue = boatStats[i + 1];
-		}
-		if (i % 12 == 2) {
-			boatItem = boatStats[i - 2];
-			boatClue = boatStats[i - 1];
-			place = i - 2;
-		}
-		if (boatItem == 0)
-			var boatItemString = "Nothing in here";
-		if (boatItem == 1)
-			var boatItemString = "1. Item found: Shovel";
-		if (boatItem == 2)
-			var boatItemString = "1. Item found: Detector";
-		if (boatItem == 3)
-			var boatItemString = "1. Item found: Compass";
-		if (boatItem == 4)
-			var boatItemString = "1. Item found: Map";
-		if (boatItem == 5)
-			var boatItemString = "1. Item found: Pen";
-			
-		 //-------------------------------------------------------
+	//-------------------------------------------------------
 		 addEventListener("keyup", function(key){
 		 //lets you move up options
 		    if(key.keyCode == "87"){
@@ -1789,6 +1786,36 @@ function main() {
 		    }
 		//---------------------------------------------------------
 		});	
+	
+	function drawBoatUI(i) {
+		var boatItem;
+		var boatItemString;
+		var boatClue;
+		var place = i;
+		var foundClue = "2. What does this paper say?";
+		if (i % 12 == 0) {
+			boatItem = boatStats[i];
+			boatClue = boatStats[i + 1];
+		}
+		if (i % 12 == 2) {
+			boatItem = boatStats[i - 2];
+			boatClue = boatStats[i - 1];
+			place = i - 2;
+		}
+		if (boatItem == 0)
+			var boatItemString = "Nothing in here";
+		if (boatItem == 1)
+			var boatItemString = "1. Item found: Shovel";
+		if (boatItem == 2)
+			var boatItemString = "1. Item found: Detector";
+		if (boatItem == 3)
+			var boatItemString = "1. Item found: Compass";
+		if (boatItem == 4)
+			var boatItemString = "1. Item found: Map";
+		if (boatItem == 5)
+			var boatItemString = "1. Item found: Pen";
+			
+		 
 			
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1796,6 +1823,17 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
+		
+		//----------------------------------------------
+		c.fillStyle = "rgba(50,0,0, 0.75)";
+		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
+		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillStyle = "rgb(255,220,210)";
+		
+		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
+		//----------------------------------------------		
 		
 		c.strokeText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
@@ -1817,19 +1855,19 @@ function main() {
 		if (getBoatItem) {
 			if (boatItem == 1)
 				player.SHOVEL = true;
-			getItem.play();
+				getItem.play();
 			if (boatItem == 2)
 				player.DETECTOR = true;
-			getItem.play();
+				getItem.play();
 			if (boatItem == 3)
 				player.COMPASS = true;
-			getItem.play();
+				getItem.play();
 			if (boatItem == 4)
 				player.MAP = true;
-			getItem.play();
+				getItem.play();
 			if (boatItem == 5)
 				player.PEN = true;
-			getItem.play();
+				getItem.play();
 			boatStats[place] = 0;
 			getBoatItem = false;
 		}
@@ -1858,11 +1896,11 @@ function main() {
 
 	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		/*if(humTut) {
-		 c.font = "20px Arial";
-		 c.strokeText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
-		 c.fillText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
-		 setInterval(function (){humTut = true;}, 6000)
-		 }*/
+			c.font = "20px Arial";
+			c.strokeText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
+			c.fillText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
+			setInterval(function (){humTut = true;}, 6000)
+		}*/
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (64 - 48) + 48;
 		if (numOfPlayers == 2)
@@ -1953,17 +1991,17 @@ function main() {
 			}
 			if (who == 2 && numOfPlayers > 1) {
 				if (player2.HEALTH != 0)
-					femaleGruntSnd1.play();	
+					maleGruntSnd2.play();
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			if (who == 3 && numOfPlayers > 2) {
 				if (player3.HEALTH != 0)
-					maleGruntSnd2.play();
+					femaleGruntSnd1.play();
 				player3.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			if (who == 4 && numOfPlayers > 3) {
 				if (player4.HEALTH != 0)
-					femaleGruntSnd2.play();
+					femaleGruntSnd2.play(); 
 				player4.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			player.WATER -= Math.floor((Math.random() * (1000 - 500)) + 500);
@@ -2052,22 +2090,14 @@ function main() {
 	function homeUI() {
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
-		c.lineWidth = 5;
-		//c.lineJoin="miter";
-		//c.miterLimit=20;
+		c.lineWidth = 10;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
 		c.strokeText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.strokeText("Choose your party size: Decide with '1' '2' '3' '4' ", (canvasWidth / 3) - 50, (canvasHeight / 3));
-		c.fillText("Choose your party size: Decide with '1' '2' '3' '4' ", (canvasWidth / 3) - 50, (canvasHeight / 3));
-		c.strokeText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight/3) + 30);
-		c.fillText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight/3) + 30);
-		c.strokeText("Find your first village and watch out for bandits", (canvasWidth/3) - 50, (canvasHeight/3) + 160);
-		c.fillText("Find your first village and watch out for bandits", (canvasWidth/3) - 50, (canvasHeight/3) + 160);
-		c.strokeText("Press spacebar to continue", (canvasWidth/3) - 50, (canvasHeight/3) + 190);
-		c.fillText("Press spacebar to continue", (canvasWidth/3) - 50, (canvasHeight/3) + 190);
+		c.strokeText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
+		c.fillText("People on journey: " + numOfPlayers, (canvasWidth / 3), (canvasHeight / 3));
 	}
 
 	// ----------------------------------------
@@ -2156,7 +2186,6 @@ function main() {
 	var fishEnemies = new Array(2000);
 	var fishOrig = new Array(fishEnemies.length);
 	var travellers = new Array(150);
-	var foilage = new Array(allObjects.length);
 
 	//items/stats
 	var travellerStats = new Array(travellers.length);
@@ -2204,7 +2233,7 @@ function main() {
 	};
 
 	var homeBase = {
-		WATER : 20000 * 4
+		WATER : 20000
 	};
 
 	//------------------------------------------
@@ -2406,11 +2435,6 @@ function main() {
 		travellers[i] = Math.floor(Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2);
 	}
 
-	for (var k = 0; k < foilage.length; k++) {
-		//foilage[k] = Math.floor(Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2);
-		foilage[k] = Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2;
-	}
-
 	//-------------------------------------------
 	//helper functions for hookKeys()
 	//-------------------------------------------
@@ -2431,7 +2455,6 @@ function main() {
 		caves[i] -= moveSpeed;
 		boats[i] -= moveSpeed;
 		boundaries[i] -= moveSpeed;
-		foilage[i] -= moveSpeed;
 	}
 
 	function inAll(i) {
@@ -2449,7 +2472,6 @@ function main() {
 		caves[i] += moveSpeed;
 		boats[i] += moveSpeed;
 		boundaries[i] += moveSpeed;
-		foilage[i] += moveSpeed;
 	}
 
 	// ----------------------------------------
@@ -2665,7 +2687,7 @@ function main() {
 		}
 	}
 
-	var moveSpeed = .25;
+	var moveSpeed = 1;
 
 	// ----------------------------------------
 	//     Move the other characters
@@ -2698,7 +2720,7 @@ function main() {
 	for (var k = 0; k < humanEnemies.length / 2; k++) {
 		humDir[k] = Math.floor((Math.random() * 4)) + 1;
 	}
-	var humanSpeed = 60 * world_speed;
+	var humanSpeed = 50 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
@@ -2743,7 +2765,7 @@ function main() {
 	for (var k = 0; k < fishEnemies.length / 2; k++) {
 		fishDir[k] = Math.floor(Math.random() * 2) + 1;
 	}
-	var fishSpeed = 40 * world_speed;
+	var fishSpeed = 35 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
@@ -2783,79 +2805,81 @@ function main() {
 	// Player 2 movement
 	var direction2 = 1;
 	setInterval(function() {
-
-		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player2.X > player.X) {
-				player2.X -= othersSpeed;
-				direction2 = 2;
-			}
-			if (player2.X < player.X) {
-				player2.X += othersSpeed;
-				direction2 = 4;
-			}
-			if (player2.Y > player.Y) {
-				player2.Y -= othersSpeed;
-				direction2 = 3;
-			}
-			if (player2.Y < player.Y) {
-				player2.Y += othersSpeed;
-				direction2 = 1;
-			}
-		}
-
-	}, 50);
+		/*
+		 if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
+		 if (player2.X > player.X) {
+		 player2.X -= othersSpeed;
+		 direction2 = 2;
+		 }
+		 if (player2.X < player.X) {
+		 player2.X += othersSpeed;
+		 direction2 = 4;
+		 }
+		 if (player2.Y > player.Y) {
+		 player2.Y -= othersSpeed;
+		 direction2 = 3;
+		 }
+		 if (player2.Y < player.Y) {
+		 player2.Y += othersSpeed;
+		 direction2 = 1;
+		 }
+		 }
+		 */
+	}, 30);
 	// Player 3 movement
 	var direction3 = 1;
 	setInterval(function() {
-		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player3.X > player.X) {
-				player3.X -= othersSpeed;
-				direction3 = 2;
-			}
-			if (player3.X < player.X) {
-				player3.X += othersSpeed;
-				direction3 = 4;
-			}
-			if (player3.Y > player.Y) {
-				player3.Y -= othersSpeed;
-				direction3 = 3;
-			}
-			if (player3.Y < player.Y) {
-				player3.Y += othersSpeed;
-				direction3 = 1;
-			}
-		}
-	}, 50);
+		/*
+		 if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
+		 if (player3.X > player.X) {
+		 player3.X -= othersSpeed;
+		 direction3 = 2;
+		 }
+		 if (player3.X < player.X) {
+		 player3.X += othersSpeed;
+		 direction3 = 4;
+		 }
+		 if (player3.Y > player.Y) {
+		 player3.Y -= othersSpeed;
+		 direction3 = 3;
+		 }
+		 if (player3.Y < player.Y) {
+		 player3.Y += othersSpeed;
+		 direction3 = 1;
+		 }
+		 }
+		 */
+	}, 40);
 	// Player 4 movement
 	var direction4 = 1;
 	setInterval(function() {
-
-		if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
-			if (player4.X > player.X) {
-				player4.X -= othersSpeed;
-				direction4 = 2;
-			}
-			if (player4.X < player.X) {
-				player4.X += othersSpeed;
-				direction4 = 4;
-			}
-			if (player4.Y > player.Y) {
-				player4.Y -= othersSpeed;
-				direction4 = 3;
-			}
-			if (player4.Y < player.Y) {
-				player4.Y += othersSpeed;
-				direction4 = 1;
-			}
-		}
-
+		/*
+		 if (!inVillage && !inBattle && !talking && !pause && !inCave && !inBoat) {
+		 if (player4.X > player.X) {
+		 player4.X -= othersSpeed;
+		 direction4 = 2;
+		 }
+		 if (player4.X < player.X) {
+		 player4.X += othersSpeed;
+		 direction4 = 4;
+		 }
+		 if (player4.Y > player.Y) {
+		 player4.Y -= othersSpeed;
+		 direction4 = 3;
+		 }
+		 if (player4.Y < player.Y) {
+		 player4.Y += othersSpeed;
+		 direction4 = 1;
+		 }
+		 }
+		 */
 	}, 50);
 
 	// the lower the faster
 	// Player movement, controls all the other objects
 	// Move Down
 	var direction = 1;
-	var playerSpeed = 50 * world_speed;
+	var playerSpeed = 140 * world_speed;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 1) {
@@ -2863,7 +2887,7 @@ function main() {
 				moveOthersY(-1);
 				for (var i = 1; i < allObjects.length; i += 2) {
 					decAll(i);
-					if (allObjects[i] > player.Y - 1 && allObjects[i] < player.Y + 1 && allObjects[i - 1] > player.X - 1 && allObjects[i - 1] < player.X + 1) {
+					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 						center[1] -= moveSpeed;
 						moveOthersY(1);
 						for (var j = 1; j < allObjects.length; j += 2) {
@@ -2876,7 +2900,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= 1 * numOfPlayers;
 			}
 			direction = 1;
 		}
@@ -2889,7 +2913,7 @@ function main() {
 				moveOthersY(1);
 				for (var i = 1; i < allObjects.length; i += 2) {
 					inAll(i);
-					if (allObjects[i] > player.Y - 1 && allObjects[i] < player.Y + 1 && allObjects[i - 1] > player.X - 1 && allObjects[i - 1] < player.X + 1) {
+					if (allObjects[i] == player.Y && allObjects[i - 1] == player.X) {
 						center[1] += moveSpeed;
 						moveOthersY(-1);
 						for (var j = 1; j < allObjects.length; j += 2) {
@@ -2902,7 +2926,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= 1 * numOfPlayers;
 			}
 			direction = 3;
 		}
@@ -2915,7 +2939,7 @@ function main() {
 				moveOthersX(1);
 				for (var i = 0; i < allObjects.length; i += 2) {
 					inAll(i);
-					if (allObjects[i + 1] > player.Y - 1 && allObjects[i + 1] < player.Y + 1 && allObjects[i] > player.X - 1 && allObjects[i] < player.X + 1) {
+					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 						center[0] += moveSpeed;
 						moveOthersX(-1);
 						for (var j = 0; j < allObjects.length; j += 2) {
@@ -2928,7 +2952,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= 1 * numOfPlayers;
 			}
 			direction = 2;
 		}
@@ -2941,7 +2965,7 @@ function main() {
 				moveOthersX(-1);
 				for (var i = 0; i < allObjects.length; i += 2) {
 					decAll(i);
-					if (allObjects[i + 1] > player.Y - 1 && allObjects[i + 1] < player.Y + 1 && allObjects[i] > player.X - 1 && allObjects[i] < player.X + 1) {
+					if (allObjects[i] == player.X && allObjects[i + 1] == player.Y) {
 						center[0] -= moveSpeed;
 						moveOthersX(1);
 						for (var j = 0; j < allObjects.length; j += 2) {
@@ -2954,7 +2978,7 @@ function main() {
 				if (player.UV > 0) {
 					player.UV--;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= 1 * numOfPlayers;
 			}
 			direction = 4;
 		}
@@ -2983,7 +3007,7 @@ function main() {
 		ENTER : 13,
 		PAUSE : 27,
 		SPACE : 32,
-		//DoN_E : 69
+		DoN_E : 69
 	};
 
 	var goUp = false;
@@ -3116,11 +3140,11 @@ function main() {
 					if (!gameOver)
 						pause = true;
 					break;
-				/*case keys.DoN_E:
+				case keys.DoN_E:
 					if (day)
 						counter = 60;
 					else
-						counter = 0;*/
+						counter = 0;
 				case keys.SPACE:
 					if (inBattle) {
 						playerCount = count;
@@ -3201,11 +3225,11 @@ function main() {
 
 	function drawPlayers() {
 		if (player4.HEALTH > 0 && numOfPlayers > 3)
-			drawPlayer4(player4.X - .3, player4.Y - .3);
+			drawPlayer4(player.X - .3, player.Y - .3);
 		if (player3.HEALTH > 0 && numOfPlayers > 2)
-			drawPlayer3(player3.X - .3, player3.Y + .3);
+			drawPlayer3(player.X - .3, player.Y + .3);
 		if (player2.HEALTH > 0 && numOfPlayers > 1)
-			drawPlayer2(player2.X + .3, player2.Y - .3);
+			drawPlayer2(player.X + .3, player.Y - .3);
 		if (player.HEALTH > 0 && numOfPlayers > 0)
 			drawPlayer(player.X + .3, player.Y + .3);
 	}
@@ -3218,10 +3242,6 @@ function main() {
 	function drawAll() {
 		//draw floor
 		drawTiles(center);
-		for (var i = 0; i < foilage.length; i += 2) {
-			if (foilage[i] < range && foilage[i] > -range && foilage[i + 1] < range && foilage[i + 1] > -range)
-				drawFoilage(foilage[i], foilage[i + 1], i);
-		}
 		for (var i = 0; i < allObjects.length; i += 2) {
 			if (boundaries[i] < range && boundaries[i] > -range && boundaries[i + 1] < range && boundaries[i + 1] > -range && boundaries[i] <= player.X && boundaries[i + 1] <= player.Y)
 				drawRock(boundaries[i], boundaries[i + 1], i);
@@ -3410,20 +3430,10 @@ function main() {
 		drawAll();
 		drawUI();
 		if (!pause) {
-			/*
-			if ((goUp == true && goLeft == true) || (goUp == true && goRight == true)) {
-				moveSpeed = (.25) / 2;
-			} else if ((goDown == true && goLeft == true) || (goDown == true && goRight == true)) {
-				moveSpeed = (.25) / 2;
-			} else {
-				moveSpeed = .25;
-			}*/
 			//---------------------conditions-----------------------
 			//if in shadow
-			//if (allObjects[i+1] > player.Y-1 && allObjects[i+1] < player.Y+1 && allObjects[i] > player.X-1 && allObjects[i] < player.X+1) {
-
 			for (var i = 0; i < shadows.length; i += 2) {
-				if (shadows[i] > player.X - 1 && shadows[i] < player.X + 1 && shadows[i + 1] > player.Y - 1 && shadows[i + 1] < player.Y + 1) {
+				if (shadows[i] == player.X && shadows[i + 1] == player.Y) {
 					inSun = false;
 					inShadow = true;
 					break;
@@ -3473,7 +3483,7 @@ function main() {
 			}
 			if (enterCave && !inBattle) {
 				for (var i = 0; i < caves.length; i += 2) {
-					if (caves[i] > player.X - 1 && caves[i] < player.X + 1 && caves[i + 1] + 1 > player.Y - 1 && caves[i + 1] + 1 < player.Y + 1) {
+					if (player.X == caves[i] && player.Y == caves[i + 1] + 1) {
 						inCave = true;
 						drawCaveUI(i);
 						break;
@@ -3485,7 +3495,7 @@ function main() {
 			}
 			if (enterBoat && !inBattle) {
 				for (var i = 0; i < boats.length; i += 2) {
-					if (boats[i] > player.X - 1 && boats[i] < player.X + 1 && boats[i + 1] + 1 > player.Y - 1 && boats[i + 1] + 1 < player.Y + 1) {
+					if (player.X == boats[i] && player.Y == boats[i + 1] + 1) {
 						inBoat = true;
 						drawBoatUI(i);
 						break;
@@ -3526,7 +3536,7 @@ function main() {
 			//if press spacebar and in village go to a village ui
 			if (enter && !inBattle) {
 				for (var i = 0; i < villages.length; i += 2) {
-					if (villages[i] > player.X - 1 && villages[i] < player.X + 1 && villages[i + 1] + 1 > player.Y - 1 && villages[i + 1] + 1 < player.Y + 1) {
+					if (player.X == villages[i] && player.Y == villages[i + 1] + 1) {
 						inVillage = true;
 						drawVillageUI(i);
 						overworld.pause();
@@ -3606,7 +3616,7 @@ function main() {
 			}
 
 			//if at base, refill water and use base's water supply and press enter
-			if (homeBase[0] > player.X - 1 && homeBase[0] < player.X + 1 && homeBase[1] + 1 > player.Y - 1 && homeBase[1] + 1 < player.Y + 1 && enter && homeBase.WATER > 0) {
+			if (player.X == homeBase[0] && player.Y == homeBase[1] + 1 && enter && homeBase.WATER > 0) {
 				if (inHome == false && canDrink == true)
 					drinkSound.play();
 				homeBase.WATER -= (player.WATERORIG - player.WATER);

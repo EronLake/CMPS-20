@@ -255,16 +255,16 @@ function draw() {
 	if (titleScreen) {
 		c.textAlign = "center";
 		var titleimg = new Image();
-		titleimg.src = "http://i.imgur.com/nDxvHh5.png?5";
-		c.drawImage(titleimg, 400, 0, 522, 670);
+		titleimg.src = 'Images/title_page.png';
+		c.drawImage(titleimg, 0, 0, canvas.width, canvas.height);
 		//display cover image
 		c.lineWidth = 15;
 		c.font = "40px Arial";
 		c.textAlign = "center";
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
-		c.strokeText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
-		c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
+		//c.strokeText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
+		//c.fillText("SCORCHING SEA", canvas.width / 2, canvas.height / 2 - 200);
 		c.strokeText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
 		c.fillText("Press Spacebar to Play", canvas.width / 2, canvas.height / 2 + 200);
 	} else if (titleScreen == false && instrScreen == true) {

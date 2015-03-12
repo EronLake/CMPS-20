@@ -324,7 +324,7 @@ function main() {
 		}
 		tileMap[x] = row;
 	}
-	
+
 	//---------------------------
 	//variables for menu disply and navigation
 	//---------------------------
@@ -528,13 +528,13 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (direction2 == 1)
+		if (direction == 1)
 			c.drawImage(hero2FrontImg, -30, -43, 50, 50);
-		if (direction2 == 2)
+		if (direction == 2)
 			c.drawImage(hero2LeftImg, -30, -43, 50, 50);
-		if (direction2 == 3)
+		if (direction == 3)
 			c.drawImage(hero2BackImg, -30, -43, 50, 50);
-		if (direction2 == 4)
+		if (direction == 4)
 			c.drawImage(hero2RightImg, -30, -43, 50, 50);
 		c.transform(1, 0, .7, -1, -33, 35);
 		c.drawImage(heroShadowImg, -15, 5, 44, 25);
@@ -547,13 +547,13 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (direction3 == 1)
+		if (direction == 1)
 			c.drawImage(hero3FrontImg, -30, -43, 50, 50);
-		if (direction3 == 2)
+		if (direction == 2)
 			c.drawImage(hero3LeftImg, -30, -43, 50, 50);
-		if (direction3 == 3)
+		if (direction == 3)
 			c.drawImage(hero3BackImg, -30, -43, 50, 50);
-		if (direction3 == 4)
+		if (direction == 4)
 			c.drawImage(hero3RightImg, -30, -43, 50, 50);
 		c.transform(1, 0, .7, -1, -33, 35);
 		c.drawImage(heroShadowImg, -15, 5, 44, 25);
@@ -566,13 +566,13 @@ function main() {
 		projectFromCenter(colOffset, rowOffset, pt);
 		c.save();
 		c.translate(pt[0], pt[1]);
-		if (direction4 == 1)
+		if (direction == 1)
 			c.drawImage(hero4FrontImg, -30, -43, 50, 50);
-		if (direction4 == 2)
+		if (direction == 2)
 			c.drawImage(hero4LeftImg, -30, -43, 50, 50);
-		if (direction4 == 3)
+		if (direction == 3)
 			c.drawImage(hero4BackImg, -30, -43, 50, 50);
-		if (direction4 == 4)
+		if (direction == 4)
 			c.drawImage(hero4RightImg, -30, -43, 50, 50);
 		c.transform(1, 0, .7, -1, -33, 35);
 		c.drawImage(heroShadowImg, -15, 5, 44, 25);
@@ -1234,114 +1234,120 @@ function main() {
 			var itemAmount = "Item: Map for 2500ml";
 		if (item == 5)
 			var itemAmount = "Item: Pen for 2500ml";
-			
+
 		/////////////////////////////
-		//draws village menu	
+		//draws village menu
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		
-		addEventListener("keydown", function(key){
-		 //-------------------------------------------------------
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(inVillage && keydown == false){
-		       		if(village_selection > 1){
-		       			village_selection-= 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(village_selection);  //d = "down";
-		       }
-		 
-		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(inVillage && keydown == false){
-		       		if(village_selection < 4){
-		       			village_selection+= 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(village_selection);  //d = "down";
-		       }
-		    }
-		//---------------------------------------------------------
+
+		addEventListener("keydown", function(key) {
+			//-------------------------------------------------------
+			//lets you move up options
+			if (key.keyCode == "87") {
+				console.log('up');
+				//d = "up";
+
+				if (inVillage && keydown == false) {
+					if (village_selection > 1) {
+						village_selection -= 1;
+						keydown = true;
+					}
+					console.log(village_selection);
+					//d = "down";
+				}
+
+				//---------------------------------------------------------
+				//lets you move up options
+			} else if (key.keyCode == "83") {
+				console.log('down');
+				//d = "down";
+
+				if (inVillage && keydown == false) {
+					if (village_selection < 4) {
+						village_selection += 1;
+						keydown = true;
+					}
+					console.log(village_selection);
+					//d = "down";
+				}
+			}
+			//---------------------------------------------------------
 		});
-		
-		addEventListener("keyup", function(key){
-		 //-------------------------------------------------------
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(inVillage){
-		       		keydown = false;
-		       }
-		 
-		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(inVillage){
-		        	keydown = false;
-		       }
-		    }
-		//---------------------------------------------------------
+
+		addEventListener("keyup", function(key) {
+			//-------------------------------------------------------
+			//lets you move up options
+			if (key.keyCode == "87") {
+				console.log('up');
+				//d = "up";
+
+				if (inVillage) {
+					keydown = false;
+				}
+
+				//---------------------------------------------------------
+				//lets you move up options
+			} else if (key.keyCode == "83") {
+				console.log('down');
+				//d = "down";
+
+				if (inVillage) {
+					keydown = false;
+				}
+			}
+			//---------------------------------------------------------
 		});
 		//----------------------------------------------
 		c.fillStyle = "rgba(50,0,0, 0.75)";
-		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillRect((canvasWidth / 3) - 50, (canvasHeight / 3) - 80, 870, 270);
 		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
-		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillRect((canvasWidth / 3) - 40, (canvasHeight / 3) - 70, 850, 250);
 		c.fillStyle = "rgb(255,220,210)";
-		
+
 		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
-		//----------------------------------------------		
-		
+		//----------------------------------------------
+
 		c.strokeText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("VILLAGE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		//-------------------------
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-	
-		if(village_selection == 1) {
+
+		if (village_selection == 1) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(healthAmount, (canvasWidth / 3), canvasHeight / 3);
 		c.fillText(healthAmount, (canvasWidth / 3), canvasHeight / 3);
 		//-------------------------
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(village_selection == 2) {
+
+		if (village_selection == 2) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(waterAmount, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.fillText(waterAmount, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		//-------------------------
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(village_selection == 3) {
+
+		if (village_selection == 3) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
 		c.fillText(itemAmount, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
 		//-------------------------
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(village_selection == 4) {
+
+		if (village_selection == 4) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText("Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		c.fillText("Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
+
 		//if player wants to buy health
 		if (buyHealth && health > 0 && player.WATER - 1000 > 0) {
 			villageItems[place] -= 1;
@@ -1415,7 +1421,7 @@ function main() {
 		}
 	}
 
-//inBattle || gameOver || inVillage || youWin || talking || inCave || inBoat
+	//inBattle || gameOver || inVillage || youWin || talking || inCave || inBoat
 
 	// ----------------------------------------
 	//     Player moves on screen
@@ -1429,59 +1435,64 @@ function main() {
 			var water = "2. Here take this water: " + travellerStats[i];
 		else
 			var water = "I wish I could give you more water";
-			
-		 //-------------------------------------------------------
-		 addEventListener("keyup", function(key){
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(talking && keydown == false){
-		       		if(talking_selection > 1){
-		       			talking_selection-= 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(talking_selection);  //d = "down";
-		       }
-		 
-		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(talking && keydown == false){
-		       		if(talking_selection < 2){
-		       			talking_selection += 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(talking_selection);  //d = "down";
-		       }
-		    }
-		//---------------------------------------------------------
+
+		//-------------------------------------------------------
+		addEventListener("keyup", function(key) {
+			//lets you move up options
+			if (key.keyCode == "87") {
+				console.log('up');
+				//d = "up";
+
+				if (talking && keydown == false) {
+					if (talking_selection > 1) {
+						talking_selection -= 1;
+						keydown = true;
+					}
+					console.log(talking_selection);
+					//d = "down";
+				}
+
+				//---------------------------------------------------------
+				//lets you move up options
+			} else if (key.keyCode == "83") {
+				console.log('down');
+				//d = "down";
+
+				if (talking && keydown == false) {
+					if (talking_selection < 2) {
+						talking_selection += 1;
+						keydown = true;
+					}
+					console.log(talking_selection);
+					//d = "down";
+				}
+			}
+			//---------------------------------------------------------
 		});
-		
-		addEventListener("keyup", function(key){
-		 //-------------------------------------------------------
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(talking){
-		       		keydown = false;
-		       }
-		 
-		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(talking){
-		        	keydown = false;
-		       }
-		    }
-		//---------------------------------------------------------
+
+		addEventListener("keyup", function(key) {
+			//-------------------------------------------------------
+			//lets you move up options
+			if (key.keyCode == "87") {
+				console.log('up');
+				//d = "up";
+
+				if (talking) {
+					keydown = false;
+				}
+
+				//---------------------------------------------------------
+				//lets you move up options
+			} else if (key.keyCode == "83") {
+				console.log('down');
+				//d = "down";
+
+				if (talking) {
+					keydown = false;
+				}
+			}
+			//---------------------------------------------------------
 		});
-			
 
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1489,35 +1500,35 @@ function main() {
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		
+
 		//----------------------------------------------
 		c.fillStyle = "rgba(50,0,0, 0.75)";
-		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillRect((canvasWidth / 3) - 50, (canvasHeight / 3) - 80, 870, 270);
 		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
-		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillRect((canvasWidth / 3) - 40, (canvasHeight / 3) - 70, 850, 250);
 		c.fillStyle = "rgb(255,220,210)";
-		
+
 		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
-		//----------------------------------------------	
-		
+		//----------------------------------------------
+
 		c.strokeText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		
-		if(talking_selection == 1) {
+
+		if (talking_selection == 1) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(food, (canvasWidth / 3), canvasHeight / 3);
 		c.fillText(food, (canvasWidth / 3), canvasHeight / 3);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(talking_selection == 2) {
+
+		if (talking_selection == 2) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(water, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.fillText(water, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
+
 		if (getWater) {
 			player.WATER += travellerStats[i];
 			travellerStats[i] = 0;
@@ -1557,64 +1568,69 @@ function main() {
 	// ----------------------------------------
 	//     Draw Cave
 	// ----------------------------------------
-	 //-------------------------------------------------------
-		 addEventListener("keyup", function(key){
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(inCave && keydown == false){
-		       		if(cave_selection > 1){
-		       			cave_selection-= 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(cave_selection);  //d = "down";
-		       		console.log(keydown);  
+	//-------------------------------------------------------
+	addEventListener("keyup", function(key) {
+		//lets you move up options
+		if (key.keyCode == "87") {
+			console.log('up');
+			//d = "up";
 
-		       }
-		 
+			if (inCave && keydown == false) {
+				if (cave_selection > 1) {
+					cave_selection -= 1;
+					keydown = true;
+				}
+				console.log(cave_selection);
+				//d = "down";
+				console.log(keydown);
+
+			}
+
+			//---------------------------------------------------------
+			//lets you move up options
+		} else if (key.keyCode == "83") {
+			console.log('down');
+			//d = "down";
+
+			if (inCave && keydown == false) {
+				if (cave_selection < 4) {
+					cave_selection += 1;
+					keydown = true;
+				}
+				console.log(cave_selection);
+				//d = "down";
+				console.log(keydown);
+			}
+		}
 		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(inCave && keydown == false){
-		       		if(cave_selection < 4){
-		       			cave_selection += 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(cave_selection);  //d = "down";
-		       		console.log(keydown);  
-		       }
-		    }
+	});
+
+	addEventListener("keyup", function(key) {
+		//-------------------------------------------------------
+		//lets you move up options
+		if (key.keyCode == "87") {
+			console.log('up');
+			//d = "up";
+
+			if (inCave) {
+				keydown = false;
+				console.log(keydown2);
+			}
+
+			//---------------------------------------------------------
+			//lets you move up options
+		} else if (key.keyCode == "83") {
+			console.log('down');
+			//d = "down";
+
+			if (inCave) {
+				keydown = false;
+				console.log(keydown2);
+			}
+		}
 		//---------------------------------------------------------
-		});
-		
-		addEventListener("keyup", function(key){
-		 //-------------------------------------------------------
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(inCave){
-		       		keydown = false;
-		       		console.log(keydown2);  
-		       }
-		 
-		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(inCave){
-		        	keydown = false;
-		        	console.log(keydown2);  
-		       }
-		    }
-		//---------------------------------------------------------
-		});
-	
-	
+	});
+
 	function drawCaveUI(i) {
 		var water1;
 		var water2;
@@ -1650,59 +1666,56 @@ function main() {
 			var water4mes = "4. ml found: " + water4;
 		else
 			var water4mes = "";
-			
-			
-		
-		
+
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		
+
 		//----------------------------------------------
 		c.fillStyle = "rgba(50,0,0, 0.75)";
-		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillRect((canvasWidth / 3) - 50, (canvasHeight / 3) - 80, 870, 270);
 		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
-		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillRect((canvasWidth / 3) - 40, (canvasHeight / 3) - 70, 850, 250);
 		c.fillStyle = "rgb(255,220,210)";
-		
+
 		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
-		//----------------------------------------------		
-		
+		//----------------------------------------------
+
 		c.strokeText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("CAVE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		
-		if(cave_selection == 1) {
+
+		if (cave_selection == 1) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(water1mes, (canvasWidth / 3), canvasHeight / 3);
 		c.fillText(water1mes, (canvasWidth / 3), canvasHeight / 3);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(cave_selection == 2) {
+
+		if (cave_selection == 2) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(water2mes, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.fillText(water2mes, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(cave_selection == 3) {
+
+		if (cave_selection == 3) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(water3mes, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
 		c.fillText(water3mes, (canvasWidth / 3) + 20, (canvasHeight / 3) + 60);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(cave_selection == 4) {
+
+		if (cave_selection == 4) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(water4mes, (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		c.fillText(water4mes, (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
+
 		if (caveWater1) {
 			player.WATER += caveStats[place];
 			caveStats[place] = 0;
@@ -1768,94 +1781,100 @@ function main() {
 			var boatItemString = "1. Item found: Map";
 		if (boatItem == 5)
 			var boatItemString = "1. Item found: Pen";
-			
-		 //-------------------------------------------------------
-		 addEventListener("keyup", function(key){
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(inBoat && keydown == false){
-		       		if(boat_selection > 1){
-		       			boat_selection-= 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(boat_selection);  //d = "down";
-		       }
-		 
-		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(inBoat && keydown == false){
-		       		if(boat_selection < 2){
-		       			boat_selection += 1;
-		       			keydown = true;
-		       		}	
-		       		console.log(boat_selection);  //d = "down";
-		       }
-		    }
-		//---------------------------------------------------------
+
+		//-------------------------------------------------------
+		addEventListener("keyup", function(key) {
+			//lets you move up options
+			if (key.keyCode == "87") {
+				console.log('up');
+				//d = "up";
+
+				if (inBoat && keydown == false) {
+					if (boat_selection > 1) {
+						boat_selection -= 1;
+						keydown = true;
+					}
+					console.log(boat_selection);
+					//d = "down";
+				}
+
+				//---------------------------------------------------------
+				//lets you move up options
+			} else if (key.keyCode == "83") {
+				console.log('down');
+				//d = "down";
+
+				if (inBoat && keydown == false) {
+					if (boat_selection < 2) {
+						boat_selection += 1;
+						keydown = true;
+					}
+					console.log(boat_selection);
+					//d = "down";
+				}
+			}
+			//---------------------------------------------------------
 		});
-		
-		addEventListener("keyup", function(key){
-		 //-------------------------------------------------------
-		 //lets you move up options
-		    if(key.keyCode == "87"){
-		        console.log('up'); //d = "up";   
-		       
-		       if(inBoat){
-		       		keydown = false;
-		       }
-		 
-		//---------------------------------------------------------
-		//lets you move up options        
-		    } else if(key.keyCode == "83"){
-		        console.log('down');  //d = "down";
-		        
-		        if(inBoat){
-		        	keydown = false;
-		       }
-		    }
-		//---------------------------------------------------------
-		});	
-			
+
+		addEventListener("keyup", function(key) {
+			//-------------------------------------------------------
+			//lets you move up options
+			if (key.keyCode == "87") {
+				console.log('up');
+				//d = "up";
+
+				if (inBoat) {
+					keydown = false;
+				}
+
+				//---------------------------------------------------------
+				//lets you move up options
+			} else if (key.keyCode == "83") {
+				console.log('down');
+				//d = "down";
+
+				if (inBoat) {
+					keydown = false;
+				}
+			}
+			//---------------------------------------------------------
+		});
+
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		c.lineWidth = 10;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
-		
+
 		//----------------------------------------------
 		c.fillStyle = "rgba(50,0,0, 0.75)";
-		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
+		c.fillRect((canvasWidth / 3) - 50, (canvasHeight / 3) - 80, 870, 270);
 		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
-		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
+		c.fillRect((canvasWidth / 3) - 40, (canvasHeight / 3) - 70, 850, 250);
 		c.fillStyle = "rgb(255,220,210)";
-		
+
 		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
-		//----------------------------------------------		
-		
+		//----------------------------------------------
+
 		c.strokeText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("ABANDONED BOAT", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		
-		if(boat_selection == 1) {
+
+		if (boat_selection == 1) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(boatItemString, (canvasWidth / 3), canvasHeight / 3);
 		c.fillText(boatItemString, (canvasWidth / 3), canvasHeight / 3);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
-		if(boat_selection == 2) {
+
+		if (boat_selection == 2) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
-		} 
+		}
 		c.strokeText(foundClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.fillText(foundClue, (canvasWidth / 3) + 10, (canvasHeight / 3) + 30);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		
+
 		if (getBoatItem) {
 			if (boatItem == 1)
 				player.SHOVEL = true;
@@ -1995,7 +2014,7 @@ function main() {
 			}
 			if (who == 2 && numOfPlayers > 1) {
 				if (player2.HEALTH != 0)
-					femaleGruntSnd1.play();	
+					femaleGruntSnd1.play();
 				player2.HEALTH -= Math.ceil((Math.random() * (20 - numOfPlayers)) + 5);
 			}
 			if (who == 3 && numOfPlayers > 2) {
@@ -2104,12 +2123,12 @@ function main() {
 		c.fillText("IN HOME", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.strokeText("Choose your party size: Decide with '1' '2' '3' '4' ", (canvasWidth / 3) - 50, (canvasHeight / 3));
 		c.fillText("Choose your party size: Decide with '1' '2' '3' '4' ", (canvasWidth / 3) - 50, (canvasHeight / 3));
-		c.strokeText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight/3) + 30);
-		c.fillText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight/3) + 30);
-		c.strokeText("Find your first village and watch out for bandits", (canvasWidth/3) - 50, (canvasHeight/3) + 160);
-		c.fillText("Find your first village and watch out for bandits", (canvasWidth/3) - 50, (canvasHeight/3) + 160);
-		c.strokeText("Press spacebar to continue", (canvasWidth/3) - 50, (canvasHeight/3) + 190);
-		c.fillText("Press spacebar to continue", (canvasWidth/3) - 50, (canvasHeight/3) + 190);
+		c.strokeText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight / 3) + 30);
+		c.fillText("Current party size: " + numOfPlayers, (canvasWidth / 3) - 50, (canvasHeight / 3) + 30);
+		c.strokeText("Find your first village and watch out for bandits", (canvasWidth / 3) - 50, (canvasHeight / 3) + 160);
+		c.fillText("Find your first village and watch out for bandits", (canvasWidth / 3) - 50, (canvasHeight / 3) + 160);
+		c.strokeText("Press spacebar to continue", (canvasWidth / 3) - 50, (canvasHeight / 3) + 190);
+		c.fillText("Press spacebar to continue", (canvasWidth / 3) - 50, (canvasHeight / 3) + 190);
 	}
 
 	// ----------------------------------------
@@ -2449,7 +2468,6 @@ function main() {
 	}
 
 	for (var k = 0; k < foilage.length; k++) {
-		//foilage[k] = Math.floor(Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2);
 		foilage[k] = Math.random() * (tiles_dimension - 4) - (tiles_dimension / 2) + 2;
 	}
 
@@ -2740,30 +2758,29 @@ function main() {
 	for (var k = 0; k < humanEnemies.length / 2; k++) {
 		humDir[k] = Math.floor((Math.random() * 4)) + 1;
 	}
-	var humanSpeed = 80 * world_speed;
+	var humanSpeed = 110 * world_speed;
 	setInterval(function() {
-		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
 			for (var i = 0; i < humanEnemies.length; i += 2) {
 				if (humanEnemies[i] > player.X && humanEnemies[i] < 9 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] -= othersSpeed;
 					humDir[i] = 2;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i] < player.X && humanEnemies[i] > -3 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] += othersSpeed;
 					humDir[i] = 1;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i + 1] > player.Y && humanEnemies[i + 1] < 3 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] -= othersSpeed;
 					humDir[i] = 3;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i + 1] < player.Y && humanEnemies[i + 1] > -9 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] += othersSpeed;
 					humDir[i] = 4;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i] == player.X && humanEnemies[i + 1] == player.Y) {
 					inBattle = true;
@@ -2785,7 +2802,7 @@ function main() {
 	for (var k = 0; k < fishEnemies.length / 2; k++) {
 		fishDir[k] = Math.floor(Math.random() * 2) + 1;
 	}
-	var fishSpeed = 60 * world_speed;
+	var fishSpeed = 90 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
@@ -2793,20 +2810,20 @@ function main() {
 				if (fishEnemies[i] > player.X && fishEnemies[i] < 10 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] -= othersSpeed;
 					fishDir[i] = 2;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i] < player.X && fishEnemies[i] > -4 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] += othersSpeed;
 					fishDir[i] = 1;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i + 1] > player.Y && fishEnemies[i + 1] < 4 && fishEnemies[i] > -4 && fishEnemies[i] < 10 && fishSkip == false) {
 					fishEnemies[i + 1] -= othersSpeed;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i + 1] < player.Y && fishEnemies[i + 1] > -10 && fishEnemies[i] > -4 && fishEnemies[i] < 10 && fishSkip == false) {
 					fishEnemies[i + 1] += othersSpeed;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i] == player.X && fishEnemies[i + 1] == player.Y) {
 					inBattle = true;
@@ -2916,9 +2933,9 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV-=.25;
+					player.UV -= .25;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= (1 * numOfPlayers - 1) / 4;
 			}
 			direction = 1;
 		}
@@ -2942,14 +2959,15 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV-=.25;
+					player.UV -= .25;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= (1 * numOfPlayers - 1) / 4;
 			}
 			direction = 3;
 		}
 	}, playerSpeed);
 	// Move Left
+
 	setInterval(function() {
 		if (goLeft) {
 			if (center[0] > -2) {
@@ -2968,14 +2986,15 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV-=.25;
+					player.UV -= .25;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= (1 * numOfPlayers - 1) / 4;
 			}
 			direction = 2;
 		}
 	}, playerSpeed);
 	// Move Right
+
 	setInterval(function() {
 		if (goRight) {
 			if (center[0] < tiles_dimension - 3) {
@@ -2994,9 +3013,9 @@ function main() {
 			}
 			if (inSun && player.WATER > 0) {
 				if (player.UV > 0) {
-					player.UV-=.25;
+					player.UV -= .25;
 				}
-				player.WATER -= (1 * numOfPlayers - 1)/4;
+				player.WATER -= (1 * numOfPlayers - 1) / 4;
 			}
 			direction = 4;
 		}
@@ -3037,41 +3056,52 @@ function main() {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat) {
 						goDown = true;
-					else if (!inVillage && fishBat && inBattle && !gameOver) {
+						goLeft = false;
+						goRight = false;
+						goUp = false;
+					} else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "S";
 						execKeys(hitKeys, matchKey);
 					}
 					break;
 				case keys.UP:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat) {
 						goUp = true;
-					else if (!inVillage && fishBat && inBattle && !gameOver) {
+						goDown = false;
+						goRight = false;
+						goLeft = false;
+					} else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "W";
 						execKeys(hitKeys, matchKey);
 					}
 					break;
 				case keys.LEFT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat) {
 						goLeft = true;
-					else if (!inVillage && fishBat && inBattle && !gameOver) {
+						goUp = false;
+						goDown = false;
+						goRight = false;
+					} else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "A";
 						execKeys(hitKeys, matchKey);
 					}
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat) {
 						goRight = true;
-					else if (!inVillage && fishBat && inBattle && !gameOver) {
+						goDown = false;
+						goLeft = false;
+						goUp = false;
+					} else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "D";
 						execKeys(hitKeys, matchKey);
 					}
 					break;
-					
-					
-					///////////////////////////////////
-					//this is where you need to continue code
+
+				///////////////////////////////////
+				//this is where you need to continue code
 				case keys.ONE:
 					if (inHome)
 						numOfPlayers = 1;
@@ -3090,63 +3120,63 @@ function main() {
 					break;
 				case keys.ENTER:
 					if (inVillage)
-						if(village_selection == 1){
+						if (village_selection == 1) {
 							buyHealth = true;
 						}
 					if (talking)
-						if(talking_selection == 1){
+						if (talking_selection == 1) {
 							getFood = true;
 						}
 					if (inCave)
-						if(cave_selection == 1){
+						if (cave_selection == 1) {
 							caveWater1 = true;
 							cave_selection += 1;
 							break;
 						}
 					if (inBoat)
-						if(boat_selection == 1){
+						if (boat_selection == 1) {
 							getBoatItem = true;
 						}
-				 //----------------------------------
+					//----------------------------------
 					if (inVillage)
-						if(village_selection == 2){
+						if (village_selection == 2) {
 							buyWater = true;
 						}
 					if (talking)
-						if(talking_selection == 2){
+						if (talking_selection == 2) {
 							getWater = true;
 						}
 					if (inCave)
-						if(cave_selection == 2){
+						if (cave_selection == 2) {
 							caveWater2 = true;
 							cave_selection += 1;
 							break;
 						}
 					if (inBoat)
-						if(boat_selection == 2){
+						if (boat_selection == 2) {
 							getBoatClue = true;
 						}
-			     //----------------------------------
+					//----------------------------------
 					if (inVillage && player.WATER > 1000)
-						if(village_selection == 3){	
+						if (village_selection == 3) {
 							buyItem = true;
 						}
 					if (inCave)
-						if(cave_selection == 3){
+						if (cave_selection == 3) {
 							caveWater3 = true;
 							cave_selection += 1;
-							
+
 							break;
 						}
-				 //----------------------------------   
+					//----------------------------------
 					if (inVillage) {
-						if(village_selection == 4){
+						if (village_selection == 4) {
 							pickClue = Math.floor(Math.random() * clues.length);
 							getClue = true;
 						}
 					}
 					if (inCave)
-						if(cave_selection == 4){
+						if (cave_selection == 4) {
 							caveWater4 = true;
 							cave_selection -= 1;
 							break;
@@ -3159,10 +3189,10 @@ function main() {
 						pause = true;
 					break;
 				/*case keys.DoN_E:
-					if (day)
-						counter = 60;
-					else
-						counter = 0;*/
+				 if (day)
+				 counter = 60;
+				 else
+				 counter = 0;*/
 				case keys.SPACE:
 					if (inBattle) {
 						playerCount = count;
@@ -3242,14 +3272,30 @@ function main() {
 	}
 
 	function drawPlayers() {
-		if (player4.HEALTH > 0 && numOfPlayers > 3)
-			drawPlayer4(player4.X - .3, player4.Y - .3);
-		if (player3.HEALTH > 0 && numOfPlayers > 2)
-			drawPlayer3(player3.X - .3, player3.Y + .3);
-		if (player2.HEALTH > 0 && numOfPlayers > 1)
-			drawPlayer2(player2.X + .3, player2.Y - .3);
-		if (player.HEALTH > 0 && numOfPlayers > 0)
-			drawPlayer(player.X + .3, player.Y + .3);
+		if (player4.HEALTH > 0 && numOfPlayers == 4) {
+			if (player3.HEALTH > 0)
+				drawPlayer3(player3.X - .3, player3.Y - .3);
+			if (player4.HEALTH > 0)
+				drawPlayer4(player4.X + .3, player4.Y - .3);
+			if (player.HEALTH > 0)
+				drawPlayer(player.X - .3, player.Y + .3);
+			if (player2.HEALTH > 0)
+				drawPlayer2(player2.X + .3, player2.Y + .3);
+		} else if (player3.HEALTH > 0 && numOfPlayers == 3) {
+			if (player2.HEALTH > 0)
+				drawPlayer2(player2.X + .3, player2.Y - .3);
+			if (player3.HEALTH > 0)
+				drawPlayer3(player3.X - .3, player3.Y - .3);
+			if (player.HEALTH > 0)
+				drawPlayer(player.X, player.Y + .3);
+		} else if (player2.HEALTH > 0 && numOfPlayers == 2) {
+			if(player.HEALTH > 0)
+				drawPlayer(player.X - .3, player.Y);
+			if(player2.HEALTH > 0)
+				drawPlayer2(player2.X + .3, player2.Y);
+		} else if (player.HEALTH > 0 && numOfPlayers == 1) {
+			drawPlayer(player.X, player.Y);
+		}
 	}
 
 	//draw all objects
@@ -3352,13 +3398,13 @@ function main() {
 				player.WATER -= 1 * numOfPlayers;
 			if (player.WATER <= 0 || player.UV <= 0) {
 				if (numOfPlayers > 0)
-					player.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
+					player.HEALTH -= Math.floor(Math.random() * (5 - 1) + 1);
 				if (numOfPlayers > 1)
-					player2.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
+					player2.HEALTH -= Math.floor(Math.random() * (5 - 1) + 1);
 				if (numOfPlayers > 2)
-					player3.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
+					player3.HEALTH -= Math.floor(Math.random() * (5 - 1) + 1);
 				if (numOfPlayers > 3)
-					player4.HEALTH -= Math.floor(Math.random() * (3 - 1) + 1);
+					player4.HEALTH -= Math.floor(Math.random() * (5 - 1) + 1);
 			}
 
 		}
@@ -3454,11 +3500,11 @@ function main() {
 		if (!pause) {
 			/*
 			if ((goUp == true && goLeft == true) || (goUp == true && goRight == true)) {
-				moveSpeed = (.25) / 2;
+			moveSpeed = (.25) / 2;
 			} else if ((goDown == true && goLeft == true) || (goDown == true && goRight == true)) {
-				moveSpeed = (.25) / 2;
+			moveSpeed = (.25) / 2;
 			} else {
-				moveSpeed = .25;
+			moveSpeed = .25;
 			}*/
 			//---------------------conditions-----------------------
 			//if in shadow
@@ -3477,9 +3523,9 @@ function main() {
 
 			//destroy cactus and replenish water
 			for (var i = 0; i < cactusPos.length; i += 2) {
-				if (((cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y) || (cactusPos[i] == player.X && cactusPos[i + 1] - 1 == player.Y) || (cactusPos[i] == player.X + 1 && cactusPos[i + 1] == player.Y) || (cactusPos[i] == player.X - 1 && cactusPos[i + 1] == player.Y)) && drinkCac == true) {
+				if (cactusPos[i] > player.X - 1 && cactusPos[i] < player.X + 1 && cactusPos[i + 1] + 1 > player.Y - 1 && cactusPos[i + 1] + 1 < player.Y + 1 && drinkCac == true) {
 					drinkSound.play();
-					player.WATER += 250;
+					player.WATER += 500;
 					if (player.HEALTH > 0 && numOfPlayers > 0) {
 						player.HEALTH += Math.floor(Math.random() * (4 - 1) + 1);
 					}
@@ -3583,27 +3629,6 @@ function main() {
 				goRight = false;
 				goLeft = false;
 			}
-			if(goLeft){
-				goDown = false;
-				goUp = false;
-				goRight = false;
-			}
-			if(goRight){
-				goDown = false;
-				goUp = false;
-				goLeft = false;
-			}
-			if(goUp){
-				goDown = false;
-				goRight = false;
-				goLeft = false;
-			}
-			if(goDown){
-				goUp = false;
-				goRight = false;
-				goLeft = false;
-			}
-			
 
 			//if all death conditions
 			if ((player.HEALTH < 1 && player2.HEALTH < 1 && player3.HEALTH < 1 && player4.HEALTH < 1) && numOfPlayers == 4) {

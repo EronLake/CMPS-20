@@ -311,7 +311,7 @@ function main() {
 	// ----------------------------------------
 	//     Tiles Setup
 	// ----------------------------------------
-	var tiles_dimension = 1000;
+	var tiles_dimension = 500;
 
 	var tileCount = 0;
 	var tileMap = new Array();
@@ -342,7 +342,7 @@ function main() {
 	//-----------------------------------------
 	/////////////////////////
 	//changes dayLength,
-	var world_speed = 1;
+	var world_speed = .5;
 	/////////////////////////
 	var day = true;
 	var counter = 0;
@@ -1215,25 +1215,25 @@ function main() {
 			place = i - 4;
 		}
 		if (health > 0)
-			var healthAmount = "1. Food: " + health + " for 1000 ml each";
+			var healthAmount = "Food: " + health + " for 1000 ml each";
 		else
-			var healthAmount = "1. No food here";
+			var healthAmount = "No food here";
 		if (water > 0)
-			var waterAmount = "2. ml found: " + water;
+			var waterAmount = "ml found: " + water;
 		else
-			var waterAmount = "2. No water here";
+			var waterAmount = "No water here";
 		if (item == 0 || item > 5)
-			var itemAmount = "3. No items here";
+			var itemAmount = "No items here";
 		if (item == 1)
-			var itemAmount = "3. Item: Shovel for 2500ml";
+			var itemAmount = "Item: Shovel for 2500ml";
 		if (item == 2)
-			var itemAmount = "3. Item: Detector for 2500ml";
+			var itemAmount = "Item: Detector for 2500ml";
 		if (item == 3)
-			var itemAmount = "3. Item: Compass for 2500ml";
+			var itemAmount = "Item: Compass for 2500ml";
 		if (item == 4)
-			var itemAmount = "3. Item: Map for 2500ml";
+			var itemAmount = "Item: Map for 2500ml";
 		if (item == 5)
-			var itemAmount = "3. Item: Pen for 2500ml";
+			var itemAmount = "Item: Pen for 2500ml";
 			
 		/////////////////////////////
 		//draws village menu	
@@ -1295,7 +1295,6 @@ function main() {
 		    }
 		//---------------------------------------------------------
 		});
-		
 		//----------------------------------------------
 		c.fillStyle = "rgba(50,0,0, 0.75)";
 		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
@@ -1339,8 +1338,8 @@ function main() {
 		if(village_selection == 4) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
 		} 
-		c.strokeText("4. Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
-		c.fillText("4. Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.strokeText("Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.fillText("Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		
 		//if player wants to buy health
@@ -1482,6 +1481,7 @@ function main() {
 		    }
 		//---------------------------------------------------------
 		});
+			
 
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -1499,7 +1499,7 @@ function main() {
 		
 		c.strokeText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		c.fillText("ENTER:select", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
-		//----------------------------------------------		
+		//----------------------------------------------	
 		
 		c.strokeText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
 		c.fillText("HELLO, STRANGER", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
@@ -2176,16 +2176,16 @@ function main() {
 	//-----------------------------------------
 
 	//multiples of 2
-	var rockPos = new Array(10000);
-	var cactusPos = new Array(2000);
+	var rockPos = new Array(2500);
+	var cactusPos = new Array(1000);
 	var homeBase = new Array(2);
 	var promiseWater = new Array(2);
 	//multiples of 12
 	var villages = new Array(2400);
 	//multiples of 8
-	var caves = new Array(800);
+	var caves = new Array(400);
 	//multiples of 12
-	var boats = new Array(720);
+	var boats = new Array(240);
 	//boundaries
 	var boundaries = new Array(tiles_dimension * 8);
 
@@ -2194,10 +2194,10 @@ function main() {
 	var shadows = new Array(objectSize);
 
 	//multiples of 2
-	var humanEnemies = new Array(2000);
-	var fishEnemies = new Array(2000);
+	var humanEnemies = new Array(500);
+	var fishEnemies = new Array(500);
 	var fishOrig = new Array(fishEnemies.length);
-	var travellers = new Array(150);
+	var travellers = new Array(100);
 	var foilage = new Array(allObjects.length);
 
 	//items/stats
@@ -2220,8 +2220,8 @@ function main() {
 		SHOVEL : false,
 		DETECTOR : false,
 		COMPASS : false,
-		MAP : false,
-		PEN : false
+		MAP : true,
+		PEN : true
 	};
 
 	var player2 = {
@@ -3494,8 +3494,8 @@ function main() {
 					}
 					cactusPos[i] = -tiles_dimension;
 					//num of rocks for some reason rocks.length does not work
-					allObjects[10000 + i] = -tiles_dimension;
-					shadows[10000 + i] = -tiles_dimension;
+					allObjects[2500 + i] = -tiles_dimension;
+					shadows[2500 + i] = -tiles_dimension;
 					break;
 				}
 			}
@@ -3583,6 +3583,27 @@ function main() {
 				goRight = false;
 				goLeft = false;
 			}
+			if(goLeft){
+				goDown = false;
+				goUp = false;
+				goRight = false;
+			}
+			if(goRight){
+				goDown = false;
+				goUp = false;
+				goLeft = false;
+			}
+			if(goUp){
+				goDown = false;
+				goRight = false;
+				goLeft = false;
+			}
+			if(goDown){
+				goUp = false;
+				goRight = false;
+				goLeft = false;
+			}
+			
 
 			//if all death conditions
 			if ((player.HEALTH < 1 && player2.HEALTH < 1 && player3.HEALTH < 1 && player4.HEALTH < 1) && numOfPlayers == 4) {

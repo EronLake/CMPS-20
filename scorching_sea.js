@@ -330,7 +330,7 @@ function main() {
 	// ----------------------------------------
 	//     Tiles Setup
 	// ----------------------------------------
-	var tiles_dimension = 1000;
+	var tiles_dimension = 500;
 
 	var tileCount = 0;
 	var tileMap = new Array();
@@ -361,7 +361,7 @@ function main() {
 	//-----------------------------------------
 	/////////////////////////
 	//changes dayLength,
-	var world_speed = 1;
+	var world_speed = .5;
 	/////////////////////////
 	var day = true;
 	var counter = 0;
@@ -1121,7 +1121,7 @@ function main() {
 			c.fillText("PAUSE", (canvasWidth / 2) - 25, (canvasHeight / 2) - 25);
 		}
 	}
-
+	
 	// ----------------------------------------
 	//     Clues Setup
 	// ----------------------------------------
@@ -2203,16 +2203,16 @@ function main() {
 	//-----------------------------------------
 
 	//multiples of 2
-	var rockPos = new Array(10000);
-	var cactusPos = new Array(2000);
+	var rockPos = new Array(2500);
+	var cactusPos = new Array(1000);
 	var homeBase = new Array(2);
 	var promiseWater = new Array(2);
 	//multiples of 12
 	var villages = new Array(2400);
 	//multiples of 8
-	var caves = new Array(800);
+	var caves = new Array(400);
 	//multiples of 12
-	var boats = new Array(720);
+	var boats = new Array(240);
 	//boundaries
 	var boundaries = new Array(tiles_dimension * 8);
 
@@ -2221,10 +2221,10 @@ function main() {
 	var shadows = new Array(objectSize);
 
 	//multiples of 2
-	var humanEnemies = new Array(2000);
-	var fishEnemies = new Array(2000);
+	var humanEnemies = new Array(500);
+	var fishEnemies = new Array(500);
 	var fishOrig = new Array(fishEnemies.length);
-	var travellers = new Array(150);
+	var travellers = new Array(100);
 	var foilage = new Array(allObjects.length);
 
 	//items/stats
@@ -2273,7 +2273,7 @@ function main() {
 	};
 
 	var homeBase = {
-		WATER : 20000 * 4
+		WATER : 20000
 	};
 
 	//------------------------------------------
@@ -2767,7 +2767,7 @@ function main() {
 	for (var k = 0; k < humanEnemies.length / 2; k++) {
 		humDir[k] = Math.floor((Math.random() * 4)) + 1;
 	}
-	var humanSpeed = 60 * world_speed;
+	var humanSpeed = 110 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !talking && !pause && !inCave && !inBoat) {
@@ -2775,22 +2775,22 @@ function main() {
 				if (humanEnemies[i] > player.X && humanEnemies[i] < 9 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] -= othersSpeed;
 					humDir[i] = 2;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i] < player.X && humanEnemies[i] > -3 && humanEnemies[i + 1] > -9 && humanEnemies[i + 1] < 3 && skip == false) {
 					humanEnemies[i] += othersSpeed;
 					humDir[i] = 1;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i + 1] > player.Y && humanEnemies[i + 1] < 3 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] -= othersSpeed;
 					humDir[i] = 3;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i + 1] < player.Y && humanEnemies[i + 1] > -9 && humanEnemies[i] > -3 && humanEnemies[i] < 9 && skip == false) {
 					humanEnemies[i + 1] += othersSpeed;
 					humDir[i] = 4;
-					//skip = true;
+					skip = true;
 				}
 				if (humanEnemies[i] == player.X && humanEnemies[i + 1] == player.Y) {
 					inBattle = true;
@@ -2812,7 +2812,7 @@ function main() {
 	for (var k = 0; k < fishEnemies.length / 2; k++) {
 		fishDir[k] = Math.floor(Math.random() * 2) + 1;
 	}
-	var fishSpeed = 40 * world_speed;
+	var fishSpeed = 90 * world_speed;
 	setInterval(function() {
 		//for loop
 		if (!inBattle && !inVillage && !inHome && !day && !talking && !pause && !inCave && !inBoat) {
@@ -2820,20 +2820,20 @@ function main() {
 				if (fishEnemies[i] > player.X && fishEnemies[i] < 10 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] -= othersSpeed;
 					fishDir[i] = 2;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i] < player.X && fishEnemies[i] > -4 && fishEnemies[i + 1] > -10 && fishEnemies[i + 1] < 4 && fishSkip == false) {
 					fishEnemies[i] += othersSpeed;
 					fishDir[i] = 1;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i + 1] > player.Y && fishEnemies[i + 1] < 4 && fishEnemies[i] > -4 && fishEnemies[i] < 10 && fishSkip == false) {
 					fishEnemies[i + 1] -= othersSpeed;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i + 1] < player.Y && fishEnemies[i + 1] > -10 && fishEnemies[i] > -4 && fishEnemies[i] < 10 && fishSkip == false) {
 					fishEnemies[i + 1] += othersSpeed;
-					//fishSkip = true;
+					fishSkip = true;
 				}
 				if (fishEnemies[i] == player.X && fishEnemies[i + 1] == player.Y) {
 					inBattle = true;
@@ -2924,7 +2924,7 @@ function main() {
 	// Player movement, controls all the other objects
 	// Move Down
 	var direction = 1;
-	var playerSpeed = 50 * world_speed;
+	var playerSpeed = 100 * world_speed;
 	setInterval(function() {
 		if (goDown) {
 			if (center[1] < tiles_dimension + 1) {
@@ -3064,8 +3064,12 @@ function main() {
 			if (!pause) {
 				switch (evt.keyCode) {
 				case keys.DOWN:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat){
 						goDown = true;
+						goLeft = false;
+						goRight = false;
+						goUp = false;
+					}
 					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "S";
 						execKeys(hitKeys, matchKey);
@@ -3101,8 +3105,12 @@ function main() {
 			       }
 					break;
 				case keys.UP:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat){
 						goUp = true;
+						goDown = false;
+						goRight = false;
+						goLeft = false;
+					}
 					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "W";
 						execKeys(hitKeys, matchKey);
@@ -3139,16 +3147,24 @@ function main() {
 			       }
 					break;
 				case keys.LEFT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat){
 						goLeft = true;
+						goUp = false;
+						goDown = false;
+						goRight = false;
+					}
 					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "A";
 						execKeys(hitKeys, matchKey);
 					}
 					break;
 				case keys.RIGHT:
-					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat)
+					if (!inVillage && !inBattle && !gameOver && !inHome && !youWin && !talking && !inCave && !inBoat){
 						goRight = true;
+						goDown = false;
+						goLeft = false;
+						goUp = false;
+					}
 					else if (!inVillage && fishBat && inBattle && !gameOver) {
 						matchKey = "D";
 						execKeys(hitKeys, matchKey);
@@ -3346,14 +3362,30 @@ function main() {
 	}
 
 	function drawPlayers() {
-		if (player4.HEALTH > 0 && numOfPlayers > 3)
-			drawPlayer4(player4.X - .3, player4.Y - .3);
-		if (player3.HEALTH > 0 && numOfPlayers > 2)
-			drawPlayer3(player3.X - .3, player3.Y + .3);
-		if (player2.HEALTH > 0 && numOfPlayers > 1)
-			drawPlayer2(player2.X + .3, player2.Y - .3);
-		if (player.HEALTH > 0 && numOfPlayers > 0)
-			drawPlayer(player.X + .3, player.Y + .3);
+		if (player4.HEALTH > 0 && numOfPlayers == 4) {
+			if (player3.HEALTH > 0)
+				drawPlayer3(player3.X - .3, player3.Y - .3);
+			if (player4.HEALTH > 0)
+				drawPlayer4(player4.X + .3, player4.Y - .3);
+			if (player.HEALTH > 0)
+				drawPlayer(player.X - .3, player.Y + .3);
+			if (player2.HEALTH > 0)
+				drawPlayer2(player2.X + .3, player2.Y + .3);
+		} else if (player3.HEALTH > 0 && numOfPlayers == 3) {
+			if (player2.HEALTH > 0)
+				drawPlayer2(player2.X + .3, player2.Y - .3);
+			if (player3.HEALTH > 0)
+				drawPlayer3(player3.X - .3, player3.Y - .3);
+			if (player.HEALTH > 0)
+				drawPlayer(player.X, player.Y + .3);
+		} else if (player2.HEALTH > 0 && numOfPlayers == 2) {
+			if(player.HEALTH > 0)
+				drawPlayer(player.X - .3, player.Y);
+			if(player2.HEALTH > 0)
+				drawPlayer2(player2.X + .3, player2.Y);
+		} else if (player.HEALTH > 0 && numOfPlayers == 1) {
+			drawPlayer(player.X, player.Y);
+		}
 	}
 
 	//draw all objects
@@ -3581,7 +3613,7 @@ function main() {
 
 			//destroy cactus and replenish water
 			for (var i = 0; i < cactusPos.length; i += 2) {
-				if (((cactusPos[i] == player.X && cactusPos[i + 1] + 1 == player.Y) || (cactusPos[i] == player.X && cactusPos[i + 1] - 1 == player.Y) || (cactusPos[i] == player.X + 1 && cactusPos[i + 1] == player.Y) || (cactusPos[i] == player.X - 1 && cactusPos[i + 1] == player.Y)) && drinkCac == true) {
+				if (cactusPos[i] > player.X - 1 && cactusPos[i] < player.X + 1 && cactusPos[i + 1] + 1 > player.Y - 1 && cactusPos[i + 1] + 1 < player.Y + 1 && drinkCac == true) {
 					drinkSound.play();
 					player.WATER += 250;
 					if (player.HEALTH > 0 && numOfPlayers > 0) {
@@ -3607,7 +3639,7 @@ function main() {
 			//if near a traveller
 			if (talk && !inBattle) {
 				for (var i = 0; i < travellers.length; i += 2) {
-					if ((player.X == travellers[i] && player.Y == travellers[i + 1]) || (player.X == travellers[i] + 1 && player.Y == travellers[i + 1]) || (player.X == travellers[i] - 1 && player.Y == travellers[i + 1]) || (player.X == travellers[i] && player.Y == travellers[i + 1] + 1) || (player.X == travellers[i] && player.Y == travellers[i + 1] - 1)) {
+					if (travellers[i] > player.X - 1 && travellers[i] < player.X + 1 && travellers[i + 1] + 1 > player.Y - 1 && travellers[i + 1] + 1 < player.Y + 1) {
 						talking = true;
 						drawTravellerUI(i);
 						break;

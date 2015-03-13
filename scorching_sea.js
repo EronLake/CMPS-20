@@ -3630,8 +3630,8 @@ function main() {
 					}
 					cactusPos[i] = -tiles_dimension;
 					//num of rocks for some reason rocks.length does not work
-					allObjects[10000 + i] = -tiles_dimension;
-					shadows[10000 + i] = -tiles_dimension;
+					allObjects[2500 + i] = -tiles_dimension;
+					shadows[2500 + i] = -tiles_dimension;
 					break;
 				}
 			}

@@ -269,7 +269,7 @@ addEventListener("keydown", function(key) {
 		instrScreen = false;
 	}
 });
-
+//c.textAlign = "center"
 var titleImage = document.getElementById("title");
 function draw() {
 	//clears screen every loop
@@ -2129,7 +2129,6 @@ function main() {
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.strokeText("FIGHT FOR YOUR LIFE", (canvasWidth /2 ), (canvasHeight / 3) - 30);
 		c.fillText("FIGHT FOR YOUR LIFE", (canvasWidth /2 ), (canvasHeight / 3) - 30);
-		c.textAlign = "left";
 
 		// Draw Fish's health bar
 		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
@@ -2222,7 +2221,6 @@ function main() {
 		c.fillText(humKilled, (canvasWidth / 2), (canvasHeight / 2) + 20);
 		c.strokeText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
 		c.fillText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
-		c.textAlign = "left";
 	}
 
 	// ----------------------------------------
@@ -2247,7 +2245,6 @@ function main() {
 		c.fillText(humKilled, (canvasWidth / 2), (canvasHeight / 2) + 20);
 		c.strokeText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
 		c.fillText(fishKilled, (canvasWidth / 2), (canvasHeight / 2) + 60);
-		c.textAlign = "left";
 	}
 
 	//var centerX = Math.floor(Math.random() * ((tiles_dimension - tiles_dimension / 4) - tiles_dimension / 4) + (tiles_dimension / 4));

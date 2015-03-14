@@ -358,6 +358,7 @@ function main() {
 	var boat_selection = 1;
 	//contols tutorial 
 	var hum_tut = true;
+	var fish_tut = true;
 	//makes "space bar for draw" blink
 	var tut_blink = true;
 	
@@ -370,6 +371,8 @@ function main() {
 	}
 
 	setInterval(humButtonFunc, 1000);
+	
+
 	
 	//----------------------------
 
@@ -1953,15 +1956,18 @@ function main() {
 		 c.strokeText("In the Schorching Sea, those who remain still have honor", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 30));
 		 c.fillText("In the Schorching Sea, those who remain still have honor", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 30));
 		 
-		 c.strokeText("humans now duel for the little water left.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
-		 c.fillText("humans now duel for the little water left.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
+		 c.strokeText("Humans now duel for the little water left.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
+		 c.fillText("Humans now duel for the little water left.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
 		 
 		 c.strokeText("Wait for the signal, then draw your weapon [Hit Spacebar]", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 90));
 		 c.fillText("Wait for the signal, then draw your weapon [Hit Spacebar]", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 90)); 
+		 
+		 c.strokeText("There is penalty damage if you shoot before and after the signal.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 120));
+		 c.fillText("There is penalty damage if you shoot before and after the signal.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 120)); 
 		 if(tut_blink == true){
 			 c.font = "30px Arial";
-			 c.strokeText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 150));
-			 c.fillText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 150));
+			 c.strokeText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 180));
+			 c.fillText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 180));
 		}
 	 }
 	
@@ -2078,6 +2084,25 @@ function main() {
 	// ----------------------------------------
 	//     Draw Fish Battle Screen
 	// ----------------------------------------
+	function draw_fish_tut() {
+		 c.font = "20px Arial";
+		 c.strokeText("When the sea dried up the creatures beneath adapted and evolved.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 30));
+		 c.fillText("When the sea dried up the creatures beneath adapted and evolved.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 30));
+		 
+		 c.strokeText("They are ruthless and will hunt for survivors, but only at night.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
+		 c.fillText("They are ruthless and will hunt for survivors, but only at night.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
+		 
+		 c.strokeText("Match your keys with the keys outlined in Green to fight. ", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 90));
+		 c.fillText("Match your keys with the keys outlined in Green to fight. ", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 90)); 
+		 
+		 c.strokeText("The creatures fight back, you can see their progress below your keys. ", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 120));
+		 c.fillText("The creatures fight back, you can see their progress below your keys. ", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 120));
+		 if(tut_blink == true){
+			 c.font = "30px Arial";
+			 c.strokeText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 180));
+			 c.fillText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 180));
+		}
+	 }
 
 	var fishHealth = 0;
 
@@ -2619,7 +2644,7 @@ function main() {
 			//Outline current key grey-green
 			c.lineWidth = 3;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
-			c.strokeStyle = 'rgba(128, 255, 128, 1)';
+			c.strokeStyle = 'rgba(50, 50, 50, 1)';
 			c.font = "40px Arial";
 			c.strokeText(AIKeys[AIcurrKey], (canvasWidth / 2) + (AIcurrKey * 40) - 100, (canvasHeight /3) + 200);
 			c.fillText(AIKeys[AIcurrKey], (canvasWidth / 2) + (AIcurrKey * 40) - 100, (canvasHeight /3) + 200);
@@ -2628,7 +2653,7 @@ function main() {
 
 	function AIexecKeys() {
 		var damageGiven = Math.floor(Math.random() * (15 - 10) + 10);
-		if (fishBat && inBattle) {
+		if (fishBat && inBattle && !fish_tut) {
 			calcDamage(damageGiven, true);
 			AIcurrKey++;
 			if (AIcurrKey == AIKeys.length) {
@@ -3275,9 +3300,13 @@ function main() {
 				 counter = 0;*/
 				case keys.SPACE:
 					if (inBattle) {
-						if(hum_tut){
+						if(hum_tut && humBat){
 							hum_tut = false;
-						}else {
+						}
+						else if(fish_tut && fishBat) {
+							fish_tut = false;
+						}
+						else {
 							playerCount = count;
 							count = 0;
 							hurt = true;
@@ -3568,7 +3597,7 @@ function main() {
 	// ----------------------------------------
 	//     Animation
 	// ----------------------------------------
-	var humTut = true;
+	//var humTut = true;
 	var inSun = false;
 	var inBattle = false;
 	var printKeys = false;
@@ -3728,14 +3757,18 @@ function main() {
 			if (fishBat && !enter && inBattle && !humBat && !inVillage && !inHome && !gameOver && !youWin) {
 				overworld.pause();
 				fishBattleTheme.play();
-				//console.log("2 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
-				count++;
-				drawBattleScreen_fish(enemyPosition, count, playerCount);
-				drawKeys(hitKeys);
-				drawAIKeys(AIKeys);
-				changeKeyColor(hitKeys);
-				if (currKey == hitKeys.length && hitKeys.length != 0) {
-					keysDone = true;
+				if(fish_tut == true ){
+					draw_fish_tut();
+				} else if(fish_tut == false){ 
+					//console.log("2 currKey: " + currKey + " hitKeys length: " + hitKeys.length);
+					count++;
+					drawBattleScreen_fish(enemyPosition, count, playerCount);
+					drawKeys(hitKeys);
+					drawAIKeys(AIKeys);
+					changeKeyColor(hitKeys);
+					if (currKey == hitKeys.length && hitKeys.length != 0) {
+						keysDone = true;
+					}
 				}
 			}
 

@@ -515,7 +515,7 @@ function main() {
 
 	function drawPlayer(colOffset, rowOffset) {
 		var pt = [0, 0];
-		var waterLevel = "ml: " + player.WATER;
+		var waterLevel = "mL: " + player.WATER;
 		var uvLevel = "UV: " + player.UV;
 		c.beginPath();
 		projectFromCenter(colOffset, rowOffset, pt);
@@ -600,7 +600,7 @@ function main() {
 
 	function drawHomeBase(colOffset, rowOffset) {
 		var pt = [0, 0];
-		var homeWaterLev = "ml: " + homeBase.WATER;
+		var homeWaterLev = "mL: " + homeBase.WATER;
 		c.beginPath();
 		c.fillStyle = 'rgb(50, 150, 150)';
 		projectFromCenter(colOffset, rowOffset, pt);
@@ -916,7 +916,7 @@ function main() {
 			var hpLevel2 = "P2 Health: " + player2.HEALTH;
 			var hpLevel3 = "P3 Health: " + player3.HEALTH;
 			var hpLevel4 = "P4 Health: " + player4.HEALTH;
-			var homeWaterLev = "Home ml: " + homeBase.WATER;
+			var homeWaterLev = "Home mL: " + homeBase.WATER;
 			var homeDir = "Compass: ";
 			if (homeBase[1] + 1 < player.Y) {
 				homeDir += "North ";
@@ -934,7 +934,7 @@ function main() {
 			var time = Math.floor(counter / 60) + " : " + counter % 60;
 			var line = 20;
 			var space = 0;
-			c.lineWidth = 7;
+			c.lineWidth = 5;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 0, 0, .75)';
 			c.font = "15px Arial";
@@ -1146,7 +1146,7 @@ function main() {
 			clues[4] = "I felt a stange disturbance on my walk to the other village";
 		}
 		if ((promiseWater[0] < 50 && promiseWater[0] > -50) && (promiseWater[1] < 50 && promiseWater[1] < -50)) {
-			clues[5] = "I felt it tell ya, if only I had a shovel";
+			clues[5] = "I felt it I tell ya, if only I had a shovel";
 		} else {
 			clues[5] = "A shovel will be your best friend";
 		}
@@ -1167,7 +1167,7 @@ function main() {
 		}
 		clues[13] = "I always go back home to refill my water bottle";
 		clues[14] = "Don't tell me you are looking for the 'Promise Land' too!";
-		clues[15] = "It is cooler at night...but a lot more scarier.";
+		clues[15] = "It is cooler at night...but a lot scarier.";
 		clues[16] = "Your house is the center of everything, did ya know?";
 		clues[17] = "I never get tired at night!";
 		clues[18] = "My favorite drink is cactus water.";
@@ -1234,25 +1234,25 @@ function main() {
 			place = i - 4;
 		}
 		if (health > 0)
-			var healthAmount = "1. Food: " + health + " for 1000 ml each";
+			var healthAmount = "Food: " + health + " for 1000 mL each";
 		else
-			var healthAmount = "1. No food here";
+			var healthAmount = "No food here";
 		if (water > 0)
-			var waterAmount = "2. ml found: " + water;
+			var waterAmount = "mL found: " + water;
 		else
-			var waterAmount = "2. No water here";
+			var waterAmount = "No water here";
 		if (item == 0 || item > 5)
-			var itemAmount = "3. No items here";
+			var itemAmount = "No items here";
 		if (item == 1)
-			var itemAmount = "3. Item: Shovel for 2500ml";
+			var itemAmount = "Item: Shovel for 2500mL";
 		if (item == 2)
-			var itemAmount = "3. Item: Detector for 2500ml";
+			var itemAmount = "Item: Detector for 2500mL";
 		if (item == 3)
-			var itemAmount = "3. Item: Compass for 2500ml";
+			var itemAmount = "Item: Compass for 2500mL";
 		if (item == 4)
-			var itemAmount = "3. Item: Map for 2500ml";
+			var itemAmount = "Item: Map for 2500mL";
 		if (item == 5)
-			var itemAmount = "3. Item: Pen for 2500ml";
+			var itemAmount = "Item: Pen for 2500mL";
 			
 		/////////////////////////////
 		//draws village menu	
@@ -1324,6 +1324,7 @@ function main() {
 		c.fillRect((canvasWidth / 3) - 40,(canvasHeight / 3) - 70,850,250);
 		c.fillStyle = "rgb(255,220,210)";
 		
+		c.lineWidth = 5;
 		c.strokeText("Esc:Exit", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		c.fillText("Esc:Exit", (canvasWidth / 3) + 600, (canvasHeight / 3) - 30);
 		//----------------------------------------------		
@@ -1360,8 +1361,8 @@ function main() {
 		if(village_selection == 4) {
 			c.strokeStyle = 'rgba(0, 200, 0, 1)';
 		} 
-		c.strokeText("4. Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
-		c.fillText("4. Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.strokeText("Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
+		c.fillText("Talk", (canvasWidth / 3) + 30, (canvasHeight / 3) + 90);
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		
 		//if player wants to buy health
@@ -1444,11 +1445,11 @@ function main() {
 	// ----------------------------------------
 	function drawTravellerUI(i) {
 		if (travellerStats[i + 1] != 0)
-			var food = " 1. Here have some of my food: " + travellerStats[i + 1];
+			var food = "Here have some of my food: " + travellerStats[i + 1];
 		else
 			var food = "I need to save my food";
 		if (travellerStats[i] != 0)
-			var water = "2. Here take this water: " + travellerStats[i];
+			var water = "Here take this water: " + travellerStats[i];
 		else
 			var water = "I wish I could give you more water";
 		
@@ -1510,7 +1511,7 @@ function main() {
 		
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
-		c.lineWidth = 10;
+		c.lineWidth = 5;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
@@ -1604,19 +1605,19 @@ function main() {
 			place = i - 2;
 		}
 		if (water1 != 0)
-			var water1mes = "1. ml found: " + water1;
+			var water1mes = "mL found: " + water1;
 		else
 			var water1mes = "-";
 		if (water2 != 0)
-			var water2mes = "2. ml found: " + water2;
+			var water2mes = "mL found: " + water2;
 		else
 			var water2mes = "-";
 		if (water3 != 0)
-			var water3mes = "3. ml found: " + water3;
+			var water3mes = "mL found: " + water3;
 		else
 			var water3mes = "-";
 		if (water4 != 0)
-			var water4mes = "4. ml found: " + water4;
+			var water4mes = "mL found: " + water4;
 		else
 			var water4mes = "-";
 			
@@ -1686,6 +1687,7 @@ function main() {
 		} */
 		
 		//----------------------------------------------
+		c.lineWidth = 5;
 		c.fillStyle = "rgba(50,0,0, 0.75)";
 		c.fillRect((canvasWidth / 3) - 50,(canvasHeight / 3) - 80,870,270);
 		c.fillStyle = 'rgba(200, 100, 100, 0.75)';
@@ -1783,15 +1785,15 @@ function main() {
 		if (boatItem == 0)
 			var boatItemString = "Nothing in here";
 		if (boatItem == 1)
-			var boatItemString = "1. Item found: Shovel";
+			var boatItemString = "Item found: Shovel";
 		if (boatItem == 2)
-			var boatItemString = "1. Item found: Detector";
+			var boatItemString = "Item found: Detector";
 		if (boatItem == 3)
-			var boatItemString = "1. Item found: Compass";
+			var boatItemString = "Item found: Compass";
 		if (boatItem == 4)
-			var boatItemString = "1. Item found: Map";
+			var boatItemString = "Item found: Map";
 		if (boatItem == 5)
-			var boatItemString = "1. Item found: Pen";
+			var boatItemString = "Item found: Pen";
 			/*
 		if(inBoat){
 		 //-------------------------------------------------------
@@ -1850,7 +1852,7 @@ function main() {
 			
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
-		c.lineWidth = 10;
+		c.lineWidth = 5;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
 		c.font = "20px Arial";
@@ -1944,7 +1946,7 @@ function main() {
 		var yourHealth2 = "P2 Health: " + player2.HEALTH;
 		var yourHealth3 = "P3 Health: " + player3.HEALTH;
 		var yourHealth4 = "P4 Health: " + player4.HEALTH;
-		var yourWater = "ml: " + player.WATER;
+		var yourWater = "mL: " + player.WATER;
 		var enemyHealth = "Enemy Health: " + enemyHp;
 		var line = 30;
 		var indent = 10;
@@ -2063,33 +2065,34 @@ function main() {
 		c.fillStyle = "rgba(0,25,75, 0.25)";
 		c.fillRect(0, 0, canvasWidth, canvasHeight);
 		// Display prompt fight on screen
+		c.textAlign = "center";
 		c.lineWidth = 10;
 		c.font = "60px Arial";
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, 1)';
-		c.strokeText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
-		c.fillText("FIGHT FOR YOUR LIFE", (canvasWidth / 3) - 10, (canvasHeight / 3) - 30);
+		c.strokeText("FIGHT FOR YOUR LIFE", (canvasWidth /2 ), (canvasHeight / 3) - 30);
+		c.fillText("FIGHT FOR YOUR LIFE", (canvasWidth /2 ), (canvasHeight / 3) - 30);
 
 		// Draw Fish's health bar
 		c.fillStyle = 'rgba(0, 0, 0, 0.75)';
-		c.fillRect(canvasWidth / 2, canvasHeight / 2 - 15, 110, 25);
+		c.fillRect(canvasWidth / 2 - 80, canvasHeight / 3 + 100, 110, 25);
 		c.fillStyle = 'rgba(150, 150, 150, 0.75)';
-		c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, 100, 15);
+		c.fillRect(canvasWidth / 2 - 75, canvasHeight / 3 + 105, 100, 15);
 		c.fillStyle = 'rgba(200, ' + fishHealth * 2 + ', ' + (fishHealth * 2 + 55) + ', 1)';
 		if (fishHealth > 0 && numOfPlayers == 4)
-			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * (2 / 3), 15);
+			c.fillRect(canvasWidth /2 - 75, canvasHeight /3 + 105, fishHealth * (2 / 3), 15);
 		if (fishHealth > 0 && numOfPlayers == 3)
-			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth, 15);
+			c.fillRect(canvasWidth /2 - 75, canvasHeight /3 + 105, fishHealth, 15);
 		if (fishHealth > 0 && numOfPlayers == 2)
-			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * 2, 15);
+			c.fillRect(canvasWidth /2 - 75, canvasHeight /3 + 105, fishHealth * 2, 15);
 		c.font = "15px Arial";
 		if (fishHealth > 0 && numOfPlayers == 1)
-			c.fillRect(canvasWidth / 2 + 5, canvasHeight / 2 - 10, fishHealth * 4, 15);
+			c.fillRect(canvasWidth /2 - 80, canvasHeight /3 + 100, fishHealth * 4, 15);
 		c.lineWidth = 3;
 		c.fillStyle = 'rgba(255, 255, 255, 1)';
 		c.strokeStyle = 'rgba(0, 0, 0, .75)';
-		c.strokeText("Enemy Health", canvasWidth / 2 + 5, canvasHeight / 3 + 90);
-		c.fillText("Enemy Health", canvasWidth / 2 + 5, canvasHeight / 3 + 90);
+		c.strokeText("Enemy Health", canvasWidth / 2 - 40, canvasHeight / 3 + 90);
+		c.fillText("Enemy Health", canvasWidth / 2 + - 40, canvasHeight / 3 + 90);
 
 		// If you successfuly beat the fish, delete fish from grid and gain reward
 		if (fishHealth < 1) {
@@ -2568,26 +2571,26 @@ function main() {
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 0, 0, 1)';
 			c.font = "40px Arial";
-			c.strokeText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
-			c.fillText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
+			c.strokeText(AIKeys[i], (canvasWidth / 2) + (i * 40) - 100, (canvasHeight /3) + 200);
+			c.fillText(AIKeys[i], (canvasWidth / 2) + (i * 40) - 100, (canvasHeight /3) + 200);
 		}
 		for (var i = 0; i < AIcurrKey; i++) {
-			//Outline finished keys red
+			//Outline finished keys grey
 			c.lineWidth = 3;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
-			c.strokeStyle = 'rgba(255, 0, 0, 1)';
+			c.strokeStyle = 'rgba(128, 128, 128, 1)';
 			c.font = "40px Arial";
-			c.strokeText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
-			c.fillText(AIKeys[i], (canvasWidth / 6) + (i + 20) * 40, (canvasHeight / 10));
+			c.strokeText(AIKeys[i], (canvasWidth / 2) + (i * 40) - 100, (canvasHeight /3) + 200);
+			c.fillText(AIKeys[i], (canvasWidth / 2) + (i * 40) - 100, (canvasHeight /3) + 200);
 		}
 		if (AIcurrKey <= AIKeys.length - 1) {
-			//Outline current key green
+			//Outline current key grey-green
 			c.lineWidth = 3;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
-			c.strokeStyle = 'rgba(0, 255, 43, 1)';
+			c.strokeStyle = 'rgba(128, 255, 128, 1)';
 			c.font = "40px Arial";
-			c.strokeText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20) * 40, (canvasHeight / 10));
-			c.fillText(AIKeys[AIcurrKey], (canvasWidth / 6) + (AIcurrKey + 20) * 40, (canvasHeight / 10));
+			c.strokeText(AIKeys[AIcurrKey], (canvasWidth / 2) + (AIcurrKey * 40) - 100, (canvasHeight /3) + 200);
+			c.fillText(AIKeys[AIcurrKey], (canvasWidth / 2) + (AIcurrKey * 40) - 100, (canvasHeight /3) + 200);
 		}
 	}
 
@@ -2610,25 +2613,27 @@ function main() {
 	function drawKeys(hitKeys) {
 		for (var i = 0; i < hitKeys.length; i++) {
 			c.lineWidth = 3;
+			//c.textAlign = "right";
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 0, 0, 1)';
 			c.font = "40px Arial";
-			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
-			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
+			c.strokeText(hitKeys[i], (canvasWidth /2 ) + (i * 40) - 100, (canvasHeight /3) + 50);
+			c.fillText(hitKeys[i], (canvasWidth / 2) + (i * 40) - 100, (canvasHeight /3) + 50);
 		}
 	}
 
 	setInterval(AIexecKeys, 3000);
 
 	function changeKeyColor(hitKeys) {
+		//c.textAlign = "right";
 		for (var i = 0; i < currKey; i++) {
 			//Outline finished keys red
 			c.lineWidth = 3;
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(255, 0, 0, 1)';
 			c.font = "40px Arial";
-			c.strokeText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
-			c.fillText(hitKeys[i], (canvasWidth / 6) + i * 40, (canvasHeight / 10));
+			c.strokeText(hitKeys[i], (canvasWidth /2) + (i * 40) - 100, (canvasHeight /3) + 50);
+			c.fillText(hitKeys[i], (canvasWidth /2) + (i * 40) - 100, (canvasHeight /3) + 50);
 		}
 		if (currKey <= hitKeys.length - 1) {
 			//Outline current key green
@@ -2636,8 +2641,8 @@ function main() {
 			c.fillStyle = 'rgba(255, 255, 255, 1)';
 			c.strokeStyle = 'rgba(0, 255, 43, 1)';
 			c.font = "40px Arial";
-			c.strokeText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
-			c.fillText(hitKeys[currKey], (canvasWidth / 6) + currKey * 40, (canvasHeight / 10));
+			c.strokeText(hitKeys[currKey], (canvasWidth / 2) + (currKey * 40) - 100, (canvasHeight /3) + 50);
+			c.fillText(hitKeys[currKey], (canvasWidth / 2) + (currKey * 40) - 100, (canvasHeight /3) + 50);
 		}
 	}
 
@@ -3246,7 +3251,6 @@ function main() {
 					if (inCave)
 						if(cave_selection == 1){
 							caveWater1 = true;
-							cave_selection += 1;
 							break;
 						}
 					if (inBoat)
@@ -3265,7 +3269,6 @@ function main() {
 					if (inCave)
 						if(cave_selection == 2){
 							caveWater2 = true;
-							cave_selection += 1;
 							break;
 						}
 					if (inBoat)
@@ -3280,7 +3283,6 @@ function main() {
 					if (inCave)
 						if(cave_selection == 3){
 							caveWater3 = true;
-							cave_selection += 1;
 							
 							break;
 						}
@@ -3294,7 +3296,6 @@ function main() {
 					if (inCave)
 						if(cave_selection == 4){
 							caveWater4 = true;
-							cave_selection -= 1;
 							break;
 						}
 					if (!inBattle) {

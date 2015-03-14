@@ -356,6 +356,21 @@ function main() {
 	var talking_selection = 1;
 	var cave_selection = 1;
 	var boat_selection = 1;
+	//contols tutorial 
+	var hum_tut = true;
+	//makes "space bar for draw" blink
+	var tut_blink = true;
+	
+	function humButtonFunc() {
+		if (tut_blink == true) {
+			tut_blink = false;
+		} else if (tut_blink == false) {
+			tut_blink = true;
+		}
+	}
+
+	setInterval(humButtonFunc, 1000);
+	
 	//----------------------------
 
 	//-----------------------------------------
@@ -1926,14 +1941,25 @@ function main() {
 	var hurt = false;
 	var drawStart = 40;
 	var enemyHp = Math.ceil(Math.random() * (100 - 25) + 25);
-
-	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
-		/*if(humTut) {
+	
+	function draw_tut() {
 		 c.font = "20px Arial";
-		 c.strokeText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
-		 c.fillText("Instructions", (canvasWidth / 2), (canvasHeight / 3));
-		 setInterval(function (){humTut = true;}, 6000)
-		 }*/
+		 c.strokeText("In the Schorching Sea, those who remain still have honor", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 30));
+		 c.fillText("In the Schorching Sea, those who remain still have honor", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 30));
+		 
+		 c.strokeText("humans now duel for the little water left.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
+		 c.fillText("humans now duel for the little water left.", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 60));
+		 
+		 c.strokeText("Wait for the signal, then draw your weapon [Hit Spacebar]", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 90));
+		 c.fillText("Wait for the signal, then draw your weapon [Hit Spacebar]", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 90)); 
+		 if(tut_blink == true){
+			 c.font = "30px Arial";
+			 c.strokeText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 150));
+			 c.fillText("Press Spacebar to Duel", ((canvasWidth / 2)- 200), ((canvasHeight / 3) + 150));
+		}
+	 }
+	
+	function drawBattleScreen(i, count, playerCount, randDrawSpeed) {
 		if (numOfPlayers == 1)
 			var drawEnd = Math.random() * (64 - 48) + 48;
 		if (numOfPlayers == 2)
@@ -3240,12 +3266,16 @@ function main() {
 				 counter = 0;*/
 				case keys.SPACE:
 					if (inBattle) {
-						playerCount = count;
-						count = 0;
-						hurt = true;
-						if (!gameOver) {
-							if (humBat)
-								gunShot.play();
+						if(hum_tut){
+							hum_tut = false;
+						}else {
+							playerCount = count;
+							count = 0;
+							hurt = true;
+							if (!gameOver) {
+								if (humBat)
+									gunShot.play();
+							}
 						}
 					} else if (inVillage)
 						if (village_selection == 1) {
@@ -3680,9 +3710,13 @@ function main() {
 			// If Party encounters a Human battle
 			if (inBattle && !enter && !fishBat && humBat && !inVillage && !inHome && !gameOver && !youWin) {
 				overworld.pause();
+				if(hum_tut == true ){
+					draw_tut();
+				} else if(hum_tut == false){ 
 				wind.play();
-				count++;
-				drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
+					count++;
+					drawBattleScreen(enemyPosition, count, playerCount, randomDrawSpeed);
+				}
 			}
 
 			// If in a Fish battle, display keys on screen

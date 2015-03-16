@@ -3361,7 +3361,6 @@ function main() {
 					if (inCave)
 						if (cave_selection == 3) {
 							caveWater3 = true;
-							cave_selection += 1;
 							break;
 						}
 					//----------------------------------
